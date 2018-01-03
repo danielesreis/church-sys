@@ -6,12 +6,15 @@ public class Member {
     private String number;
     private String birthDate;
     private String role;
-    private String id;
+    private String register;
     
-    Member(String name, String role, String birthDate) {
+    Member(String name, String address, String number, String birthDate, String role, String register) {
         setName(name);
+        setAddress(address);
+        setNumber(number);
         setBirthDate(birthDate);
         setRole(role);
+        setRegister(register);
     }
     
     /*throw exception in case the string is empty or null*/
@@ -64,12 +67,12 @@ public class Member {
         return this.role;
     }
     
-    void setId(String id) {
-        this.id = id;
+    void setRegister(String register) {
+        this.register = register;
     }
     
-    String getId() {
-        return this.id;
+    String getregister() {
+        return this.register;
     }
     
     String upperCaseString(String str) {
