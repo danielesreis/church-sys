@@ -9,11 +9,15 @@ import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.Component;
+import javax.swing.event.TableModelListener;
+import javax.swing.event.TableModelEvent;
+import java.util.List;
+import java.util.ArrayList;
 /**
  *
  * @author danielesreis
  */
-public class MemberListFrame extends javax.swing.JFrame {
+public class MemberListFrame extends javax.swing.JFrame{
 
     /**
      * Creates new form ListaMembrosFrame
@@ -27,23 +31,68 @@ public class MemberListFrame extends javax.swing.JFrame {
         defaultTableModel.addColumn("Data de nascimento");
         defaultTableModel.addColumn("Cargo");
         defaultTableModel.addColumn("Cadastro");
-        JTable jTable = new JTable(defaultTableModel);
+        
+        /*leio as rows do .xlsx e armazeno em um List*/
+        List<Member> memberList = new ArrayList<Member>();
+        Member member = new Member("dani", "a", "a", "a", "a", "a");
+        memberList.add(member);
+        setMemberList(memberList);
+        
+        defaultTableModel.addRow(member.getStringMember());
+        
+        JTable jTable;
+        jTable = new JTable(defaultTableModel);
+        jTable.setAutoscrolls(true);
+        jTable.getTableHeader().setReorderingAllowed(false);
+        
         this.jTable = jTable;
         this.jScrollPane1.getViewport().add(jTable);
-    }
-    
-    
-    public static JTable getTable() {
-        return jTable;
-    }
+        
+        this.jTable.getModel().addTableModelListener(new TableModelListener() {
             
-    public void updateTable(Member member) {
-        DefaultTableModel defaultTableModel = (DefaultTableModel)getTable().getModel();
+            public void tableChanged(TableModelEvent e) {
+                
+                switch(e.getType())
+                {
+                    case TableModelEvent.INSERT: /*atualizo .xlsx*/; break;
+                    case TableModelEvent.UPDATE: updateList(e.getFirstRow(), e.getColumn()); /*atualizo .xlsx*/; break;
+                    case TableModelEvent.DELETE: ; break;
+                    default: 
+                }
+            }
+        });
+    }
+    
+    public void updateList(int objectIndex, int attributeIndex) {
+        List<Member> memberList = getMemberList();
+        Member member = memberList.get(objectIndex);
+        JTable jTable = getJTable();
+        
+        Object data = (Object)jTable.getModel().getValueAt(objectIndex, attributeIndex);
+        member = member.updateMember(data, attributeIndex);
+    }
+    
+    public  void insertIntoTable(Member member) {
+        DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();
         Object[] data = {member.getName(), member.getAddress(), member.getNumber(), member.getBirthDate(), member.getRole(), 
                          member.getRegister()};
-        System.out.println(defaultTableModel.getRowCount());
         defaultTableModel.addRow(data);
-        System.out.println(defaultTableModel.getRowCount());
+    }
+    
+    public void setMemberList(List<Member> memberList) {
+        this.memberList = memberList;
+    }
+    
+    public List<Member> getMemberList() {
+        return this.memberList;
+    }
+  
+    public  void setJTable(JTable newJTable) {
+        this.jTable = newJTable;
+    }
+    
+    public  JTable getJTable() {
+        return jTable;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,20 +103,12 @@ public class MemberListFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btn_edit_member = new javax.swing.JButton();
         btn_insert_member = new javax.swing.JButton();
         btn_export_member = new javax.swing.JButton();
         btn_exclude_member = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        btn_edit_member.setText("Editar membro");
-        btn_edit_member.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_edit_memberActionPerformed(evt);
-            }
-        });
 
         btn_insert_member.setText("Inserir membro");
         btn_insert_member.addActionListener(new java.awt.event.ActionListener() {
@@ -99,7 +140,6 @@ public class MemberListFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_export_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_exclude_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_edit_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_insert_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(45, 45, 45)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 775, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -110,16 +150,14 @@ public class MemberListFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(123, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(123, 123, 123)
                         .addComponent(btn_insert_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_edit_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(30, 30, 30)
                         .addComponent(btn_exclude_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 236, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_export_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(38, 38, 38))
         );
@@ -127,14 +165,13 @@ public class MemberListFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_edit_memberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_edit_memberActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_edit_memberActionPerformed
-
     private void btn_insert_memberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_insert_memberActionPerformed
         // TODO add your handling code here:
-        InsertMemberFrame insertMemberFrame = new InsertMemberFrame();
-        insertMemberFrame.setVisible(true);
+        /*InsertMemberFrame insertMemberFrame = new InsertMemberFrame();
+        insertMemberFrame.setVisible(true);*/
+        
+        InsertMemberDialog insertMemberDialog = new InsertMemberDialog(this, true, getMemberList());
+        insertMemberDialog.setVisible(true);
     }//GEN-LAST:event_btn_insert_memberActionPerformed
 
     private void btn_export_memberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_export_memberActionPerformed
@@ -186,9 +223,10 @@ public class MemberListFrame extends javax.swing.JFrame {
         });
     }
     
-    private static javax.swing.JTable jTable;
+    private int operationType;
+    private List<Member> memberList; 
+    private javax.swing.JTable jTable;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_edit_member;
     private javax.swing.JButton btn_exclude_member;
     private javax.swing.JButton btn_export_member;
     private javax.swing.JButton btn_insert_member;

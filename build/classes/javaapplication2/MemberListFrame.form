@@ -28,7 +28,6 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btn_export_member" min="-2" pref="158" max="-2" attributes="0"/>
                   <Component id="btn_exclude_member" alignment="0" min="-2" pref="158" max="-2" attributes="0"/>
-                  <Component id="btn_edit_member" alignment="0" min="-2" pref="158" max="-2" attributes="0"/>
                   <Component id="btn_insert_member" alignment="0" min="-2" pref="158" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
@@ -42,17 +41,15 @@
           <Group type="102" alignment="1" attributes="0">
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="123" max="32767" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="436" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
                       <Component id="btn_insert_member" min="-2" pref="41" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btn_edit_member" min="-2" pref="41" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       <Component id="btn_exclude_member" min="-2" pref="41" max="-2" attributes="0"/>
-                      <EmptySpace pref="236" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="btn_export_member" min="-2" pref="41" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -62,14 +59,6 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JButton" name="btn_edit_member">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Editar membro"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_edit_memberActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="btn_insert_member">
       <Properties>
         <Property name="text" type="java.lang.String" value="Inserir membro"/>

@@ -4,23 +4,57 @@
  * and open the template in the editor.
  */
 package javaapplication2;
-import javax.swing.JRootPane;
 import javax.swing.JTable;
-import javax.swing.JFrame;
+import java.awt.Frame;
+import java.util.List;
 /**
  *
  * @author danielesreis
  */
-public class InsertMemberFrame extends javax.swing.JFrame {
+public class InsertMemberDialog extends javax.swing.JDialog {
 
     /**
-     * Creates new form InsertMemberFrame
+     * Creates new form InsertMemberDialog
+     * @param parent
      */
-    
-    public InsertMemberFrame() {
+    public InsertMemberDialog(Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
     }
     
+    public InsertMemberDialog(Frame parent, boolean modal, List<Member> memberList) {
+        super(parent, modal);
+        setParentFrame(parent);
+        MemberListFrame memberListFrame = (MemberListFrame)parent;
+        JTable jTable = memberListFrame.getJTable();
+        setMemberList(memberList);
+        initComponents();
+    }
+    
+    public void setMemberList(List<Member> memberList) {
+        this.memberList = memberList;
+    }
+    
+    public List<Member> getMemberList() {
+        return this.memberList;
+    }
+    
+    public void setJTable(JTable jTable) {
+        this.jTable = jTable;
+    }
+    
+    public JTable getJTable() {
+        return this.jTable;
+    }
+    
+    public void setParentFrame(Frame parentFrame) {
+        this.parentFrame = parentFrame;
+    }
+    
+    public Frame getParentFrame() {
+        return this.parentFrame;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -132,7 +166,7 @@ public class InsertMemberFrame extends javax.swing.JFrame {
                             .addComponent(txtfield_address, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtfield_name, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtfield_register, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,8 +196,8 @@ public class InsertMemberFrame extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(txtfield_register, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btn_insert_member, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(btn_insert_member, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -174,7 +208,9 @@ public class InsertMemberFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -213,11 +249,14 @@ public class InsertMemberFrame extends javax.swing.JFrame {
         birthDate = txtfield_birthdate.getText();
         role = txtfield_role.getText();
         register = txtfield_register.getText();
-        
-        MemberListFrame memberListFrame = new MemberListFrame();               
+
         Member member = new Member(name, address, number, birthDate, role, register);
-        memberListFrame.updateTable(member);
+        List<Member> memberList = getMemberList();
+        memberList.add(member);
+        MemberListFrame memberListFrame = (MemberListFrame)this.getParentFrame();
+        memberListFrame.insertIntoTable(member);
         this.dispose();
+        
     }//GEN-LAST:event_btn_insert_memberActionPerformed
 
     /**
@@ -237,25 +276,34 @@ public class InsertMemberFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InsertMemberFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InsertMemberDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InsertMemberFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InsertMemberDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InsertMemberFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InsertMemberDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InsertMemberFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InsertMemberDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                InsertMemberFrame insertMemberFrame = new InsertMemberFrame();
-                insertMemberFrame.setVisible(true);
+                InsertMemberDialog dialog = new InsertMemberDialog(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
     
+    private List<Member> memberList;
+    private java.awt.Frame parentFrame;
+    private javax.swing.JTable jTable;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_insert_member;
     private javax.swing.JLabel jLabel1;

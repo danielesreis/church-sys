@@ -16,11 +16,29 @@ public class Member {
         setRole(role);
         setRegister(register);
     }
+   
+    Object[] getStringMember() {
+        Object[] rowData = {this.getName(), this.getAddress(), this.getNumber(), this.getBirthDate(), this.getRole(), this.getRegister()};
+        return rowData;
+    }
+    
+    Member updateMember(Object attribute, int attributeIndex) {
+        switch(attributeIndex){
+            case 0: this.setName((String)attribute); break;
+            case 1: this.setAddress((String)attribute); break;
+            case 2: this.setNumber((String)attribute); break;
+            case 3: this.setBirthDate((String)attribute); break;
+            case 4: this.setRole((String)attribute); break;
+            case 5: this.setRegister((String)attribute); break;
+            default: /*throw smth*/            
+        }
+        return this;
+    }
     
     /*throw exception in case the string is empty or null*/
     void setName(String name) { 
         
-        if(name.isEmpty() || name == null)
+        if(name.isEmpty())
             System.out.println("error setName");
         
         this.name = upperCaseString(name);
