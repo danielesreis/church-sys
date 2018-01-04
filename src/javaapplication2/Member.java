@@ -71,7 +71,7 @@ public class Member {
         this.register = register;
     }
     
-    String getregister() {
+    String getRegister() {
         return this.register;
     }
     

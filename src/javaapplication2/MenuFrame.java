@@ -88,7 +88,8 @@ public class MenuFrame extends javax.swing.JFrame {
 
     private void btn_member_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_member_listActionPerformed
         // TODO add your handling code here:
-        new MemberListFrame().setVisible(true);
+        MemberListFrame memberListFrame = new MemberListFrame();
+        memberListFrame.setVisible(true);
     }//GEN-LAST:event_btn_member_listActionPerformed
 
     private void btn_registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_registerActionPerformed

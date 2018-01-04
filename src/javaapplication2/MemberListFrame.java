@@ -4,7 +4,11 @@
  * and open the template in the editor.
  */
 package javaapplication2;
-
+import javax.swing.JTable;
+import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import java.awt.Component;
 /**
  *
  * @author danielesreis
@@ -16,8 +20,31 @@ public class MemberListFrame extends javax.swing.JFrame {
      */
     public MemberListFrame() {
         initComponents();
+        DefaultTableModel defaultTableModel = new DefaultTableModel();
+        defaultTableModel.addColumn("Nome");
+        defaultTableModel.addColumn("Endereço");
+        defaultTableModel.addColumn("Número");
+        defaultTableModel.addColumn("Data de nascimento");
+        defaultTableModel.addColumn("Cargo");
+        defaultTableModel.addColumn("Cadastro");
+        JTable jTable = new JTable(defaultTableModel);
+        this.jTable = jTable;
+        this.jScrollPane1.getViewport().add(jTable);
     }
-
+    
+    
+    public static JTable getTable() {
+        return jTable;
+    }
+            
+    public void updateTable(Member member) {
+        DefaultTableModel defaultTableModel = (DefaultTableModel)getTable().getModel();
+        Object[] data = {member.getName(), member.getAddress(), member.getNumber(), member.getBirthDate(), member.getRole(), 
+                         member.getRegister()};
+        System.out.println(defaultTableModel.getRowCount());
+        defaultTableModel.addRow(data);
+        System.out.println(defaultTableModel.getRowCount());
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,27 +54,13 @@ public class MemberListFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        table_members = new javax.swing.JTable();
         btn_edit_member = new javax.swing.JButton();
         btn_insert_member = new javax.swing.JButton();
         btn_export_member = new javax.swing.JButton();
         btn_exclude_member = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        table_members.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(table_members);
 
         btn_edit_member.setText("Editar membro");
         btn_edit_member.addActionListener(new java.awt.event.ActionListener() {
@@ -85,26 +98,28 @@ public class MemberListFrame extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_export_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_exclude_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_edit_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_insert_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_exclude_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(72, 72, 72)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 757, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                    .addComponent(btn_insert_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(45, 45, 45)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 775, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(123, 123, 123)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(123, 123, 123)
                         .addComponent(btn_insert_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btn_edit_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btn_exclude_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 236, Short.MAX_VALUE)
                         .addComponent(btn_export_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(38, 38, 38))
         );
@@ -118,7 +133,8 @@ public class MemberListFrame extends javax.swing.JFrame {
 
     private void btn_insert_memberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_insert_memberActionPerformed
         // TODO add your handling code here:
-        new InsertMemberFrame().setVisible(true);
+        InsertMemberFrame insertMemberFrame = new InsertMemberFrame();
+        insertMemberFrame.setVisible(true);
     }//GEN-LAST:event_btn_insert_memberActionPerformed
 
     private void btn_export_memberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_export_memberActionPerformed
@@ -160,7 +176,8 @@ public class MemberListFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MemberListFrame().setVisible(true);
+                MemberListFrame memberListFrame = new MemberListFrame();
+                memberListFrame.setVisible(true);
                 /*
                     data = readSavedData();
                     updateTable(data);
@@ -168,13 +185,13 @@ public class MemberListFrame extends javax.swing.JFrame {
             }
         });
     }
-
+    
+    private static javax.swing.JTable jTable;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_edit_member;
     private javax.swing.JButton btn_exclude_member;
     private javax.swing.JButton btn_export_member;
     private javax.swing.JButton btn_insert_member;
     private javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JTable table_members;
     // End of variables declaration//GEN-END:variables
 }

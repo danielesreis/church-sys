@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package javaapplication2;
-
+import javax.swing.JRootPane;
+import javax.swing.JTable;
+import javax.swing.JFrame;
 /**
  *
  * @author danielesreis
@@ -14,10 +16,11 @@ public class InsertMemberFrame extends javax.swing.JFrame {
     /**
      * Creates new form InsertMemberFrame
      */
+    
     public InsertMemberFrame() {
         initComponents();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -210,9 +213,11 @@ public class InsertMemberFrame extends javax.swing.JFrame {
         birthDate = txtfield_birthdate.getText();
         role = txtfield_role.getText();
         register = txtfield_register.getText();
-                
-        Member member = new Member(name, address, number, birthDate, role, register);
         
+        MemberListFrame memberListFrame = new MemberListFrame();               
+        Member member = new Member(name, address, number, birthDate, role, register);
+        memberListFrame.updateTable(member);
+        this.dispose();
     }//GEN-LAST:event_btn_insert_memberActionPerformed
 
     /**
@@ -245,11 +250,12 @@ public class InsertMemberFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InsertMemberFrame().setVisible(true);
+                InsertMemberFrame insertMemberFrame = new InsertMemberFrame();
+                insertMemberFrame.setVisible(true);
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_insert_member;
     private javax.swing.JLabel jLabel1;
