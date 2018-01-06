@@ -180,6 +180,17 @@ public class MemberListFrame extends javax.swing.JFrame{
 
     private void btn_exclude_memberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exclude_memberActionPerformed
         // TODO add your handling code here:
+        JTable jTable = getJTable();
+        DefaultTableModel defaultTableModel = (DefaultTableModel)jTable.getModel();
+        List<Member> memberList = getMemberList();
+        
+        int[] rowsSelected = jTable.getSelectedRows();
+        for (int i=0; i<rowsSelected.length; i++)
+        {
+            memberList.remove(i);
+            defaultTableModel.removeRow(i);
+        }
+        jTable.validate();
     }//GEN-LAST:event_btn_exclude_memberActionPerformed
 
     /**
