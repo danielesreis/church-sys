@@ -25,8 +25,6 @@ public class InsertMemberDialog extends javax.swing.JDialog {
     public InsertMemberDialog(Frame parent, boolean modal, List<Member> memberList) {
         super(parent, modal);
         setParentFrame(parent);
-        MemberListFrame memberListFrame = (MemberListFrame)parent;
-        JTable jTable = memberListFrame.getJTable();
         setMemberList(memberList);
         initComponents();
     }
@@ -38,15 +36,7 @@ public class InsertMemberDialog extends javax.swing.JDialog {
     public List<Member> getMemberList() {
         return this.memberList;
     }
-    
-    public void setJTable(JTable jTable) {
-        this.jTable = jTable;
-    }
-    
-    public JTable getJTable() {
-        return this.jTable;
-    }
-    
+       
     public void setParentFrame(Frame parentFrame) {
         this.parentFrame = parentFrame;
     }
@@ -88,7 +78,7 @@ public class InsertMemberDialog extends javax.swing.JDialog {
         jLabel2.setText("ENDEREÇO");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setText("NÚMERO");
+        jLabel3.setText("TELEFONE");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("DATA DE NASCIMENTO");
@@ -111,12 +101,14 @@ public class InsertMemberDialog extends javax.swing.JDialog {
             }
         });
 
+        txtfield_number.setToolTipText("(XX) XXXXX-XXXX");
         txtfield_number.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtfield_numberActionPerformed(evt);
             }
         });
 
+        txtfield_birthdate.setToolTipText("XX/XX/XXXX");
         txtfield_birthdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtfield_birthdateActionPerformed(evt);
@@ -197,7 +189,7 @@ public class InsertMemberDialog extends javax.swing.JDialog {
                     .addComponent(txtfield_register, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btn_insert_member, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -209,8 +201,8 @@ public class InsertMemberDialog extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -253,7 +245,7 @@ public class InsertMemberDialog extends javax.swing.JDialog {
         Member member = new Member(name, address, number, birthDate, role, register);
         List<Member> memberList = getMemberList();
         memberList.add(member);
-        MemberListFrame memberListFrame = (MemberListFrame)this.getParentFrame();
+        MemberListFrame memberListFrame = (MemberListFrame)getParentFrame();
         memberListFrame.insertIntoTable(member);
         this.dispose();
         
@@ -303,7 +295,6 @@ public class InsertMemberDialog extends javax.swing.JDialog {
     
     private List<Member> memberList;
     private java.awt.Frame parentFrame;
-    private javax.swing.JTable jTable;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_insert_member;
     private javax.swing.JLabel jLabel1;

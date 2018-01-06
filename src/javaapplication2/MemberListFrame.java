@@ -27,23 +27,26 @@ public class MemberListFrame extends javax.swing.JFrame{
         DefaultTableModel defaultTableModel = new DefaultTableModel();
         defaultTableModel.addColumn("Nome");
         defaultTableModel.addColumn("Endereço");
-        defaultTableModel.addColumn("Número");
+        defaultTableModel.addColumn("Telefone");
         defaultTableModel.addColumn("Data de nascimento");
         defaultTableModel.addColumn("Cargo");
         defaultTableModel.addColumn("Cadastro");
         
         /*leio as rows do .xlsx e armazeno em um List*/
         List<Member> memberList = new ArrayList<Member>();
+        
         Member member = new Member("dani", "a", "a", "a", "a", "a");
         memberList.add(member);
         setMemberList(memberList);
         
-        defaultTableModel.addRow(member.getStringMember());
+        updateTable(memberList, defaultTableModel);
         
         JTable jTable;
         jTable = new JTable(defaultTableModel);
         jTable.setAutoscrolls(true);
         jTable.getTableHeader().setReorderingAllowed(false);
+        setJTable(jTable);
+        this.jTable.validate();
         
         this.jTable = jTable;
         this.jScrollPane1.getViewport().add(jTable);
@@ -56,11 +59,18 @@ public class MemberListFrame extends javax.swing.JFrame{
                 {
                     case TableModelEvent.INSERT: /*atualizo .xlsx*/; break;
                     case TableModelEvent.UPDATE: updateList(e.getFirstRow(), e.getColumn()); /*atualizo .xlsx*/; break;
-                    case TableModelEvent.DELETE: ; break;
+                    case TableModelEvent.DELETE: /*atualizo .xlsx*/; break;
                     default: 
                 }
             }
         });
+    }
+    
+    public void updateTable(List<Member> members, DefaultTableModel defaultTableModel) {
+        defaultTableModel.setRowCount(0);
+        for(int i=0; i<members.size(); i++) {
+            defaultTableModel.addRow(members.get(i).getStringMember());
+        }
     }
     
     public void updateList(int objectIndex, int attributeIndex) {
@@ -105,7 +115,8 @@ public class MemberListFrame extends javax.swing.JFrame{
 
         btn_insert_member = new javax.swing.JButton();
         btn_export_member = new javax.swing.JButton();
-        btn_exclude_member = new javax.swing.JButton();
+        btn_search_member = new javax.swing.JButton();
+        btn_remove_member = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -124,10 +135,17 @@ public class MemberListFrame extends javax.swing.JFrame{
             }
         });
 
-        btn_exclude_member.setText("Excluir membro");
-        btn_exclude_member.addActionListener(new java.awt.event.ActionListener() {
+        btn_search_member.setText("Pesquisar membro");
+        btn_search_member.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_exclude_memberActionPerformed(evt);
+                btn_search_memberActionPerformed(evt);
+            }
+        });
+
+        btn_remove_member.setText("Excluir membro");
+        btn_remove_member.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_remove_memberActionPerformed(evt);
             }
         });
 
@@ -135,30 +153,31 @@ public class MemberListFrame extends javax.swing.JFrame{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_export_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_exclude_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_insert_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_search_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_insert_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_remove_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(45, 45, 45)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 775, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 763, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addContainerGap(81, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(123, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(123, 123, 123)
                         .addComponent(btn_insert_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
-                        .addComponent(btn_exclude_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_search_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(btn_remove_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_export_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btn_export_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(38, 38, 38))
         );
 
@@ -178,7 +197,13 @@ public class MemberListFrame extends javax.swing.JFrame{
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_export_memberActionPerformed
 
-    private void btn_exclude_memberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exclude_memberActionPerformed
+    private void btn_search_memberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_search_memberActionPerformed
+        // TODO add your handling code here:
+        SearchMemberDialog searchMemberDialog = new SearchMemberDialog(this, true, getJTable());
+        searchMemberDialog.setVisible(true);
+    }//GEN-LAST:event_btn_search_memberActionPerformed
+
+    private void btn_remove_memberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_remove_memberActionPerformed
         // TODO add your handling code here:
         JTable jTable = getJTable();
         DefaultTableModel defaultTableModel = (DefaultTableModel)jTable.getModel();
@@ -191,7 +216,7 @@ public class MemberListFrame extends javax.swing.JFrame{
             defaultTableModel.removeRow(i);
         }
         jTable.validate();
-    }//GEN-LAST:event_btn_exclude_memberActionPerformed
+    }//GEN-LAST:event_btn_remove_memberActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,13 +259,13 @@ public class MemberListFrame extends javax.swing.JFrame{
         });
     }
     
-    private int operationType;
     private List<Member> memberList; 
     private javax.swing.JTable jTable;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_exclude_member;
     private javax.swing.JButton btn_export_member;
     private javax.swing.JButton btn_insert_member;
+    private javax.swing.JButton btn_remove_member;
+    private javax.swing.JButton btn_search_member;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

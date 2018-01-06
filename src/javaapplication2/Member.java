@@ -1,4 +1,6 @@
 package javaapplication2;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Member {
     private String name;
@@ -22,14 +24,39 @@ public class Member {
         return rowData;
     }
     
-    Member updateMember(Object attribute, int attributeIndex) {
+    public static List<Member> objectSearch (List<Member> memberList, int attributeIndex, String searchString)
+    {
+        List<Member> searchList = new ArrayList<Member>();
+        String attributeValue;
+        
+        for(int i=0; i<memberList.size(); i++) {
+            Member member = memberList.get(i);
+            attributeValue = member.getAttribute(attributeIndex);
+            if (attributeValue.contains(upperCaseString(searchString))) searchList.add(member);
+        }
+        return searchList;
+    }
+    
+    public String getAttribute(int attributeIndex) {
+        switch(attributeIndex) {
+            case 0: return getName();
+            case 1: return getAddress();
+            case 2: return getNumber();
+            case 3: return getBirthDate();
+            case 4: return getRole();
+            case 5: return getRegister();
+        }
+        return "";
+    }
+            
+    Member updateMember(Object value, int attributeIndex) {
         switch(attributeIndex){
-            case 0: this.setName((String)attribute); break;
-            case 1: this.setAddress((String)attribute); break;
-            case 2: this.setNumber((String)attribute); break;
-            case 3: this.setBirthDate((String)attribute); break;
-            case 4: this.setRole((String)attribute); break;
-            case 5: this.setRegister((String)attribute); break;
+            case 0: this.setName((String)value); break;
+            case 1: this.setAddress((String)value); break;
+            case 2: this.setNumber((String)value); break;
+            case 3: this.setBirthDate((String)value); break;
+            case 4: this.setRole((String)value); break;
+            case 5: this.setRegister((String)value); break;
             default: /*throw smth*/            
         }
         return this;
@@ -49,7 +76,7 @@ public class Member {
     }
     
     void setAddress(String address) {
-        this.address = address;
+        this.address = upperCaseString(address);
     }
     
     String getAddress() {
@@ -93,7 +120,7 @@ public class Member {
         return this.register;
     }
     
-    String upperCaseString(String str) {
+    public static String upperCaseString(String str) {
         
         String[] words = str.split("\\s+");
         
