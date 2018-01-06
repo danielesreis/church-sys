@@ -46,12 +46,12 @@ public class MemberListFrame extends javax.swing.JFrame{
         jTable = new JTable(defaultTableModel);
         jTable.setAutoscrolls(true);
         jTable.getTableHeader().setReorderingAllowed(false);
+        jTable.getTableHeader().setResizingAllowed(false);
+        
         setJTable(jTable);
+        
         this.jTable.validate();
-        
-        this.jTable = jTable;
         this.jScrollPane1.getViewport().add(jTable);
-        
         this.jTable.getModel().addTableModelListener(new TableModelListener() {
             
             public void tableChanged(TableModelEvent e) {

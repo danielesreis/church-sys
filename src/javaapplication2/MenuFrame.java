@@ -42,7 +42,7 @@ public class MenuFrame extends javax.swing.JFrame {
             }
         });
 
-        btn_register.setText("Caixa");
+        btn_register.setText("Fluxo de Caixa");
         btn_register.setActionCommand("");
         btn_register.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btn_register.addActionListener(new java.awt.event.ActionListener() {
