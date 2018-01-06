@@ -9,6 +9,7 @@ import javax.swing.JTable;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -83,7 +84,7 @@ public class SearchMemberDialog extends javax.swing.JDialog {
         });
 
         buttonGroup1.add(radiobtn_number);
-        radiobtn_number.setText("Número");
+        radiobtn_number.setText("Telefone");
         radiobtn_number.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 radiobtn_numberActionPerformed(evt);
@@ -217,20 +218,33 @@ public class SearchMemberDialog extends javax.swing.JDialog {
             radiobtn_birthdate.isSelected(), radiobtn_role.isSelected(), radiobtn_register.isSelected()};
         MemberListFrame memberListFrame = (MemberListFrame)getParentFrame();
         List<Member> memberList = memberListFrame.getMemberList();
-        
         List<Member> searchResult = new ArrayList<Member>();
+        boolean error = false;
         
-        for(int i=0; i<radiobtn.length; i++) {
-            if (radiobtn[i]==true)
-            {
-                searchResult = Member.objectSearch(memberList, i, txtfield_search.getText());
-                break;
-            }
+        if (txtfield_search.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(parentFrame, "O campo de busca está em branco!", "Alerta", HEIGHT);
+            error = true;
         }
-        memberListFrame.updateTable(searchResult, (DefaultTableModel)memberListFrame.getJTable().getModel());
-        memberListFrame.getJTable().validate();
+        
+        if(!radiobtn_name.isSelected() && !radiobtn_address.isSelected() && !radiobtn_number.isSelected() &&
+                !radiobtn_birthdate.isSelected() && !radiobtn_role.isSelected() && !radiobtn_register.isSelected()) {
+            JOptionPane.showMessageDialog(parentFrame, "Selecione o tipo de busca!", "Alerta", HEIGHT);
+            error = true;
+        }
+        
+        if(!error) {
+            for(int i=0; i<radiobtn.length; i++) {
+                if (radiobtn[i]==true)
+                {
+                    searchResult = Member.objectSearch(memberList, i, txtfield_search.getText());
+                    break;
+                }
+            }
+            memberListFrame.updateTable(searchResult, (DefaultTableModel)memberListFrame.getJTable().getModel());
+            memberListFrame.getJTable().validate();
+        }
     }//GEN-LAST:event_btn_searchActionPerformed
-
+    
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
         MemberListFrame memberListFrame = (MemberListFrame)getParentFrame();

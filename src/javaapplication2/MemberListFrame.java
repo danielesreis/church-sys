@@ -13,6 +13,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.event.TableModelEvent;
 import java.util.List;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 /**
  *
  * @author danielesreis
@@ -80,6 +81,7 @@ public class MemberListFrame extends javax.swing.JFrame{
         
         Object data = (Object)jTable.getModel().getValueAt(objectIndex, attributeIndex);
         member = member.updateMember(data, attributeIndex);
+        System.out.println(memberList.size());
     }
     
     public  void insertIntoTable(Member member) {
@@ -209,13 +211,19 @@ public class MemberListFrame extends javax.swing.JFrame{
         DefaultTableModel defaultTableModel = (DefaultTableModel)jTable.getModel();
         List<Member> memberList = getMemberList();
         
-        int[] rowsSelected = jTable.getSelectedRows();
-        for (int i=0; i<rowsSelected.length; i++)
+        int answer = JOptionPane.showConfirmDialog(rootPane, "Deseja mesmo excluir o membro?", "Confirmar Operação", 
+                JOptionPane.YES_NO_OPTION);
+        
+        if(answer == 0)
         {
-            memberList.remove(i);
-            defaultTableModel.removeRow(i);
+            int[] rowsSelected = jTable.getSelectedRows();
+            for (int i=0; i<rowsSelected.length; i++)
+            {
+                memberList.remove(i);
+                defaultTableModel.removeRow(i);
+            }
+            jTable.validate();
         }
-        jTable.validate();
     }//GEN-LAST:event_btn_remove_memberActionPerformed
 
     /**

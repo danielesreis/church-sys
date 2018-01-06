@@ -241,7 +241,7 @@ public class InsertMemberDialog extends javax.swing.JDialog {
         birthDate = txtfield_birthdate.getText();
         role = txtfield_role.getText();
         register = txtfield_register.getText();
-
+        
         Member member = new Member(name, address, number, birthDate, role, register);
         List<Member> memberList = getMemberList();
         memberList.add(member);
