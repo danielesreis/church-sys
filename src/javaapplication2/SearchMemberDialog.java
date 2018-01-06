@@ -221,7 +221,7 @@ public class SearchMemberDialog extends javax.swing.JDialog {
         List<Member> searchResult = new ArrayList<Member>();
         boolean error = false;
         
-        if (txtfield_search.getText().isEmpty()) {
+        if (txtfield_search.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(parentFrame, "O campo de busca está em branco!", "Alerta", HEIGHT);
             error = true;
         }

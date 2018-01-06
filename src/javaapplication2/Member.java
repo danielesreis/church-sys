@@ -62,12 +62,7 @@ public class Member {
         return this;
     }
     
-    /*throw exception in case the string is empty or null*/
     void setName(String name) { 
-        
-        if(name.isEmpty())
-            System.out.println("error setName");
-        
         this.name = upperCaseString(name);
     }
     
@@ -84,7 +79,7 @@ public class Member {
     }
     
     void setNumber(String number) {
-        this.number = number;
+        this.number = upperCaseString(number);
     }
     
     String getNumber() {
@@ -92,19 +87,14 @@ public class Member {
     }
     
     void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
+        this.birthDate = upperCaseString(number);
     }
     
     String getBirthDate() {
         return this.birthDate;
     }
     
-    /*throw exception*/
     void setRole(String role) {
-        
-        if(role.isEmpty() || role == null)
-            System.out.println("error setRole");
-        
         this.role = upperCaseString(role);
     }
     
@@ -113,7 +103,7 @@ public class Member {
     }
     
     void setRegister(String register) {
-        this.register = register;
+        this.register = upperCaseString(register);
     }
     
     String getRegister() {
@@ -122,6 +112,7 @@ public class Member {
     
     public static String upperCaseString(String str) {
         
+        str = str.trim();
         String[] words = str.split("\\s+");
         
         str = "";
