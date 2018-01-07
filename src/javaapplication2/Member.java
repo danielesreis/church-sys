@@ -27,10 +27,12 @@ public class Member implements Utilities {
         for(int i=0; i<memberList.size(); i++) {
             Member member = memberList.get(i);
             attributeValue = member.getAttribute(attributeIndex);
-            if (attributeValue.contains(member.upperCaseString(searchString))) searchList.add(member);
+            attributeValue = attributeValue.toLowerCase();
+                       
+            if (attributeValue.contains(searchString.toLowerCase())) searchList.add(member);
         }
         return searchList;
-    }
+    }  
     
     public String getAttribute(int attributeIndex) {
         switch(attributeIndex) {
@@ -82,6 +84,7 @@ public class Member implements Utilities {
     }
     
     void setBirthDate(String birthDate) {
+        birthDate = birthDate.replaceAll("\\s+", "");
         this.birthDate = birthDate.isEmpty() ? birthDate : upperCaseString(birthDate);
     }
     
@@ -119,7 +122,7 @@ public class Member implements Utilities {
             str = str + words[i];
             str = str + " ";
         }
-        return str;
+        return str.substring(0, str.length()-1);
     }
     
     public Object[] getStringMember(int index) {

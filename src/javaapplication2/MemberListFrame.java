@@ -42,7 +42,7 @@ public class MemberListFrame extends JFrame{
         setMemberList(memberList);
         
         updateTable(memberList, defaultTableModel);
-        updateTxt();
+        updateTxt(Integer.toString(memberList.size()));
         
         JTable jTable;
         jTable = new JTable(defaultTableModel);
@@ -59,7 +59,7 @@ public class MemberListFrame extends JFrame{
                 
                 switch(e.getType())
                 {
-                    case TableModelEvent.INSERT: updateTxt(); /*atualizo .xlsx*/; break;
+                    case TableModelEvent.INSERT: updateTxt(Integer.toString(getMemberList().size())); /*atualizo .xlsx*/; break;
                     case TableModelEvent.UPDATE: updateList(e.getFirstRow(), e.getColumn()); /*atualizo .xlsx*/; break;
                     case TableModelEvent.DELETE: /*atualizo .xlsx*/; break;
                     default: 
@@ -68,15 +68,8 @@ public class MemberListFrame extends JFrame{
         });
     }
     
-    public void updateTxt() {
-        txt_membernumber.setText(Integer.toString(getMemberList().size()));
-    }
-        
-    public void updateTable(List<Member> members, DefaultTableModel defaultTableModel) {
-        defaultTableModel.setRowCount(0);
-        for(int i=0; i<members.size(); i++) {
-            defaultTableModel.addRow(members.get(i).getStringMember(i));
-        }
+    public void updateTxt(String num) {
+        txt_membernumber.setText(num);
     }
     
     public void updateList(int objectIndex, int attributeIndex) {
@@ -86,7 +79,13 @@ public class MemberListFrame extends JFrame{
         
         Object data = (Object)jTable.getModel().getValueAt(objectIndex, attributeIndex);
         member = member.updateMember(data, attributeIndex);
-        System.out.println(memberList.size());
+    }
+    
+    public void updateTable(List<Member> members, DefaultTableModel defaultTableModel) {
+        defaultTableModel.setRowCount(0);
+        for(int i=0; i<members.size(); i++) {
+            defaultTableModel.addRow(members.get(i).getStringMember(i));
+        }
     }
     
     public  void insertIntoTable(Member member) {

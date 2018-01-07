@@ -241,6 +241,7 @@ public class SearchMemberDialog extends javax.swing.JDialog {
                 }
             }
             memberListFrame.updateTable(searchResult, (DefaultTableModel)memberListFrame.getJTable().getModel());
+            memberListFrame.updateTxt(Integer.toString(searchResult.size()));
             memberListFrame.getJTable().validate();
         }
     }//GEN-LAST:event_btn_searchActionPerformed

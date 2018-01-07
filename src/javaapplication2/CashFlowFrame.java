@@ -5,7 +5,12 @@
  */
 package javaapplication2;
 
+import java.awt.Color;
+import java.awt.Component;
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,7 +30,8 @@ public class CashFlowFrame extends javax.swing.JFrame {
         defaultTableModel.addColumn("Valor");
         defaultTableModel.addColumn("Saldo");
         
-        Entry entry = new Entry("09", "10", "1995", "ha", 1000, true);
+        Entry entry = new Entry("0 9 / 1 0/1995", "ha", true, 1000.05);
+        
         /*leio as rows e armazeno em EntryList*/
         EntryList entryList = new EntryList();
         
@@ -39,12 +45,31 @@ public class CashFlowFrame extends javax.swing.JFrame {
         jTable.getTableHeader().setReorderingAllowed(false);
         
         setJTable(jTable);
-        
         setEntryList(entryList);
         updateTable();
         
         this.jTable.validate();
         this.jScrollPane.getViewport().add(jTable);
+        
+        this.jTable.getModel().addTableModelListener(new TableModelListener() {
+            
+            public void tableChanged(TableModelEvent e) {
+                
+                switch(e.getType())
+                {
+                    case TableModelEvent.INSERT: updateTxt(); /*atualizo .xlsx*/; break;
+                    case TableModelEvent.UPDATE: updateList(e.getFirstRow(), e.getColumn()); /*atualizo .xlsx*/; break;
+                    case TableModelEvent.DELETE: /*atualizo .xlsx*/; break;
+                    default: 
+                }
+            }
+        });
+    }
+    
+    public void updateTxt() {
+    }
+    
+    public void updateList(int objectIndex, int attributeIndex) {
     }
     
     public void setEntryList(EntryList entryList) {
@@ -64,15 +89,29 @@ public class CashFlowFrame extends javax.swing.JFrame {
     }
     
     public void updateTable() {
+        JTable jTable = getJTable();
         EntryList entryList = getEntryList();
-        DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();
-        Object[] rowData;
+        DefaultTableModel defaultTableModel = (DefaultTableModel)jTable.getModel();
         
         for(int i=0; i<entryList.getEntryListSize(); i++) {
-            rowData = entryList.getStringMember(i);
+            Object[] rowData = entryList.getStringMember(i);
+            /*Color color = (rowData[2].toString().charAt(0) == '-') ? Color.RED : Color.BLUE;
+            jTable = paintRowForeground(color, rowData[2].toString(), i, 2);*/
             defaultTableModel.addRow(rowData);
         }
     }
+    
+    /*public JTable paintRowForeground(Color color, String rowValue, int rowIndex, int columnIndex) {
+        JTable jTable = getJTable();
+        jTable.setDefaultRenderer(Double.class, new DefaultTableCellRenderer() {
+            public Component getTableCellRendererComponent() {
+                Component c = super.getTableCellRendererComponent(getJTable(), rowValue, false, false, rowIndex, columnIndex);
+                c.setForeground(color);
+                return c;
+            }
+        });
+        return jTable;
+    }*/
 
     /**
      * This method is called from within the constructor to initialize the form.

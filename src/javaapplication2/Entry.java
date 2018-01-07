@@ -1,28 +1,33 @@
 package javaapplication2;
 
 public class Entry {
-    private float value;
-    private String description;
-    private boolean positiveEntry;
+    private String date;
     private String day;
     private String month;
     private String year;
+    private double value;
+    private String description;
+    private boolean positiveEntry;
     
-    Entry(String day, String month, String year, String description, float value, boolean positiveEntry) {	
-        setDay(day);
-	setMonth(month);
-	setYear(year);
+    Entry(String date, String description, boolean positiveEntry, double value) {	
+        setDate(date);
         setDescription(description);
-        setValue(value);
 	setPositiveEntry(positiveEntry);
+        setValue(value);
     }
     
-    public void setValue(float value) {
-        this.value = Float.parseFloat(Float.toString(value).trim());
+    public void setDate(String date) {
+        date = date.replaceAll("\\s+", "");
+        this.date = date;
+        
+        String[] words = date.split("/");
+        setDay(words[0]);
+        setMonth(words[1]);
+        setYear(words[2]);
     }
     
-    public float getValue() {
-        return this.value;
+    public String getDate() {
+        return this.date;
     }
     
     public void setDescription(String description) {
@@ -33,9 +38,18 @@ public class Entry {
     public String getDescription() {
         return this.description;
     }
-    
+       
     public void setPositiveEntry(boolean positiveEntry) {
         this.positiveEntry = positiveEntry;
+    }
+    
+    public void setValue(double value) {
+        value = Float.parseFloat(Double.toString(value).trim());
+        this.value = (getPositiveEntry()) ? value : -value;
+    }
+    
+    public double getValue() {
+        return this.value;
     }
     
     public boolean getPositiveEntry() {
@@ -43,7 +57,6 @@ public class Entry {
     }
     
     public void setDay(String day) {
-        day = day.trim();
         this.day = (day.length() == 1) ? "0" + day : day;
     }
     
@@ -52,7 +65,6 @@ public class Entry {
     }
     
     public void setMonth(String month) {
-        month = month.trim();
         this.month = (month.length() == 1) ? "0" + month : month;
     }
     
@@ -61,7 +73,7 @@ public class Entry {
     }
     
     public void setYear(String year) {
-        this.year = year.trim();
+        this.year = year;
     }
     
     public String getYear() {

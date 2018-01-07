@@ -1,8 +1,18 @@
 package javaapplication2;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EntryList implements Utilities {
     List<Entry> entryList;
+    
+    EntryList(){
+        List<Entry> entryList = new ArrayList<Entry>();
+        setEntryList(entryList);
+    }
+    
+    public void setEntryList(List<Entry> entryList) {
+        this.entryList = entryList;
+    }
     
     public List<Entry> getEntryList() {
         return this.entryList;
@@ -33,8 +43,7 @@ public class EntryList implements Utilities {
     
     public Object[] getStringMember(int index) {
         Entry entry = getEntryByIndex(index);
-        Object[] rowData = {concatDate(entry.getDay(), entry.getMonth(), entry.getYear()), entry.getDescription(), 
-            Float.toString(entry.getValue())};
+        Object[] rowData = {entry.getDate(), entry.getDescription(), Double.toString(entry.getValue())};
         return rowData;
     }
 }
