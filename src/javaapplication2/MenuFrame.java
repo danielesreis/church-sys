@@ -29,7 +29,7 @@ public class MenuFrame extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         btn_member_list = new javax.swing.JButton();
-        btn_register = new javax.swing.JButton();
+        btn_cash_flow = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -42,12 +42,12 @@ public class MenuFrame extends javax.swing.JFrame {
             }
         });
 
-        btn_register.setText("Fluxo de Caixa");
-        btn_register.setActionCommand("");
-        btn_register.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btn_register.addActionListener(new java.awt.event.ActionListener() {
+        btn_cash_flow.setText("Fluxo de Caixa");
+        btn_cash_flow.setActionCommand("");
+        btn_cash_flow.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btn_cash_flow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_registerActionPerformed(evt);
+                btn_cash_flowActionPerformed(evt);
             }
         });
 
@@ -58,7 +58,7 @@ public class MenuFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(63, 63, 63)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_register, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_cash_flow, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_member_list, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
@@ -68,7 +68,7 @@ public class MenuFrame extends javax.swing.JFrame {
                 .addContainerGap(130, Short.MAX_VALUE)
                 .addComponent(btn_member_list, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btn_register, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_cash_flow, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(110, 110, 110))
         );
 
@@ -92,14 +92,16 @@ public class MenuFrame extends javax.swing.JFrame {
         memberListFrame.setVisible(true);
     }//GEN-LAST:event_btn_member_listActionPerformed
 
-    private void btn_registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_registerActionPerformed
+    private void btn_cash_flowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cash_flowActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btn_registerActionPerformed
+        CashFlowDialog cashFlowDialog = new CashFlowDialog(this, true);
+        cashFlowDialog.setVisible(true);
+    }//GEN-LAST:event_btn_cash_flowActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]){
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -122,7 +124,7 @@ public class MenuFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MenuFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -132,8 +134,8 @@ public class MenuFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_cash_flow;
     private javax.swing.JButton btn_member_list;
-    private javax.swing.JButton btn_register;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

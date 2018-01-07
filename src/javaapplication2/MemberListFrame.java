@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  *
  * @author danielesreis
  */
-public class MemberListFrame extends javax.swing.JFrame{
+public class MemberListFrame extends JFrame{
 
     /**
      * Creates new form ListaMembrosFrame
@@ -38,15 +38,16 @@ public class MemberListFrame extends javax.swing.JFrame{
         
         Member member = new Member("dani", "a", "a", "a", "a", "a");
         memberList.add(member);
+        
         setMemberList(memberList);
         
         updateTable(memberList, defaultTableModel);
+        updateTxt();
         
         JTable jTable;
         jTable = new JTable(defaultTableModel);
         jTable.setAutoscrolls(true);
         jTable.getTableHeader().setReorderingAllowed(false);
-        jTable.getTableHeader().setResizingAllowed(false);
         
         setJTable(jTable);
         
@@ -58,7 +59,7 @@ public class MemberListFrame extends javax.swing.JFrame{
                 
                 switch(e.getType())
                 {
-                    case TableModelEvent.INSERT: /*atualizo .xlsx*/; break;
+                    case TableModelEvent.INSERT: updateTxt(); /*atualizo .xlsx*/; break;
                     case TableModelEvent.UPDATE: updateList(e.getFirstRow(), e.getColumn()); /*atualizo .xlsx*/; break;
                     case TableModelEvent.DELETE: /*atualizo .xlsx*/; break;
                     default: 
@@ -67,6 +68,10 @@ public class MemberListFrame extends javax.swing.JFrame{
         });
     }
     
+    public void updateTxt() {
+        txt_membernumber.setText(Integer.toString(getMemberList().size()));
+    }
+        
     public void updateTable(List<Member> members, DefaultTableModel defaultTableModel) {
         defaultTableModel.setRowCount(0);
         for(int i=0; i<members.size(); i++) {
@@ -120,6 +125,8 @@ public class MemberListFrame extends javax.swing.JFrame{
         btn_search_member = new javax.swing.JButton();
         btn_remove_member = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
+        jLabel1 = new javax.swing.JLabel();
+        txt_membernumber = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -151,36 +158,53 @@ public class MemberListFrame extends javax.swing.JFrame{
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Número de membros: ");
+
+        txt_membernumber.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_membernumber.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txt_membernumber.setText("0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_export_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_search_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_insert_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_remove_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 763, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_membernumber, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_export_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_search_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_insert_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_remove_member, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(45, 45, 45)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 763, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(81, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addContainerGap(71, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btn_insert_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
                         .addComponent(btn_search_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
                         .addComponent(btn_remove_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_export_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38))
+                        .addGap(228, 228, 228)
+                        .addComponent(btn_export_member, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txt_membernumber, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(46, 46, 46))
         );
 
         pack();
@@ -274,6 +298,8 @@ public class MemberListFrame extends javax.swing.JFrame{
     private javax.swing.JButton btn_insert_member;
     private javax.swing.JButton btn_remove_member;
     private javax.swing.JButton btn_search_member;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel txt_membernumber;
     // End of variables declaration//GEN-END:variables
 }
