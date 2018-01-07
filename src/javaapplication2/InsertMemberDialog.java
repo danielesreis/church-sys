@@ -247,8 +247,6 @@ public class InsertMemberDialog extends javax.swing.JDialog {
         memberList.add(member);
         MemberListFrame memberListFrame = (MemberListFrame)getParentFrame();
         memberListFrame.insertIntoTable(member);
-        this.dispose();
-        
     }//GEN-LAST:event_btn_insert_memberActionPerformed
 
     /**

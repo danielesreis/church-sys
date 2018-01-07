@@ -75,7 +75,7 @@ public class MemberListFrame extends JFrame{
     public void updateTable(List<Member> members, DefaultTableModel defaultTableModel) {
         defaultTableModel.setRowCount(0);
         for(int i=0; i<members.size(); i++) {
-            defaultTableModel.addRow(members.get(i).getStringMember());
+            defaultTableModel.addRow(members.get(i).getStringMember(i));
         }
     }
     

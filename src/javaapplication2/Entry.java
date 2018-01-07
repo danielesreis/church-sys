@@ -1,20 +1,20 @@
 package javaapplication2;
 
-public class Entry implements Utilities {
+public class Entry {
     private float value;
     private String description;
-    private boolean operationType;
+    private boolean positiveEntry;
     private String day;
     private String month;
     private String year;
     
-    Entry(float value, String description, boolean operationType, String day, String month, String year) {	
-        setValue(value);
-	setDescription(description);
-	setOperationType(operationType);
-	setDay(day);
+    Entry(String day, String month, String year, String description, float value, boolean positiveEntry) {	
+        setDay(day);
 	setMonth(month);
 	setYear(year);
+        setDescription(description);
+        setValue(value);
+	setPositiveEntry(positiveEntry);
     }
     
     public void setValue(float value) {
@@ -26,23 +26,25 @@ public class Entry implements Utilities {
     }
     
     public void setDescription(String description) {
-        this.description = description.isEmpty() ? description : upperCaseString(description);
+        EntryList entryList = new EntryList();
+        this.description = description.isEmpty() ? description : entryList.upperCaseString(description);
     }
     
     public String getDescription() {
         return this.description;
     }
     
-    public void setOperationType(boolean operationType) {
-        this.operationType = operationType;
+    public void setPositiveEntry(boolean positiveEntry) {
+        this.positiveEntry = positiveEntry;
     }
     
-    public boolean getOperationType() {
-        return this.operationType;
+    public boolean getPositiveEntry() {
+        return this.positiveEntry;
     }
     
     public void setDay(String day) {
-        this.day = day;
+        day = day.trim();
+        this.day = (day.length() == 1) ? "0" + day : day;
     }
     
     public String getDay() {
@@ -50,7 +52,8 @@ public class Entry implements Utilities {
     }
     
     public void setMonth(String month) {
-        this.month = month;
+        month = month.trim();
+        this.month = (month.length() == 1) ? "0" + month : month;
     }
     
     public String getMonth() {
@@ -58,17 +61,10 @@ public class Entry implements Utilities {
     }
     
     public void setYear(String year) {
-        this.year = year;
+        this.year = year.trim();
     }
     
     public String getYear() {
         return this.year;
-    }
-    
-    public String upperCaseString(String str) {
-        str = str.trim();
-        char firstLetter = Character.toUpperCase(str.charAt(0));
-        str = firstLetter + str.substring(1, str.length());
-        return str;
     }
 }

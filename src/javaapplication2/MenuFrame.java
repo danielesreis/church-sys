@@ -94,8 +94,8 @@ public class MenuFrame extends javax.swing.JFrame {
 
     private void btn_cash_flowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cash_flowActionPerformed
         // TODO add your handling code here:
-        CashFlowDialog cashFlowDialog = new CashFlowDialog(this, true);
-        cashFlowDialog.setVisible(true);
+        CashFlowFrame cashFlowFrame = new CashFlowFrame();
+        cashFlowFrame.setVisible(true);
     }//GEN-LAST:event_btn_cash_flowActionPerformed
 
     /**

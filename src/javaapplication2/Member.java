@@ -18,12 +18,7 @@ public class Member implements Utilities {
         setRole(role);
         setRegister(register);
     }
-   
-    Object[] getStringMember() {
-        Object[] rowData = {this.getName(), this.getAddress(), this.getNumber(), this.getBirthDate(), this.getRole(), this.getRegister()};
-        return rowData;
-    }
-    
+      
     public static List<Member> objectSearch (List<Member> memberList, int attributeIndex, String searchString)
     {
         List<Member> searchList = new ArrayList<Member>();
@@ -125,5 +120,10 @@ public class Member implements Utilities {
             str = str + " ";
         }
         return str;
+    }
+    
+    public Object[] getStringMember(int index) {
+        Object[] rowData = {this.getName(), this.getAddress(), this.getNumber(), this.getBirthDate(), this.getRole(), this.getRegister()};
+    return rowData;
     }
 }
