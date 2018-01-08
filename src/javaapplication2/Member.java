@@ -2,13 +2,14 @@ package javaapplication2;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Member implements Utilities {
+public class Member {
     private String name;
     private String address;
     private String number;
     private String birthDate;
     private String role;
     private String register;
+    private MemberList memberList = new MemberList();
     
     Member(String name, String address, String number, String birthDate, String role, String register) {
         setName(name);
@@ -17,23 +18,8 @@ public class Member implements Utilities {
         setBirthDate(birthDate);
         setRole(role);
         setRegister(register);
-    }
-      
-    public static List<Member> objectSearch (List<Member> memberList, int attributeIndex, String searchString)
-    {
-        List<Member> searchList = new ArrayList<Member>();
-        String attributeValue;
-        
-        for(int i=0; i<memberList.size(); i++) {
-            Member member = memberList.get(i);
-            attributeValue = member.getAttribute(attributeIndex);
-            attributeValue = attributeValue.toLowerCase();
-                       
-            if (attributeValue.contains(searchString.toLowerCase())) searchList.add(member);
-        }
-        return searchList;
-    }  
-    
+    }     
+   
     public String getAttribute(int attributeIndex) {
         switch(attributeIndex) {
             case 0: return getName();
@@ -45,22 +31,9 @@ public class Member implements Utilities {
         }
         return "";
     }
-            
-    Member updateMember(Object value, int attributeIndex) {
-        switch(attributeIndex){
-            case 0: this.setName((String)value); break;
-            case 1: this.setAddress((String)value); break;
-            case 2: this.setNumber((String)value); break;
-            case 3: this.setBirthDate((String)value); break;
-            case 4: this.setRole((String)value); break;
-            case 5: this.setRegister((String)value); break;
-            default: /*throw smth*/            
-        }
-        return this;
-    }
     
     void setName(String name) {
-        this.name = name.isEmpty() ? name : upperCaseString(name);
+        this.name = name.isEmpty() ? name : memberList.upperCaseString(name);
     }
     
     String getName() {
@@ -68,7 +41,7 @@ public class Member implements Utilities {
     }
     
     void setAddress(String address) {
-        this.address = address.isEmpty() ? address : upperCaseString(address);
+        this.address = address.isEmpty() ? address : memberList.upperCaseString(address);
     }
     
     String getAddress() {
@@ -76,7 +49,7 @@ public class Member implements Utilities {
     }
     
     void setNumber(String number) {
-        this.number = number.isEmpty() ? number : upperCaseString(number);
+        this.number = number.isEmpty() ? number : memberList.upperCaseString(number);
     }
     
     String getNumber() {
@@ -85,7 +58,7 @@ public class Member implements Utilities {
     
     void setBirthDate(String birthDate) {
         birthDate = birthDate.replaceAll("\\s+", "");
-        this.birthDate = birthDate.isEmpty() ? birthDate : upperCaseString(birthDate);
+        this.birthDate = birthDate.isEmpty() ? birthDate : memberList.upperCaseString(birthDate);
     }
     
     String getBirthDate() {
@@ -93,7 +66,7 @@ public class Member implements Utilities {
     }
     
     void setRole(String role) {
-        this.role = role.isEmpty() ? role : upperCaseString(role);
+        this.role = role.isEmpty() ? role : memberList.upperCaseString(role);
     }
     
     String getRole() {
@@ -101,32 +74,10 @@ public class Member implements Utilities {
     }
     
     void setRegister(String register) {
-        this.register = register.isEmpty() ? register : upperCaseString(register);
+        this.register = register.isEmpty() ? register : memberList.upperCaseString(register);
     }
     
     String getRegister() {
         return this.register;
-    }
-    
-    public String upperCaseString(String str) {
-        
-        str = str.trim();
-        String[] words = str.split("\\s+");
-        char firstLetter;
-        
-        str = "";
-        for(int i = 0; i < words.length; i++) {
-            firstLetter = Character.toUpperCase(words[i].charAt(0));
-            words[i] = firstLetter + words[i].substring(1);
-            
-            str = str + words[i];
-            str = str + " ";
-        }
-        return str.substring(0, str.length()-1);
-    }
-    
-    public Object[] getStringMember(int index) {
-        Object[] rowData = {this.getName(), this.getAddress(), this.getNumber(), this.getBirthDate(), this.getRole(), this.getRegister()};
-    return rowData;
     }
 }

@@ -22,18 +22,18 @@ public class InsertMemberDialog extends javax.swing.JDialog {
         initComponents();
     }
     
-    public InsertMemberDialog(Frame parent, boolean modal, List<Member> memberList) {
+    public InsertMemberDialog(Frame parent, boolean modal, MemberList memberList) {
         super(parent, modal);
         setParentFrame(parent);
         setMemberList(memberList);
         initComponents();
     }
     
-    public void setMemberList(List<Member> memberList) {
+    public void setMemberList(MemberList memberList) {
         this.memberList = memberList;
     }
     
-    public List<Member> getMemberList() {
+    public MemberList getMemberList() {
         return this.memberList;
     }
        
@@ -244,8 +244,8 @@ public class InsertMemberDialog extends javax.swing.JDialog {
         register = txtfield_register.getText();
         
         Member member = new Member(name, address, number, birthDate, role, register);
-        List<Member> memberList = getMemberList();
-        memberList.add(member);
+        MemberList memberList = getMemberList();
+        memberList.addMember(member);
         MemberListFrame memberListFrame = (MemberListFrame)getParentFrame();
         memberListFrame.insertIntoTable(member);
     }//GEN-LAST:event_btn_insert_memberActionPerformed
@@ -292,7 +292,7 @@ public class InsertMemberDialog extends javax.swing.JDialog {
         });
     }
     
-    private List<Member> memberList;
+    private MemberList memberList;
     private java.awt.Frame parentFrame;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_insert_member;

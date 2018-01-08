@@ -34,15 +34,16 @@ public class MemberListFrame extends JFrame{
         defaultTableModel.addColumn("Cadastro");
         
         /*leio as rows do .xlsx e armazeno em um List*/
-        List<Member> memberList = new ArrayList<Member>();
+        MemberList memberList = new MemberList();
+        
         
         Member member = new Member("dani", "a", "a", "a", "a", "a");
-        memberList.add(member);
+        memberList.addMember(member);
         
         setMemberList(memberList);
         
         updateTable(memberList, defaultTableModel);
-        updateTxt(Integer.toString(memberList.size()));
+        updateTxt(Integer.toString(memberList.getTotal()));
         
         JTable jTable;
         jTable = new JTable(defaultTableModel);
@@ -59,9 +60,10 @@ public class MemberListFrame extends JFrame{
                 
                 switch(e.getType())
                 {
-                    case TableModelEvent.INSERT: updateTxt(Integer.toString(getMemberList().size())); /*atualizo .xlsx*/; break;
-                    case TableModelEvent.UPDATE: updateList(e.getFirstRow(), e.getColumn()); /*atualizo .xlsx*/; break;
-                    case TableModelEvent.DELETE: /*atualizo .xlsx*/; break;
+                    case TableModelEvent.INSERT: updateTxt(Integer.toString(getMemberList().getTotal())); /*atualizo .xlsx*/; break;
+                    case TableModelEvent.UPDATE: getMemberList().updateMember(e.getFirstRow(), e.getColumn(),
+                            (Object)getJTable().getModel().getValueAt(e.getFirstRow(), e.getColumn())); /*atualizo .xlsx*/; break;
+                    case TableModelEvent.DELETE: updateTxt(Integer.toString(getMemberList().getTotal())); /*atualizo .xlsx*/; break;
                     default: 
                 }
             }
@@ -72,19 +74,17 @@ public class MemberListFrame extends JFrame{
         txt_membernumber.setText(num);
     }
     
-    public void updateList(int objectIndex, int attributeIndex) {
-        List<Member> memberList = getMemberList();
-        Member member = memberList.get(objectIndex);
-        JTable jTable = getJTable();
-        
-        Object data = (Object)jTable.getModel().getValueAt(objectIndex, attributeIndex);
-        member = member.updateMember(data, attributeIndex);
+    public void updateTable(MemberList memberList, DefaultTableModel defaultTableModel) {
+        defaultTableModel.setRowCount(0);
+        for(int i=0; i<memberList.getTotal(); i++) {
+            defaultTableModel.addRow(memberList.getStringMember(i));
+        }
     }
     
-    public void updateTable(List<Member> members, DefaultTableModel defaultTableModel) {
+    public void updateTable(MemberList memberList, List<Member> searchList, DefaultTableModel defaultTableModel) {
         defaultTableModel.setRowCount(0);
-        for(int i=0; i<members.size(); i++) {
-            defaultTableModel.addRow(members.get(i).getStringMember(i));
+        for(int i=0; i<searchList.size(); i++) {
+            defaultTableModel.addRow(memberList.getStringMember(searchList.get(i)));
         }
     }
     
@@ -95,11 +95,11 @@ public class MemberListFrame extends JFrame{
         defaultTableModel.addRow(data);
     }
     
-    public void setMemberList(List<Member> memberList) {
+    public void setMemberList(MemberList memberList) {
         this.memberList = memberList;
     }
     
-    public List<Member> getMemberList() {
+    public MemberList getMemberList() {
         return this.memberList;
     }
   
@@ -233,7 +233,7 @@ public class MemberListFrame extends JFrame{
         // TODO add your handling code here:
         JTable jTable = getJTable();
         DefaultTableModel defaultTableModel = (DefaultTableModel)jTable.getModel();
-        List<Member> memberList = getMemberList();
+        MemberList memberList = getMemberList();
         
         int answer = JOptionPane.showConfirmDialog(rootPane, "Deseja mesmo excluir o membro?", "Confirmar Operação", 
                 JOptionPane.YES_NO_OPTION);
@@ -243,7 +243,7 @@ public class MemberListFrame extends JFrame{
             int[] rowsSelected = jTable.getSelectedRows();
             for (int i=0; i<rowsSelected.length; i++)
             {
-                memberList.remove(i);
+                memberList.removeMember(i);
                 defaultTableModel.removeRow(i);
             }
             jTable.validate();
@@ -291,7 +291,7 @@ public class MemberListFrame extends JFrame{
         });
     }
     
-    private List<Member> memberList; 
+    private MemberList memberList; 
     private javax.swing.JTable jTable;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_export_member;

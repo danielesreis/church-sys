@@ -218,7 +218,7 @@ public class SearchMemberDialog extends javax.swing.JDialog {
         boolean[] radiobtn = {radiobtn_name.isSelected(), radiobtn_address.isSelected(), radiobtn_number.isSelected(), 
             radiobtn_birthdate.isSelected(), radiobtn_role.isSelected(), radiobtn_register.isSelected()};
         MemberListFrame memberListFrame = (MemberListFrame)getParentFrame();
-        List<Member> memberList = memberListFrame.getMemberList();
+        MemberList memberList = memberListFrame.getMemberList();
         List<Member> searchResult = new ArrayList<Member>();
         boolean error = false;
         
@@ -237,11 +237,11 @@ public class SearchMemberDialog extends javax.swing.JDialog {
             for(int i=0; i<radiobtn.length; i++) {
                 if (radiobtn[i]==true)
                 {
-                    searchResult = Member.objectSearch(memberList, i, txtfield_search.getText());
+                    searchResult = memberList.objectSearch(i, txtfield_search.getText());
                     break;
                 }
             }
-            memberListFrame.updateTable(searchResult, (DefaultTableModel)memberListFrame.getJTable().getModel());
+            memberListFrame.updateTable(memberList, searchResult, (DefaultTableModel)memberListFrame.getJTable().getModel());
             memberListFrame.updateTxt(Integer.toString(searchResult.size()));
             memberListFrame.getJTable().validate();
         }
@@ -250,7 +250,7 @@ public class SearchMemberDialog extends javax.swing.JDialog {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
         MemberListFrame memberListFrame = (MemberListFrame)getParentFrame();
-        List<Member> memberList = memberListFrame.getMemberList();
+        MemberList memberList = memberListFrame.getMemberList();
         DefaultTableModel defaultTableModel = (DefaultTableModel)memberListFrame.getJTable().getModel();
         
         memberListFrame.updateTable(memberList, defaultTableModel);

@@ -55,11 +55,10 @@ public class CashFlowFrame extends javax.swing.JFrame {
         this.jTable.getModel().addTableModelListener(new TableModelListener() {
             
             public void tableChanged(TableModelEvent e) {
-                EntryList entryList = getEntryList();
                 switch(e.getType())
                 {
                     case TableModelEvent.INSERT: updateTxt(getEntryList().getIn(), getEntryList().getOut(), getEntryList().getTotal()); /*atualizo .xlsx*/; break;
-                    case TableModelEvent.UPDATE: entryList.updateEntry(e.getFirstRow(), e.getColumn(),
+                    case TableModelEvent.UPDATE: getEntryList().updateEntry(e.getFirstRow(), e.getColumn(),
                             (Object)getJTable().getModel().getValueAt(e.getFirstRow(), e.getColumn())); /*atualizo .xlsx*/; break;
                     case TableModelEvent.DELETE: /*atualizo .xlsx*/; break;
                     default: 
@@ -78,22 +77,6 @@ public class CashFlowFrame extends javax.swing.JFrame {
         txt_in.setText(txtIn);
         txt_out.setText(txtOut);
         txt_total.setText(txtTotal);
-    }
-    
-    public void setEntryList(EntryList entryList) {
-        this.entryList = entryList;
-    }
-    
-    public EntryList getEntryList() {
-        return this.entryList;
-    } 
-    
-    public void setJTable(JTable jTable) {
-        this.jTable = jTable;
-    }
-    
-    public JTable getJTable() {
-        return this.jTable;
     }
     
     public void updateTable() {
@@ -116,6 +99,22 @@ public class CashFlowFrame extends javax.swing.JFrame {
         defaultTableModel.addRow(rowData);
         updateTxt(getEntryList().getIn(), getEntryList().getOut(), getEntryList().getTotal());
         getJTable().validate();
+    }
+    
+    public void setEntryList(EntryList entryList) {
+        this.entryList = entryList;
+    }
+    
+    public EntryList getEntryList() {
+        return this.entryList;
+    } 
+    
+    public void setJTable(JTable jTable) {
+        this.jTable = jTable;
+    }
+    
+    public JTable getJTable() {
+        return this.jTable;
     }
     
     /*public JTable paintRowForeground(Color color, String rowValue, int rowIndex, int columnIndex) {
