@@ -97,7 +97,9 @@ public class EntryList implements Utilities {
     
     public Object[] getStringMember(int index) {
         Entry entry = getEntryByIndex(index);
-        Object[] rowData = {entry.getDate(), entry.getDescription(), Double.toString(entry.getValue())};
+        String value = String.format("%.2f", entry.getValue());
+        
+        Object[] rowData = {entry.getDate(), entry.getDescription(), value};
         return rowData;
     }
 }

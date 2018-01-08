@@ -69,9 +69,15 @@ public class CashFlowFrame extends javax.swing.JFrame {
     }
     
     public void updateTxt(Double in, Double out, Double total) {
-        txt_in.setText(Double.toString(in));
-        txt_out.setText(Double.toString(out));
-        txt_total.setText(Double.toString(total));
+        String txtIn, txtOut, txtTotal; 
+        
+        txtIn = String.format("%.2f", in);
+        txtOut = String.format("%.2f", out);
+        txtTotal = String.format("%.2f", total);
+        
+        txt_in.setText(txtIn);
+        txt_out.setText(txtOut);
+        txt_total.setText(txtTotal);
     }
     
     public void setEntryList(EntryList entryList) {
@@ -144,6 +150,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         txt_total = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         btn_insert_entry.setText("Inserir entrada");
         btn_insert_entry.addActionListener(new java.awt.event.ActionListener() {

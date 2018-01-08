@@ -32,6 +32,7 @@ public class MenuFrame extends javax.swing.JFrame {
         btn_cash_flow = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         btn_member_list.setText("Lista de Membros");
         btn_member_list.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
