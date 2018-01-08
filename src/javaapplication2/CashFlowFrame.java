@@ -7,6 +7,7 @@ package javaapplication2;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.List;
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -54,11 +55,12 @@ public class CashFlowFrame extends javax.swing.JFrame {
         this.jTable.getModel().addTableModelListener(new TableModelListener() {
             
             public void tableChanged(TableModelEvent e) {
-                
+                EntryList entryList = getEntryList();
                 switch(e.getType())
                 {
-                    case TableModelEvent.INSERT: updateTxt(); /*atualizo .xlsx*/; break;
-                    case TableModelEvent.UPDATE: updateList(e.getFirstRow(), e.getColumn()); /*atualizo .xlsx*/; break;
+                    case TableModelEvent.INSERT: updateTxt(getEntryList().getIn(), getEntryList().getOut(), getEntryList().getTotal()); /*atualizo .xlsx*/; break;
+                    case TableModelEvent.UPDATE: entryList.updateEntry(e.getFirstRow(), e.getColumn(),
+                            (Object)getJTable().getModel().getValueAt(e.getFirstRow(), e.getColumn())); /*atualizo .xlsx*/; break;
                     case TableModelEvent.DELETE: /*atualizo .xlsx*/; break;
                     default: 
                 }
@@ -66,10 +68,10 @@ public class CashFlowFrame extends javax.swing.JFrame {
         });
     }
     
-    public void updateTxt() {
-    }
-    
-    public void updateList(int objectIndex, int attributeIndex) {
+    public void updateTxt(Double in, Double out, Double total) {
+        txt_in.setText(Double.toString(in));
+        txt_out.setText(Double.toString(out));
+        txt_total.setText(Double.toString(total));
     }
     
     public void setEntryList(EntryList entryList) {
@@ -125,23 +127,69 @@ public class CashFlowFrame extends javax.swing.JFrame {
         jScrollPane = new javax.swing.JScrollPane();
         btn_insert_entry = new javax.swing.JButton();
         btn_remove_entry = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txt_in = new javax.swing.JLabel();
+        txt_out = new javax.swing.JLabel();
+        txt_total = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btn_insert_entry.setText("Excluir entrada");
 
         btn_remove_entry.setText("Inserir entrada");
+        btn_remove_entry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_remove_entryActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Entrada:");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setText("Total:");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setText("Saída:");
+
+        txt_in.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_in.setForeground(new java.awt.Color(0, 0, 153));
+        txt_in.setText("0");
+
+        txt_out.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_out.setForeground(new java.awt.Color(153, 0, 0));
+        txt_out.setText("0");
+
+        txt_total.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_total.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(54, Short.MAX_VALUE)
                 .addComponent(btn_insert_entry, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(45, 45, 45)
-                .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_in, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_out, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_total, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(53, 53, 53)
@@ -158,16 +206,33 @@ public class CashFlowFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(159, 159, 159)
                         .addComponent(btn_insert_entry, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(txt_in))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(txt_total))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(txt_out)))
+                .addContainerGap(25, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(89, 89, 89)
                     .addComponent(btn_remove_entry, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(340, Short.MAX_VALUE)))
+                    .addContainerGap(368, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_remove_entryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_remove_entryActionPerformed
+        // TODO add your handling code here:
+        InsertEntryDialog insertEntryDialog = new InsertEntryDialog(this, true);
+        insertEntryDialog.setVisible(true);
+    }//GEN-LAST:event_btn_remove_entryActionPerformed
 
     /**
      * @param args the command line arguments
@@ -209,6 +274,12 @@ public class CashFlowFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_insert_entry;
     private javax.swing.JButton btn_remove_entry;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane;
+    private javax.swing.JLabel txt_in;
+    private javax.swing.JLabel txt_out;
+    private javax.swing.JLabel txt_total;
     // End of variables declaration//GEN-END:variables
 }

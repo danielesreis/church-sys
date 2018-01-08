@@ -4,10 +4,16 @@ import java.util.List;
 
 public class EntryList implements Utilities {
     List<Entry> entryList;
+    double in;
+    double out;
+    double total;
     
     EntryList(){
         List<Entry> entryList = new ArrayList<Entry>();
         setEntryList(entryList);
+        setIn(0);
+        setOut(0);
+        setTotal(0);
     }
     
     public void setEntryList(List<Entry> entryList) {
@@ -18,8 +24,39 @@ public class EntryList implements Utilities {
         return this.entryList;
     }
     
+    public void setIn (double in) {
+	this.in = this.in + in;
+        setTotal(in);
+    }	
+
+    public double getIn() {
+	return this.in;
+    }
+
+    public void setOut (double out) {
+	this.out = this.out + out;
+        setTotal(-out);
+    }
+
+    public double getOut() {
+	return this.out;
+    }	
+
+    public void setTotal (double total) {
+    	this.total = this.total + total;
+    }
+	
+    public double getTotal() {
+        return this.total;
+    }
+    
     public void addEntry(Entry entry) {
         getEntryList().add(entry);
+                
+        if(entry.getPositiveEntry())
+            setIn(entry.getValue());
+        else
+            setOut(entry.getValue());
     }
     
     public int getEntryListSize() {
@@ -28,6 +65,15 @@ public class EntryList implements Utilities {
     
     public Entry getEntryByIndex(int index) {
         return getEntryList().get(index);
+    }
+    
+    public void updateEntry(int entryIndex, int attributeIndex, Object attributeValue) {
+        Entry entry = getEntryList().get(entryIndex);
+        switch(attributeIndex) {
+            case 0: entry.setDate((String)attributeValue); break;
+            case 1: entry.setDescription((String)attributeValue); break;
+            case 2: entry.setValue((Double)attributeValue);
+        }
     }
     
     public static String concatDate(String day, String month, String year) {
