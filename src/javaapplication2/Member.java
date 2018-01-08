@@ -1,6 +1,8 @@
 package javaapplication2;
+import java.util.List;
+import java.util.ArrayList;
 
-public class Member {
+public class Member implements Utilities {
     private String name;
     private String address;
     private String number;
@@ -16,32 +18,49 @@ public class Member {
         setRole(role);
         setRegister(register);
     }
-   
-    Object[] getStringMember() {
-        Object[] rowData = {this.getName(), this.getAddress(), this.getNumber(), this.getBirthDate(), this.getRole(), this.getRegister()};
-        return rowData;
-    }
+      
+    public static List<Member> objectSearch (List<Member> memberList, int attributeIndex, String searchString)
+    {
+        List<Member> searchList = new ArrayList<Member>();
+        String attributeValue;
+        
+        for(int i=0; i<memberList.size(); i++) {
+            Member member = memberList.get(i);
+            attributeValue = member.getAttribute(attributeIndex);
+            attributeValue = attributeValue.toLowerCase();
+                       
+            if (attributeValue.contains(searchString.toLowerCase())) searchList.add(member);
+        }
+        return searchList;
+    }  
     
-    Member updateMember(Object attribute, int attributeIndex) {
+    public String getAttribute(int attributeIndex) {
+        switch(attributeIndex) {
+            case 0: return getName();
+            case 1: return getAddress();
+            case 2: return getNumber();
+            case 3: return getBirthDate();
+            case 4: return getRole();
+            case 5: return getRegister();
+        }
+        return "";
+    }
+            
+    Member updateMember(Object value, int attributeIndex) {
         switch(attributeIndex){
-            case 0: this.setName((String)attribute); break;
-            case 1: this.setAddress((String)attribute); break;
-            case 2: this.setNumber((String)attribute); break;
-            case 3: this.setBirthDate((String)attribute); break;
-            case 4: this.setRole((String)attribute); break;
-            case 5: this.setRegister((String)attribute); break;
+            case 0: this.setName((String)value); break;
+            case 1: this.setAddress((String)value); break;
+            case 2: this.setNumber((String)value); break;
+            case 3: this.setBirthDate((String)value); break;
+            case 4: this.setRole((String)value); break;
+            case 5: this.setRegister((String)value); break;
             default: /*throw smth*/            
         }
         return this;
     }
     
-    /*throw exception in case the string is empty or null*/
-    void setName(String name) { 
-        
-        if(name.isEmpty())
-            System.out.println("error setName");
-        
-        this.name = upperCaseString(name);
+    void setName(String name) {
+        this.name = name.isEmpty() ? name : upperCaseString(name);
     }
     
     String getName() {
@@ -49,7 +68,7 @@ public class Member {
     }
     
     void setAddress(String address) {
-        this.address = address;
+        this.address = address.isEmpty() ? address : upperCaseString(address);
     }
     
     String getAddress() {
@@ -57,7 +76,7 @@ public class Member {
     }
     
     void setNumber(String number) {
-        this.number = number;
+        this.number = number.isEmpty() ? number : upperCaseString(number);
     }
     
     String getNumber() {
@@ -65,20 +84,16 @@ public class Member {
     }
     
     void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
+        birthDate = birthDate.replaceAll("\\s+", "");
+        this.birthDate = birthDate.isEmpty() ? birthDate : upperCaseString(birthDate);
     }
     
     String getBirthDate() {
         return this.birthDate;
     }
     
-    /*throw exception*/
     void setRole(String role) {
-        
-        if(role.isEmpty() || role == null)
-            System.out.println("error setRole");
-        
-        this.role = upperCaseString(role);
+        this.role = role.isEmpty() ? role : upperCaseString(role);
     }
     
     String getRole() {
@@ -86,25 +101,32 @@ public class Member {
     }
     
     void setRegister(String register) {
-        this.register = register;
+        this.register = register.isEmpty() ? register : upperCaseString(register);
     }
     
     String getRegister() {
         return this.register;
     }
     
-    String upperCaseString(String str) {
+    public String upperCaseString(String str) {
         
+        str = str.trim();
         String[] words = str.split("\\s+");
+        char firstLetter;
         
         str = "";
         for(int i = 0; i < words.length; i++) {
-            char firstLetter = Character.toUpperCase(words[i].charAt(0));
+            firstLetter = Character.toUpperCase(words[i].charAt(0));
             words[i] = firstLetter + words[i].substring(1);
             
             str = str + words[i];
             str = str + " ";
         }
-        return str;
+        return str.substring(0, str.length()-1);
+    }
+    
+    public Object[] getStringMember(int index) {
+        Object[] rowData = {this.getName(), this.getAddress(), this.getNumber(), this.getBirthDate(), this.getRole(), this.getRegister()};
+    return rowData;
     }
 }
