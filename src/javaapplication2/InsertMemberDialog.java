@@ -70,6 +70,7 @@ public class InsertMemberDialog extends javax.swing.JDialog {
         btn_insert_member = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("NOME");
@@ -158,7 +159,7 @@ public class InsertMemberDialog extends javax.swing.JDialog {
                             .addComponent(txtfield_address, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtfield_name, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtfield_register, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

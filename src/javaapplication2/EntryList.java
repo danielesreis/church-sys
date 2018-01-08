@@ -35,7 +35,7 @@ public class EntryList implements Utilities {
 
     public void setOut (double out) {
 	this.out = this.out + out;
-        setTotal(-out);
+        setTotal(out);
     }
 
     public double getOut() {
@@ -51,12 +51,18 @@ public class EntryList implements Utilities {
     }
     
     public void addEntry(Entry entry) {
-        getEntryList().add(entry);
+        
+        int index = entryPosition();
+        getEntryList().add(index, entry);
                 
         if(entry.getPositiveEntry())
             setIn(entry.getValue());
         else
             setOut(entry.getValue());
+    }
+    
+    public int entryPosition() {
+        return getEntryListSize();
     }
     
     public int getEntryListSize() {
@@ -72,7 +78,9 @@ public class EntryList implements Utilities {
         switch(attributeIndex) {
             case 0: entry.setDate((String)attributeValue); break;
             case 1: entry.setDescription((String)attributeValue); break;
-            case 2: entry.setValue((Double)attributeValue);
+            case 2: entry.setValue(Double.parseDouble((String)attributeValue));
+                    if(entry.getPositiveEntry()) setIn(entry.getValue());
+                    else setOut(entry.getValue());
         }
     }
     

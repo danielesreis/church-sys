@@ -17,13 +17,31 @@ public class Entry {
     }
     
     public void setDate(String date) {
-        date = date.replaceAll("\\s+", "");
         this.date = date;
         
         String[] words = date.split("/");
-        setDay(words[0]);
-        setMonth(words[1]);
-        setYear(words[2]);
+        String day, month, year;
+        
+        if(words.length == 1)
+        {
+            day = month = "00";
+            year = words[0];
+        }
+        else if (words.length == 2)
+        {
+            day = "00";
+            month = words[0];
+            year = words[1];
+        }
+        else
+        {
+            day = words[0];
+            month = words[1];
+            year = words[2];
+        }
+        setDay(day);
+        setMonth(month);
+        setYear(year);
     }
     
     public String getDate() {
@@ -38,18 +56,17 @@ public class Entry {
     public String getDescription() {
         return this.description;
     }
-       
-    public void setPositiveEntry(boolean positiveEntry) {
-        this.positiveEntry = positiveEntry;
-    }
     
     public void setValue(double value) {
-        value = Float.parseFloat(Double.toString(value).trim());
         this.value = (getPositiveEntry()) ? value : -value;
     }
     
     public double getValue() {
         return this.value;
+    }
+    
+    public void setPositiveEntry(boolean positiveEntry) {
+        this.positiveEntry = positiveEntry;
     }
     
     public boolean getPositiveEntry() {
