@@ -61,6 +61,15 @@ public class EntryList implements Utilities {
             setOut(entry.getValue());
     }
     
+    public void removeEntry(int index) {
+        Entry entry = getEntryByIndex(index);
+        
+        if (entry.getPositiveEntry()) setIn(-entry.getValue());
+        else setOut(-entry.getValue());
+        
+        getEntryList().remove(index);
+    }
+    
     public int entryPosition() {
         return getEntryListSize();
     }
@@ -98,8 +107,12 @@ public class EntryList implements Utilities {
     public Object[] getStringMember(int index) {
         Entry entry = getEntryByIndex(index);
         String value = String.format("%.2f", entry.getValue());
+        int valueIndex;
         
-        Object[] rowData = {entry.getDate(), entry.getDescription(), value};
+        Object[] rowData = {entry.getDate(), entry.getDescription(), "", ""};
+        valueIndex = entry.getPositiveEntry() ? 2 : 3;
+        rowData[valueIndex] = value;
+        
         return rowData;
     }
 }

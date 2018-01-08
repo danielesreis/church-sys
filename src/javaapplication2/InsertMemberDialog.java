@@ -7,6 +7,7 @@ package javaapplication2;
 import javax.swing.JTable;
 import java.awt.Frame;
 import java.util.List;
+import javax.swing.JOptionPane;
 /**
  *
  * @author danielesreis
@@ -243,11 +244,14 @@ public class InsertMemberDialog extends javax.swing.JDialog {
         role = txtfield_role.getText();
         register = txtfield_register.getText();
         
-        Member member = new Member(name, address, number, birthDate, role, register);
-        MemberList memberList = getMemberList();
-        memberList.addMember(member);
-        MemberListFrame memberListFrame = (MemberListFrame)getParentFrame();
-        memberListFrame.insertIntoTable(member);
+        if (!name.isEmpty() || !address.isEmpty() || !number.isEmpty() || !birthDate.isEmpty() || !role.isEmpty() || !register.isEmpty()) {
+            Member member = new Member(name, address, number, birthDate, role, register);
+            MemberList memberList = getMemberList();
+            memberList.addMember(member);
+            MemberListFrame memberListFrame = (MemberListFrame)getParentFrame();
+            memberListFrame.insertIntoTable(member);
+        }
+        else JOptionPane.showMessageDialog(parentFrame, "Insira algum campo!", "Alerta", HEIGHT);
     }//GEN-LAST:event_btn_insert_memberActionPerformed
 
     /**

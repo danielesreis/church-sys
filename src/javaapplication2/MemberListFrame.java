@@ -235,7 +235,7 @@ public class MemberListFrame extends JFrame{
         DefaultTableModel defaultTableModel = (DefaultTableModel)jTable.getModel();
         MemberList memberList = getMemberList();
         
-        int answer = JOptionPane.showConfirmDialog(rootPane, "Deseja mesmo excluir o membro?", "Confirmar Operação", 
+        int answer = JOptionPane.showConfirmDialog(rootPane, "Deseja mesmo excluir?", "Confirmar operação", 
                 JOptionPane.YES_NO_OPTION);
         
         if(answer == 0)
@@ -243,8 +243,8 @@ public class MemberListFrame extends JFrame{
             int[] rowsSelected = jTable.getSelectedRows();
             for (int i=0; i<rowsSelected.length; i++)
             {
-                memberList.removeMember(i);
-                defaultTableModel.removeRow(i);
+                memberList.removeMember(rowsSelected[i]-i);
+                defaultTableModel.removeRow(rowsSelected[i]-i);
             }
             jTable.validate();
         }

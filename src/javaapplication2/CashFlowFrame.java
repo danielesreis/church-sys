@@ -8,6 +8,7 @@ package javaapplication2;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -28,7 +29,8 @@ public class CashFlowFrame extends javax.swing.JFrame {
         DefaultTableModel defaultTableModel = new DefaultTableModel();
         defaultTableModel.addColumn("Data");
         defaultTableModel.addColumn("Descrição");
-        defaultTableModel.addColumn("Valor (R$)");
+        defaultTableModel.addColumn("Entrada (R$)");
+        defaultTableModel.addColumn("Saída (R$)");
         defaultTableModel.addColumn("Saldo (R$)");
         
         //Entry entry = new Entry("0 9 / 1 0/1995", "ha", true, 1000.05);
@@ -55,12 +57,13 @@ public class CashFlowFrame extends javax.swing.JFrame {
         this.jTable.getModel().addTableModelListener(new TableModelListener() {
             
             public void tableChanged(TableModelEvent e) {
+                EntryList entryList = getEntryList();
                 switch(e.getType())
                 {
-                    case TableModelEvent.INSERT: updateTxt(getEntryList().getIn(), getEntryList().getOut(), getEntryList().getTotal()); /*atualizo .xlsx*/; break;
-                    case TableModelEvent.UPDATE: getEntryList().updateEntry(e.getFirstRow(), e.getColumn(),
+                    case TableModelEvent.INSERT: updateTxt(entryList.getIn(), entryList.getOut(), entryList.getTotal()); /*atualizo .xlsx*/; break;
+                    case TableModelEvent.UPDATE: entryList.updateEntry(e.getFirstRow(), e.getColumn(),
                             (Object)getJTable().getModel().getValueAt(e.getFirstRow(), e.getColumn())); /*atualizo .xlsx*/; break;
-                    case TableModelEvent.DELETE: /*atualizo .xlsx*/; break;
+                    case TableModelEvent.DELETE: updateTxt(entryList.getIn(), entryList.getOut(), entryList.getTotal())/*atualizo .xlsx*/; break;
                     default: 
                 }
             }
@@ -243,6 +246,24 @@ public class CashFlowFrame extends javax.swing.JFrame {
 
     private void btn_remove_entryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_remove_entryActionPerformed
         // TODO add your handling code here:
+        JTable jTable = getJTable();
+        DefaultTableModel defaultTableModel = (DefaultTableModel)jTable.getModel();
+        EntryList entryList = getEntryList();
+        
+        int answer = JOptionPane.showConfirmDialog(rootPane, "Deseja mesmo excluir?", "Confirmar Operação", 
+                JOptionPane.YES_NO_OPTION);
+        
+        if(answer == 0)
+        {
+            int[] rowsSelected = jTable.getSelectedRows();
+            for (int i=0; i<rowsSelected.length; i++)
+            {
+                entryList.removeEntry(rowsSelected[i]-i);
+                defaultTableModel.removeRow(rowsSelected[i]-i);
+            }
+            jTable.validate();
+        }
+        
     }//GEN-LAST:event_btn_remove_entryActionPerformed
 
     private void btn_insert_entryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_insert_entryActionPerformed
