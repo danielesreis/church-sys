@@ -7,6 +7,8 @@ package javaapplication2;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -85,6 +87,17 @@ public class CashFlowFrame extends javax.swing.JFrame {
                 }
             }
         });
+        
+        combobox_year.addActionListener(new ActionListener() {
+        
+           public void actionPerformed(ActionEvent e) {
+               String indexYear, indexMonth, indexDay;
+               
+               indexYear = (String)combobox_year.getSelectedItem();
+               indexMonth = (String)combobox_month.getSelectedItem();
+               indexDay = (String)combobox_day.getSelectedItem();
+           }
+        });
     }
     
     public void updateTxt(Double in, Double out, Double total) {
@@ -128,7 +141,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
                 }
             }
             years.add(pos, newYear);
-            combobox_year.insertItemAt(Integer.toString(newYear), pos);
+            combobox_year.insertItemAt(Integer.toString(newYear), pos+1);
             combobox_year.setSelectedIndex(0);
         }
     }
@@ -234,9 +247,21 @@ public class CashFlowFrame extends javax.swing.JFrame {
         txt_total.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_total.setText("0");
 
-        combobox_month.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" }));
+        combobox_year.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Anos" }));
+        combobox_year.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                combobox_yearItemStateChanged(evt);
+            }
+        });
+        combobox_year.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                combobox_yearActionPerformed(evt);
+            }
+        });
 
-        combobox_day.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        combobox_month.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Meses", "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" }));
+
+        combobox_day.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dias", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -327,6 +352,15 @@ public class CashFlowFrame extends javax.swing.JFrame {
         InsertEntryDialog insertEntryDialog = new InsertEntryDialog(getEntryList(), this, true);
         insertEntryDialog.setVisible(true);
     }//GEN-LAST:event_btn_insert_entryActionPerformed
+
+    private void combobox_yearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combobox_yearActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_combobox_yearActionPerformed
+
+    private void combobox_yearItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combobox_yearItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_combobox_yearItemStateChanged
 
     /**
      * @param args the command line arguments
