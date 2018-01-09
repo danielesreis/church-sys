@@ -2,9 +2,9 @@ package javaapplication2;
 
 public class Entry {
     private String date;
-    private String day;
-    private String month;
-    private String year;
+    private int day;
+    private int month;
+    private int year;
     private double value;
     private String description;
     private boolean positiveEntry;
@@ -18,26 +18,35 @@ public class Entry {
     
     public void setDate(String date) {
         this.date = date;
-        
         String[] words = date.split("/");
-        String day, month, year;
+        int day, month,  year;
         
         if(words.length == 1)
         {
-            day = month = "00";
-            year = words[0];
+            day = month = 0;
+            year = Integer.parseInt(words[0]);
         }
         else if (words.length == 2)
         {
-            day = "00";
-            month = words[0];
-            year = words[1];
+            day = 0;
+            if(words[0].length()==1) this.date = "0" + words[0] + "/" + words[1];
+            
+            month = Integer.parseInt(words[0]);
+            year = Integer.parseInt(words[1]);
         }
         else
         {
-            day = words[0];
-            month = words[1];
-            year = words[2];
+            if(words[1].length()==1) {
+                words[1] = "0" + words[1];
+                
+                if(words[0].length()==1) {
+                    words[0] = "0" + words[0];
+                }
+                this.date = words[0] + "/" + words[1] + "/" + words[2];
+            } 
+            day = Integer.parseInt(words[0]);
+            month = Integer.parseInt(words[1]);
+            year = Integer.parseInt(words[2]);
         }
         setDay(day);
         setMonth(month);
@@ -73,27 +82,27 @@ public class Entry {
         return this.positiveEntry;
     }
     
-    public void setDay(String day) {
-        this.day = (day.length() == 1) ? "0" + day : day;
+    public void setDay(int day) {
+        this.day = day;
     }
     
-    public String getDay() {
+    public int getDay() {
         return this.day;
     }
-    
-    public void setMonth(String month) {
-        this.month = (month.length() == 1) ? "0" + month : month;
+        
+    public void setMonth(int month) {
+        this.month = month;
     }
     
-    public String getMonth() {
+    public int getMonth() {
         return this.month;
     }
     
-    public void setYear(String year) {
+    public void setYear(int year) {
         this.year = year;
     }
     
-    public String getYear() {
+    public int getYear() {
         return this.year;
     }
 }

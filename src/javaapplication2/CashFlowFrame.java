@@ -7,6 +7,7 @@ package javaapplication2;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -14,6 +15,8 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import java.util.Calendar;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -32,18 +35,17 @@ public class CashFlowFrame extends javax.swing.JFrame {
         defaultTableModel.addColumn("Entrada (R$)");
         defaultTableModel.addColumn("Saída (R$)");
         defaultTableModel.addColumn("Saldo (R$)");
-        
+        List<Integer> years = new ArrayList<Integer>();
+        setYears(years);
         //Entry entry = new Entry("0 9 / 1 0/1995", "ha", true, 1000.05);
         
         /*leio as rows e armazeno em EntryList*/
         EntryList entryList = new EntryList();
+        /*for(int i=0; i<1; i++) {
+            entryList.addEntry(entry);
+        }*/
         
-        for(int i=0; i<1; i++) {
-            //entryList.addEntry(entry);
-        }
-        
-        JTable jTable;
-        jTable = new JTable(defaultTableModel);
+        JTable jTable = new JTable(defaultTableModel);
         jTable.setAutoscrolls(true);
         jTable.getTableHeader().setReorderingAllowed(false);
         
@@ -60,10 +62,18 @@ public class CashFlowFrame extends javax.swing.JFrame {
                 EntryList entryList = getEntryList();
                 switch(e.getType())
                 {
-                    case TableModelEvent.INSERT: updateTxt(entryList.getIn(), entryList.getOut(), entryList.getTotal()); /*atualizo .xlsx*/; break;
-                    case TableModelEvent.UPDATE: entryList.updateEntry(e.getFirstRow(), e.getColumn(),
-                            (Object)getJTable().getModel().getValueAt(e.getFirstRow(), e.getColumn())); /*atualizo .xlsx*/; break;
-                    case TableModelEvent.DELETE: updateTxt(entryList.getIn(), entryList.getOut(), entryList.getTotal())/*atualizo .xlsx*/; break;
+                    case TableModelEvent.INSERT: 
+                        updateTxt(entryList.getIn(), entryList.getOut(), entryList.getTotal());
+                        /*atualizo .xlsx*/; break;
+                        
+                    case TableModelEvent.UPDATE: 
+                        entryList.updateEntry(e.getFirstRow(), e.getColumn(),
+                            (Object)getJTable().getModel().getValueAt(e.getFirstRow(), e.getColumn()));
+                        /*atualizo .xlsx*/; break;
+                        
+                    case TableModelEvent.DELETE: 
+                        updateTxt(entryList.getIn(), entryList.getOut(), entryList.getTotal());
+                        deleteFromComboBoxYear(e.getFirstRow()); /*atualizo .xlsx*/ break;
                     default: 
                 }
             }
@@ -103,6 +113,35 @@ public class CashFlowFrame extends javax.swing.JFrame {
         updateTxt(getEntryList().getIn(), getEntryList().getOut(), getEntryList().getTotal());
         getJTable().validate();
     }
+        
+    public void updateComboBoxYear(int newYear) {
+        int size, pos=0, i;
+        List<Integer> years = getYears();
+        size = years.size();
+        
+        if(!years.contains(newYear)) {
+            if (size == 1) pos = (newYear > years.get(0)) ? 0 : 1;
+            else if (size > 1){
+                pos = size;
+                for(i=0; i<size; i++) {
+                    if (newYear > years.get(i)) {
+                        pos = i;
+                        break;
+                    }
+                }
+            }
+            years.add(pos, newYear);
+            combobox_year.insertItemAt(Integer.toString(newYear), pos);
+            combobox_year.setSelectedIndex(0);
+        }
+    }
+        
+    public void deleteFromComboBoxYear(int itemIndex) {
+        List<Integer> years = getYears();
+        years.remove(itemIndex);
+        combobox_year.removeItem(itemIndex);
+        JOptionPane.showMessageDialog(rootPane, "Removendo o errado");
+    }
     
     public void setEntryList(EntryList entryList) {
         this.entryList = entryList;
@@ -120,18 +159,15 @@ public class CashFlowFrame extends javax.swing.JFrame {
         return this.jTable;
     }
     
-    /*public JTable paintRowForeground(Color color, String rowValue, int rowIndex, int columnIndex) {
-        JTable jTable = getJTable();
-        jTable.setDefaultRenderer(Double.class, new DefaultTableCellRenderer() {
-            public Component getTableCellRendererComponent() {
-                Component c = super.getTableCellRendererComponent(getJTable(), rowValue, false, false, rowIndex, columnIndex);
-                c.setForeground(color);
-                return c;
-            }
-        });
-        return jTable;
-    }*/
-
+    public void setYears(List<Integer> years) {
+        this.years = years;
+    }
+    
+    public List<Integer> getYears() {
+        return this.years;
+    }
+    
+                
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -150,6 +186,9 @@ public class CashFlowFrame extends javax.swing.JFrame {
         txt_in = new javax.swing.JLabel();
         txt_out = new javax.swing.JLabel();
         txt_total = new javax.swing.JLabel();
+        combobox_year = new javax.swing.JComboBox<>();
+        combobox_month = new javax.swing.JComboBox<>();
+        combobox_day = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -190,6 +229,10 @@ public class CashFlowFrame extends javax.swing.JFrame {
         txt_total.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_total.setText("0");
 
+        combobox_month.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" }));
+
+        combobox_day.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -200,7 +243,10 @@ public class CashFlowFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btn_insert_entry, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_remove_entry, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btn_remove_entry, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(combobox_year, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(combobox_month, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(combobox_day, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(49, 49, 49)
                         .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -220,11 +266,17 @@ public class CashFlowFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btn_insert_entry, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)
-                        .addComponent(btn_remove_entry, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btn_remove_entry, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(combobox_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(combobox_month, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(combobox_day, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -307,11 +359,15 @@ public class CashFlowFrame extends javax.swing.JFrame {
         });
     }
 
+    private List<Integer> years;
     private JTable jTable;
     private EntryList entryList;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_insert_entry;
     private javax.swing.JButton btn_remove_entry;
+    private javax.swing.JComboBox<String> combobox_day;
+    private javax.swing.JComboBox<String> combobox_month;
+    private javax.swing.JComboBox<String> combobox_year;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

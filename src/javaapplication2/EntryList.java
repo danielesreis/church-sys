@@ -52,7 +52,7 @@ public class EntryList implements Utilities {
     
     public void addEntry(Entry entry) {
         
-        int index = entryPosition();
+        int index = position(entry);
         getEntryList().add(index, entry);
                 
         if(entry.getPositiveEntry())
@@ -70,10 +70,25 @@ public class EntryList implements Utilities {
         getEntryList().remove(index);
     }
     
-    public int entryPosition() {
-        return getEntryListSize();
+    public int position(Entry entry) {
+        int pos = 0, size = getEntryListSize();
+        List<Entry> entryList = getEntryList(); 
+        Entry auxEntry;
+        
+        if(size == 1) {
+            auxEntry = getEntryByIndex(0);
+            
+            if(auxEntry.getYear()==entry.getYear()) {
+                
+            }
+            else {
+                
+            }
+        }
+        
+        return pos;
     }
-    
+        
     public int getEntryListSize() {
         return getEntryList().size();
     }
@@ -87,9 +102,13 @@ public class EntryList implements Utilities {
         switch(attributeIndex) {
             case 0: entry.setDate((String)attributeValue); break;
             case 1: entry.setDescription((String)attributeValue); break;
-            case 2: entry.setValue(Double.parseDouble((String)attributeValue));
-                    if(entry.getPositiveEntry()) setIn(entry.getValue());
-                    else setOut(entry.getValue());
+            case 2: setIn(-entry.getValue());
+                    entry.setValue(Double.parseDouble((String)attributeValue));
+                    setIn(entry.getValue());
+                    break;
+            case 3: setOut(-entry.getValue());
+                    entry.setValue(Double.parseDouble((String)attributeValue));
+                    setOut(entry.getValue());
         }
     }
     

@@ -222,6 +222,7 @@ public class InsertEntryDialog extends javax.swing.JDialog {
             entryList.addEntry(entry);
             CashFlowFrame cashFlowFrame = (CashFlowFrame)getParentFrame();
             cashFlowFrame.updateTable(entryList.getStringMember(entryList.getEntryListSize()-1));
+            cashFlowFrame.updateComboBoxYear(entry.getYear());
         }
     }//GEN-LAST:event_btn_insertActionPerformed
 
