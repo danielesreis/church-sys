@@ -70,7 +70,6 @@ public class CashFlowFrame extends javax.swing.JFrame {
                         /*atualizo .xlsx*/; break;
                         
                     case TableModelEvent.UPDATE: 
-                        System.out.println(e.getColumn());
                         if(e.getColumn()!=-1) {
                             index = entryList.updateEntry(e.getFirstRow(), e.getColumn(), (Object)getJTable().getModel().getValueAt(e.getFirstRow(), e.getColumn()));
                         }
@@ -81,7 +80,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
                         
                     case TableModelEvent.DELETE: 
                         updateTxt(entryList.getIn(), entryList.getOut(), entryList.getTotal());
-                        deleteFromComboBoxYear(e.getFirstRow()); /*atualizo .xlsx*/ break;
+                         /*atualizo .xlsx*/ break;
                     default: 
                 }
             }
@@ -105,20 +104,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         defaultTableModel.moveRow(oldRowIndex, oldRowIndex, newRowIndex);
         setMoved(true);
     }
-    
-    /*public void updateTable() {
-        JTable jTable = getJTable();
-        EntryList entryList = getEntryList();
-        DefaultTableModel defaultTableModel = (DefaultTableModel)jTable.getModel();
         
-        for(int i=0; i<entryList.getEntryListSize(); i++) {
-            Object[] rowData = entryList.getStringMember(i);
-            defaultTableModel.addRow(rowData);
-        }
-        updateTxt(entryList.getIn(), entryList.getOut(), entryList.getTotal());
-        jTable.validate();
-    }*/
-    
     public void updateTable(Object[] rowData, int index) {
         DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();
         defaultTableModel.insertRow(index, rowData);
@@ -147,12 +133,12 @@ public class CashFlowFrame extends javax.swing.JFrame {
         }
     }
         
-    public void deleteFromComboBoxYear(int itemIndex) {
+    /*public void deleteFromComboBoxYear(int itemIndex) {
         List<Integer> years = getYears();
         years.remove(itemIndex);
         combobox_year.removeItem(itemIndex);
         JOptionPane.showMessageDialog(rootPane, "Removendo o errado");
-    }
+    }*/
     
     public static void setMoved(boolean moved) {
         moved = moved;
@@ -334,7 +320,6 @@ public class CashFlowFrame extends javax.swing.JFrame {
             }
             jTable.validate();
         }
-        
     }//GEN-LAST:event_btn_remove_entryActionPerformed
 
     private void btn_insert_entryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_insert_entryActionPerformed
