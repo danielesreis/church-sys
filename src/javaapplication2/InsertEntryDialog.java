@@ -73,7 +73,7 @@ public class InsertEntryDialog extends javax.swing.JDialog {
         jPanel1.setPreferredSize(new java.awt.Dimension(549, 300));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("DATA");
+        jLabel1.setText("DATA (dd/mm/aaaa)");
 
         txtfield_date.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,30 +127,28 @@ public class InsertEntryDialog extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(64, 64, 64)
+                            .addComponent(jLabel3)
+                            .addGap(10, 10, 10)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1))
-                                .addGap(20, 20, 20))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(btn_insert)
-                                .addComponent(txtfield_value, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtfield_date, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(200, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(radiobtn_in)
-                        .addGap(32, 32, 32)
-                        .addComponent(radiobtn_out)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addComponent(radiobtn_in)
+                                .addGap(32, 32, 32)
+                                .addComponent(radiobtn_out))
+                            .addComponent(jLabel1))
+                        .addGap(18, 18, 18)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btn_insert)
+                        .addComponent(txtfield_value, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtfield_date, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(167, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,6 +206,7 @@ public class InsertEntryDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         String date, description, value;
         boolean positiveEntry, error;
+        int index;
         
         date = txtfield_date.getText().replaceAll("\\s+", "");
         value = txtfield_value.getText().replaceAll("\\s+", "");
@@ -219,9 +218,9 @@ public class InsertEntryDialog extends javax.swing.JDialog {
         if(!error) {
             Entry entry = new Entry(date, description, positiveEntry, Double.parseDouble(value.replace(",", ".")));
             EntryList entryList = getEntryList();
-            entryList.addEntry(entry);
+            index = entryList.addEntry(entry);
             CashFlowFrame cashFlowFrame = (CashFlowFrame)getParentFrame();
-            cashFlowFrame.updateTable(entryList.getStringMember(entryList.getEntryListSize()-1));
+            cashFlowFrame.updateTable(entryList.getStringMember(index), index);
             cashFlowFrame.updateComboBoxYear(entry.getYear());
         }
     }//GEN-LAST:event_btn_insertActionPerformed
@@ -243,9 +242,8 @@ public class InsertEntryDialog extends javax.swing.JDialog {
             error = true;
         }
         
-        if(!date.matches("\\d{4}") && !date.matches("\\d{1,2}/{1}\\d{4}") && 
-                !date.matches("\\d{1,2}/{1}\\d{1,2}/{1}\\d{4}")) {
-            JOptionPane.showMessageDialog(parentFrame, "Formato de data incorreto! Colocar 4 dígitos no ano", "Alerta", HEIGHT);
+        if(!date.matches("\\d{1,2}/{1}\\d{1,2}/{1}\\d{4}")) {
+            JOptionPane.showMessageDialog(parentFrame, "Formato de data incorreto!", "Alerta", HEIGHT);
             error = true;
         }
         

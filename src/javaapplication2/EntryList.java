@@ -50,7 +50,7 @@ public class EntryList implements Utilities {
         return this.total;
     }
     
-    public void addEntry(Entry entry) {
+    public int addEntry(Entry entry) {
         
         int index = position(entry);
         getEntryList().add(index, entry);
@@ -59,6 +59,8 @@ public class EntryList implements Utilities {
             setIn(entry.getValue());
         else
             setOut(entry.getValue());
+        
+        return index;
     }
     
     public void removeEntry(int index) {
@@ -70,23 +72,77 @@ public class EntryList implements Utilities {
         getEntryList().remove(index);
     }
     
-    public int position(Entry entry) {
-        int pos = 0, size = getEntryListSize();
+    public int position(Entry newEntry) {
+        int pos = 0, auxPos=0, i, size = getEntryListSize(), auxYear, newEntryYear;
         List<Entry> entryList = getEntryList(); 
         Entry auxEntry;
+        int keep = 0;
         
-        if(size == 1) {
-            auxEntry = getEntryByIndex(0);
+        if (size >= 1) {
+            pos = size;
+            newEntryYear = newEntry.getYear();
             
-            if(auxEntry.getYear()==entry.getYear()) {
+            for(i=0; i<size; i++) {
+                auxEntry = getEntryByIndex(i);
                 
+                if(newEntryYear < auxEntry.getYear()) {
+                    keep = -1;
+                    pos = i;
+                    break;
+                }
+                else if(newEntryYear == auxEntry.getYear()) {
+                    keep = 1;
+                    auxPos = i;
+                    break;
+                }
             }
-            else {
+            
+            if(keep == 1) {
+                int newEntryMonth = newEntry.getMonth();
+               
+                for(i=auxPos; i<size; i++) {
+                    auxEntry = getEntryByIndex(i);
+                    
+                    if (newEntryMonth < auxEntry.getMonth()) {
+                        keep = -1;
+                        pos = i;
+                        break;
+                    }
+                    else if(newEntryMonth == auxEntry.getMonth()) {
+                        keep = 2;
+                        auxPos = i;
+                        break;
+                    }
+                    if (newEntryYear != auxEntry.getYear()) {
+                        keep = -1;
+                        pos = i;
+                        break;
+                    }
+                }
                 
-            }
+                if(keep == 2) {
+                    int newEntryDay = newEntry.getDay();
+                    
+                    for(i=auxPos; i<size; i++) {
+                        auxEntry = getEntryByIndex(i);
+                        
+                        if(newEntryDay < auxEntry.getDay()) {
+                            pos = i;
+                            break;
+                        }
+                        else if (newEntryDay == auxEntry.getDay()) {
+                            pos = i;
+                            break;
+                        }
+                        if((newEntryYear != auxEntry.getYear()) || newEntryMonth != auxEntry.getMonth()) {
+                            pos = i;
+                            break;
+                        }
+                    }
+                }
+             }
         }
-        
-        return pos;
+        return pos;        
     }
         
     public int getEntryListSize() {
@@ -97,10 +153,18 @@ public class EntryList implements Utilities {
         return getEntryList().get(index);
     }
     
-    public void updateEntry(int entryIndex, int attributeIndex, Object attributeValue) {
+    public int updateEntry(int entryIndex, int attributeIndex, Object attributeValue) {
         Entry entry = getEntryList().get(entryIndex);
+        Entry newEntry;
+        int index=0;
+        
         switch(attributeIndex) {
-            case 0: entry.setDate((String)attributeValue); break;
+            case 0: entry.setDate((String)attributeValue); 
+                    newEntry = entry;
+                    getEntryList().remove(entryIndex);
+                    index = addEntry(newEntry);
+                    CashFlowFrame.setMoved(false);
+                    break;
             case 1: entry.setDescription((String)attributeValue); break;
             case 2: setIn(-entry.getValue());
                     entry.setValue(Double.parseDouble((String)attributeValue));
@@ -110,6 +174,12 @@ public class EntryList implements Utilities {
                     entry.setValue(Double.parseDouble((String)attributeValue));
                     setOut(entry.getValue());
         }
+        return index;
+    }
+    
+    public void print() {
+        for(int i=0; i<getEntryListSize(); i++)
+            System.out.println(getEntryByIndex(i).getDate());
     }
     
     public static String concatDate(String day, String month, String year) {

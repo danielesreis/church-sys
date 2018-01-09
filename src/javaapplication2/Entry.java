@@ -17,37 +17,23 @@ public class Entry {
     }
     
     public void setDate(String date) {
-        this.date = date;
         String[] words = date.split("/");
         int day, month,  year;
         
-        if(words.length == 1)
-        {
-            day = month = 0;
-            year = Integer.parseInt(words[0]);
-        }
-        else if (words.length == 2)
-        {
-            day = 0;
-            if(words[0].length()==1) this.date = "0" + words[0] + "/" + words[1];
-            
-            month = Integer.parseInt(words[0]);
-            year = Integer.parseInt(words[1]);
-        }
-        else
-        {
-            if(words[1].length()==1) {
-                words[1] = "0" + words[1];
+        this.date = date;
+              
+        if(words[1].length()==1) {
+            words[1] = "0" + words[1];
                 
-                if(words[0].length()==1) {
-                    words[0] = "0" + words[0];
-                }
-                this.date = words[0] + "/" + words[1] + "/" + words[2];
-            } 
-            day = Integer.parseInt(words[0]);
-            month = Integer.parseInt(words[1]);
-            year = Integer.parseInt(words[2]);
-        }
+            if(words[0].length()==1) {
+                words[0] = "0" + words[0];
+            }
+            this.date = words[0] + "/" + words[1] + "/" + words[2];
+        } 
+        day = Integer.parseInt(words[0]);
+        month = Integer.parseInt(words[1]);
+        year = Integer.parseInt(words[2]);
+        
         setDay(day);
         setMonth(month);
         setYear(year);

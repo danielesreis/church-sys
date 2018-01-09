@@ -35,23 +35,25 @@ public class CashFlowFrame extends javax.swing.JFrame {
         defaultTableModel.addColumn("Entrada (R$)");
         defaultTableModel.addColumn("Saída (R$)");
         defaultTableModel.addColumn("Saldo (R$)");
-        List<Integer> years = new ArrayList<Integer>();
-        setYears(years);
-        //Entry entry = new Entry("0 9 / 1 0/1995", "ha", true, 1000.05);
-        
-        /*leio as rows e armazeno em EntryList*/
-        EntryList entryList = new EntryList();
-        /*for(int i=0; i<1; i++) {
-            entryList.addEntry(entry);
-        }*/
         
         JTable jTable = new JTable(defaultTableModel);
         jTable.setAutoscrolls(true);
         jTable.getTableHeader().setReorderingAllowed(false);
         
         setJTable(jTable);
+        
+        List<Integer> years = new ArrayList<Integer>();
+        setYears(years);
+        
+        /*leio as rows e armazeno em EntryList*/
+        EntryList entryList = new EntryList();
+        for(int i=0; i<0; i++) {
+            /*crio objeto entry de cada row do arquivo*/
+            //entryList.addEntry(entry);
+            updateTable(entryList.getStringMember(i), i);
+        }
+        
         setEntryList(entryList);
-        updateTable();
         
         this.jTable.validate();
         this.jScrollPane.getViewport().add(jTable);
@@ -60,6 +62,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
             
             public void tableChanged(TableModelEvent e) {
                 EntryList entryList = getEntryList();
+                int index = e.getFirstRow();
                 switch(e.getType())
                 {
                     case TableModelEvent.INSERT: 
@@ -67,8 +70,13 @@ public class CashFlowFrame extends javax.swing.JFrame {
                         /*atualizo .xlsx*/; break;
                         
                     case TableModelEvent.UPDATE: 
-                        entryList.updateEntry(e.getFirstRow(), e.getColumn(),
-                            (Object)getJTable().getModel().getValueAt(e.getFirstRow(), e.getColumn()));
+                        System.out.println(e.getColumn());
+                        if(e.getColumn()!=-1) {
+                            index = entryList.updateEntry(e.getFirstRow(), e.getColumn(), (Object)getJTable().getModel().getValueAt(e.getFirstRow(), e.getColumn()));
+                        }
+                        if(e.getColumn()==0 && !getMoved()) {
+                            moveRowTable(e.getFirstRow(), index);
+                        }
                         /*atualizo .xlsx*/; break;
                         
                     case TableModelEvent.DELETE: 
@@ -92,24 +100,28 @@ public class CashFlowFrame extends javax.swing.JFrame {
         txt_total.setText(txtTotal);
     }
     
-    public void updateTable() {
+    public void moveRowTable(int oldRowIndex, int newRowIndex) {
+        DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();
+        defaultTableModel.moveRow(oldRowIndex, oldRowIndex, newRowIndex);
+        setMoved(true);
+    }
+    
+    /*public void updateTable() {
         JTable jTable = getJTable();
         EntryList entryList = getEntryList();
         DefaultTableModel defaultTableModel = (DefaultTableModel)jTable.getModel();
         
         for(int i=0; i<entryList.getEntryListSize(); i++) {
             Object[] rowData = entryList.getStringMember(i);
-            /*Color color = (rowData[2].toString().charAt(0) == '-') ? Color.RED : Color.BLUE;
-            jTable = paintRowForeground(color, rowData[2].toString(), i, 2);*/
             defaultTableModel.addRow(rowData);
         }
         updateTxt(entryList.getIn(), entryList.getOut(), entryList.getTotal());
         jTable.validate();
-    }
+    }*/
     
-    public void updateTable(Object[] rowData) {
+    public void updateTable(Object[] rowData, int index) {
         DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();
-        defaultTableModel.addRow(rowData);
+        defaultTableModel.insertRow(index, rowData);
         updateTxt(getEntryList().getIn(), getEntryList().getOut(), getEntryList().getTotal());
         getJTable().validate();
     }
@@ -120,8 +132,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         size = years.size();
         
         if(!years.contains(newYear)) {
-            if (size == 1) pos = (newYear > years.get(0)) ? 0 : 1;
-            else if (size > 1){
+            if (size >= 1){
                 pos = size;
                 for(i=0; i<size; i++) {
                     if (newYear > years.get(i)) {
@@ -141,6 +152,14 @@ public class CashFlowFrame extends javax.swing.JFrame {
         years.remove(itemIndex);
         combobox_year.removeItem(itemIndex);
         JOptionPane.showMessageDialog(rootPane, "Removendo o errado");
+    }
+    
+    public static void setMoved(boolean moved) {
+        moved = moved;
+    }
+    
+    public static boolean getMoved() {
+        return moved;
     }
     
     public void setEntryList(EntryList entryList) {
@@ -359,6 +378,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         });
     }
 
+    private static boolean moved = false;
     private List<Integer> years;
     private JTable jTable;
     private EntryList entryList;
