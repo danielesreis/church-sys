@@ -50,6 +50,14 @@ public class EntryList implements Utilities {
         return this.total;
     }
     
+    public int getEntryListSize() {
+        return getEntryList().size();
+    }
+    
+    public Entry getEntryByIndex(int index) {
+        return getEntryList().get(index);
+    }
+    
     public int addEntry(Entry entry) {
         
         int index = position(entry);
@@ -144,15 +152,7 @@ public class EntryList implements Utilities {
         }
         return pos;        
     }
-        
-    public int getEntryListSize() {
-        return getEntryList().size();
-    }
-    
-    public Entry getEntryByIndex(int index) {
-        return getEntryList().get(index);
-    }
-    
+            
     public int updateEntry(int entryIndex, int attributeIndex, Object attributeValue) {
         Entry entry = getEntryList().get(entryIndex);
         Entry newEntry;
@@ -165,14 +165,19 @@ public class EntryList implements Utilities {
                     index = addEntry(newEntry);
                     CashFlowFrame.setMoved(false);
                     break;
-            case 1: entry.setDescription((String)attributeValue); break;
-            case 2: setIn(-entry.getValue());
-                    entry.setValue(Double.parseDouble((String)attributeValue));
-                    setIn(entry.getValue());
+            case 1: entry.setDescription((String)attributeValue); 
                     break;
-            case 3: setOut(-entry.getValue());
-                    entry.setValue(Double.parseDouble((String)attributeValue));
-                    setOut(entry.getValue());
+            case 2: if(entry.getPositiveEntry()) {
+                        setIn(-entry.getValue());
+                        entry.setValue(Double.parseDouble(((String)attributeValue).replace(",", ".")));
+                        setIn(entry.getValue());
+                    }
+                    break;
+            case 3: if(!entry.getPositiveEntry()) {
+                        setOut(-entry.getValue());
+                        entry.setValue(Double.parseDouble(((String)attributeValue).replace(",", ".")));
+                        setOut(entry.getValue());
+                    }
         }
         return index;
     }

@@ -76,6 +76,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
                     case TableModelEvent.UPDATE: 
                         if(e.getColumn()!=-1) {
                             index = entryList.updateEntry(e.getFirstRow(), e.getColumn(), (Object)getJTable().getModel().getValueAt(e.getFirstRow(), e.getColumn()));
+                            updateTxt(entryList.getIn(), entryList.getOut(), entryList.getTotal());
                         }
                         if(e.getColumn()==0 && !getMoved()) {
                             moveRowTable(e.getFirstRow(), index);
