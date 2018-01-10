@@ -7,13 +7,25 @@ public class EntryList implements Utilities {
     double in;
     double out;
     double total;
+    CashFlowFrame cashFlowFrame;
     
-    EntryList(){
+    EntryList() {}
+    
+    EntryList(CashFlowFrame cashFlowFrame){
         List<Entry> entryList = new ArrayList<Entry>();
+        setCashFlowFrame(cashFlowFrame);
         setEntryList(entryList);
         setIn(0);
         setOut(0);
         setTotal(0);
+    }
+    
+    public void setCashFlowFrame(CashFlowFrame cashFlowFrame) {
+        this.cashFlowFrame = cashFlowFrame;
+    }
+    
+    public CashFlowFrame getCashFlowFrame() {
+        return this.cashFlowFrame;
     }
     
     public void setEntryList(List<Entry> entryList) {
@@ -163,7 +175,8 @@ public class EntryList implements Utilities {
                     newEntry = entry;
                     getEntryList().remove(entryIndex);
                     index = addEntry(newEntry);
-                    CashFlowFrame.setMoved(false);
+                    getCashFlowFrame().updateComboBoxYear(newEntry.getYear());
+                    getCashFlowFrame().setMoved(false);
                     break;
             case 1: entry.setDescription((String)attributeValue); 
                     break;
@@ -241,10 +254,6 @@ public class EntryList implements Utilities {
             auxYear = (year.isEmpty()) ? Integer.toString(entry.getYear()) : year;
             searchDate = concatDate(auxDay, auxMonth, auxYear);
             
-            System.out.println("");
-            System.out.println(searchDate);
-            System.out.println(entry.getDate());
-            System.out.println("");
             if (searchDate.equals((String)entry.getDate())) searchList.add(entry);
         }
         return searchList;

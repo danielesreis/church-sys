@@ -50,7 +50,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         setYears(years);
         
         /*leio as rows e armazeno em EntryList*/
-        EntryList entryList = new EntryList();
+        EntryList entryList = new EntryList(this);
         for(int i=0; i<0; i++) {
             /*crio objeto entry de cada row do arquivo*/
             //entryList.addEntry(entry);
@@ -255,12 +255,12 @@ public class CashFlowFrame extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(rootPane, "Removendo o errado");
     }*/
     
-    public static void setMoved(boolean moved) {
-        moved = moved;
+    public void setMoved(boolean moved) {
+        this.moved = moved;
     }
     
-    public static boolean getMoved() {
-        return moved;
+    public boolean getMoved() {
+        return this.moved;
     }
     
     public void setEntryList(EntryList entryList) {
@@ -500,7 +500,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         });
     }
 
-    private static boolean moved = false;
+    private boolean moved = false;
     private List<Integer> years;
     private JTable jTable;
     private EntryList entryList;
