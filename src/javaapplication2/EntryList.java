@@ -195,11 +195,6 @@ public class EntryList implements Utilities {
         return index;
     }
     
-    public void print() {
-        for(int i=0; i<getEntryListSize(); i++)
-            System.out.println(getEntryByIndex(i).getDate());
-    }
-    
     public static String concatDate(String day, String month, String year) {
         String date = day + "/" + month + "/" + year;
         String[] words = date.split("/");
@@ -223,7 +218,7 @@ public class EntryList implements Utilities {
         String value = String.format("%.2f", entry.getValue());
         int valueIndex;
         
-        Object[] rowData = {entry.getDate(), entry.getDescription(), "", ""};
+        Object[] rowData = {entry.getDate(), entry.getDescription(), "", "", ""};
         valueIndex = entry.getPositiveEntry() ? 2 : 3;
         rowData[valueIndex] = value;
         
@@ -234,7 +229,7 @@ public class EntryList implements Utilities {
         String value = String.format("%.2f", entry.getValue());
         int valueIndex;
         
-        Object[] rowData = {entry.getDate(), entry.getDescription(), "", ""};
+        Object[] rowData = {entry.getDate(), entry.getDescription(), "", "", ""};
         valueIndex = entry.getPositiveEntry() ? 2 : 3;
         rowData[valueIndex] = value;
         
