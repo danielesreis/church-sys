@@ -210,13 +210,26 @@ public class CashFlowFrame extends javax.swing.JFrame {
     public void updateTable(List<Entry> searchEntryList) {
         DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();
         defaultTableModel.setRowCount(0);
+        Double in = 0.0, out = 0.0, total = 0.0, value;
+        Entry entry;
         Object[] rowData;
         
         for(int i=0; i<searchEntryList.size(); i++) {
-            rowData = getEntryList().getStringMember(searchEntryList.get(i));
+            entry = searchEntryList.get(i);
+            if (entry.getPositiveEntry()) {
+                value = entry.getValue();
+                in = in + value;
+            }
+            else {
+                value = entry.getValue();
+                out = out + value;
+            }
+            total = total + value;
+                        
+            rowData = getEntryList().getStringMember(entry);
             defaultTableModel.insertRow(i, rowData);
         }
-        updateTxt(getEntryList().getIn(), getEntryList().getOut(), getEntryList().getTotal());
+        updateTxt(in, out, total);
         getJTable().validate();
     }
         
