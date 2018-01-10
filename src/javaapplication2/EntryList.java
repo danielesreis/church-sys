@@ -183,7 +183,14 @@ public class EntryList implements Utilities {
     }
     
     public static String concatDate(String day, String month, String year) {
-        return (day + "/" + month + "/" + year);
+        String date = day + "/" + month + "/" + year;
+        String[] words = date.split("/");
+        
+        words[0] = (words[0].length()==1) ? "0" + words[0] : words[0];
+        words[1] = (words[1].length()==1) ? "0" + words[1] : words[1];
+        date = words[0] + "/" + words[1] + "/" + words[2];
+        
+        return date;        
     }
     
     public String upperCaseString(String str) {
@@ -203,5 +210,38 @@ public class EntryList implements Utilities {
         rowData[valueIndex] = value;
         
         return rowData;
+    }
+    
+    public Object[] getStringMember(Entry entry) {
+        String value = String.format("%.2f", entry.getValue());
+        int valueIndex;
+        
+        Object[] rowData = {entry.getDate(), entry.getDescription(), "", ""};
+        valueIndex = entry.getPositiveEntry() ? 2 : 3;
+        rowData[valueIndex] = value;
+        
+        return rowData;
+    }
+    
+    public List<Entry> objectSearch (String day, String month, String year)
+    {
+        List<Entry> searchList = new ArrayList<Entry>();
+        String searchDate, auxDay, auxMonth, auxYear;
+        
+        for(int i=0; i<getEntryListSize(); i++) {
+            Entry entry = getEntryByIndex(i);
+            
+            auxDay = (day.isEmpty()) ? Integer.toString(entry.getDay()) : day;
+            auxMonth = (month.isEmpty()) ? Integer.toString(entry.getMonth()) : month;
+            auxYear = (year.isEmpty()) ? Integer.toString(entry.getYear()) : year;
+            searchDate = concatDate(auxDay, auxMonth, auxYear);
+            
+            System.out.println("");
+            System.out.println(searchDate);
+            System.out.println(entry.getDate());
+            System.out.println("");
+            if (searchDate.equals((String)entry.getDate())) searchList.add(entry);
+        }
+        return searchList;
     }
 }

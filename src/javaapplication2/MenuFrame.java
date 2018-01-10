@@ -32,6 +32,7 @@ public class MenuFrame extends javax.swing.JFrame {
         btn_cash_flow = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Sistema ADEMVALE");
         setResizable(false);
 
         btn_member_list.setText("Lista de Membros");

@@ -71,6 +71,7 @@ public class InsertMemberDialog extends javax.swing.JDialog {
         btn_insert_member = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Inserir membro");
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N

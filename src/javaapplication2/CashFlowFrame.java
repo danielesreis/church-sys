@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -88,15 +90,101 @@ public class CashFlowFrame extends javax.swing.JFrame {
             }
         });
         
-        combobox_year.addActionListener(new ActionListener() {
-        
-           public void actionPerformed(ActionEvent e) {
-               String indexYear, indexMonth, indexDay;
+        combobox_year.addItemListener(new ItemListener() {
+           List<Entry> searchEntryList;
+           public void itemStateChanged(ItemEvent e) {
                
-               indexYear = (String)combobox_year.getSelectedItem();
-               indexMonth = (String)combobox_month.getSelectedItem();
-               indexDay = (String)combobox_day.getSelectedItem();
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+
+                    int indexYearSelected, indexMonthSelected, indexDaySelected;
+                    String yearSelected, monthSelected, daySelected;
+                   
+                    indexYearSelected = combobox_year.getSelectedIndex();
+                    indexMonthSelected = combobox_month.getSelectedIndex();
+                    indexDaySelected = combobox_day.getSelectedIndex();
+
+                    if(indexYearSelected>0 || indexMonthSelected>0 || indexDaySelected>0) {
+                        
+                        yearSelected = (indexYearSelected == 0) ? "" : (String)combobox_year.getSelectedItem();
+
+                        monthSelected = Integer.toString(indexMonthSelected);
+                        monthSelected = (indexMonthSelected == 0) ? "" : Integer.toString(combobox_month.getSelectedIndex());
+                        monthSelected = (indexMonthSelected > 0 && indexMonthSelected < 9) ? "0" + monthSelected : monthSelected;
+
+                        daySelected = (indexDaySelected == 0) ? "" : (String)combobox_day.getSelectedItem();
+
+                        searchEntryList = getEntryList().objectSearch(daySelected, monthSelected, yearSelected);
+                        System.out.println(searchEntryList.size());
+                        updateTable(searchEntryList);
+                    }
+                    else updateTable(getEntryList().getEntryList());
+                }
            }
+        });
+        
+        combobox_month.addItemListener(new ItemListener() {
+            List<Entry> searchEntryList;
+            public void itemStateChanged(ItemEvent e) {
+                
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+
+                    int indexYearSelected, indexMonthSelected, indexDaySelected;
+                    String yearSelected, monthSelected, daySelected;
+                   
+                    indexYearSelected = combobox_year.getSelectedIndex();
+                    indexMonthSelected = combobox_month.getSelectedIndex();
+                    indexDaySelected = combobox_day.getSelectedIndex();
+
+                    if(indexYearSelected>0 || indexMonthSelected>0 || indexDaySelected>0) {
+                        
+                        yearSelected = (indexYearSelected == 0) ? "" : (String)combobox_year.getSelectedItem();
+
+                        monthSelected = Integer.toString(indexMonthSelected);
+                        monthSelected = (indexMonthSelected == 0) ? "" : Integer.toString(combobox_month.getSelectedIndex());
+                        monthSelected = (indexMonthSelected > 0 && indexMonthSelected < 9) ? "0" + monthSelected : monthSelected;
+
+                        daySelected = (indexDaySelected == 0) ? "" : (String)combobox_day.getSelectedItem();
+
+                        searchEntryList = getEntryList().objectSearch(daySelected, monthSelected, yearSelected);
+                        System.out.println(searchEntryList.size());
+                        updateTable(searchEntryList);
+                    }
+                    else updateTable(getEntryList().getEntryList());
+                }
+            }
+        });
+        
+        combobox_day.addItemListener(new ItemListener() {
+            List<Entry> searchEntryList;
+            public void itemStateChanged(ItemEvent e) {
+                
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+
+                    int indexYearSelected, indexMonthSelected, indexDaySelected;
+                    String yearSelected, monthSelected, daySelected;
+                   
+                    indexYearSelected = combobox_year.getSelectedIndex();
+                    indexMonthSelected = combobox_month.getSelectedIndex();
+                    indexDaySelected = combobox_day.getSelectedIndex();
+
+                    if(indexYearSelected>0 || indexMonthSelected>0 || indexDaySelected>0) {
+                        
+                        yearSelected = (indexYearSelected == 0) ? "" : (String)combobox_year.getSelectedItem();
+
+                        monthSelected = Integer.toString(indexMonthSelected);
+                        monthSelected = (indexMonthSelected == 0) ? "" : Integer.toString(combobox_month.getSelectedIndex());
+                        monthSelected = (indexMonthSelected > 0 && indexMonthSelected < 9) ? "0" + monthSelected : monthSelected;
+
+                        daySelected = (indexDaySelected == 0) ? "" : (String)combobox_day.getSelectedItem();
+
+                        searchEntryList = getEntryList().objectSearch(daySelected, monthSelected, yearSelected);
+                        System.out.println(searchEntryList.size());
+                        updateTable(searchEntryList);
+                    }
+                    else updateTable(getEntryList().getEntryList());
+                    
+                }
+            }
         });
     }
     
@@ -116,6 +204,19 @@ public class CashFlowFrame extends javax.swing.JFrame {
         DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();
         defaultTableModel.moveRow(oldRowIndex, oldRowIndex, newRowIndex);
         setMoved(true);
+    }
+    
+    public void updateTable(List<Entry> searchEntryList) {
+        DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();
+        defaultTableModel.setRowCount(0);
+        Object[] rowData;
+        
+        for(int i=0; i<searchEntryList.size(); i++) {
+            rowData = getEntryList().getStringMember(searchEntryList.get(i));
+            defaultTableModel.insertRow(i, rowData);
+        }
+        updateTxt(getEntryList().getIn(), getEntryList().getOut(), getEntryList().getTotal());
+        getJTable().validate();
     }
         
     public void updateTable(Object[] rowData, int index) {
@@ -209,6 +310,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         combobox_day = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Fluxo de Caixa");
         setResizable(false);
 
         btn_insert_entry.setText("Inserir entrada");
@@ -247,7 +349,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         txt_total.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_total.setText("0");
 
-        combobox_year.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Anos" }));
+        combobox_year.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ano" }));
         combobox_year.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 combobox_yearItemStateChanged(evt);
@@ -259,9 +361,9 @@ public class CashFlowFrame extends javax.swing.JFrame {
             }
         });
 
-        combobox_month.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Meses", "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" }));
+        combobox_month.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mês", "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" }));
 
-        combobox_day.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dias", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        combobox_day.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dia", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

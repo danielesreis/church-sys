@@ -18,18 +18,13 @@ public class Entry {
     
     public void setDate(String date) {
         String[] words = date.split("/");
-        int day, month,  year;
-        
-        this.date = date;
+        int day, month, year;
               
-        if(words[1].length()==1) {
-            words[1] = "0" + words[1];
-                
-            if(words[0].length()==1) {
-                words[0] = "0" + words[0];
-            }
-            this.date = words[0] + "/" + words[1] + "/" + words[2];
-        } 
+        words[0] = (words[0].length()==1) ? "0" + words[0] : words[0];
+        words[1] = (words[1].length()==1) ? "0" + words[1] : words[1];
+        
+        this.date = words[0] + "/" + words[1] + "/" + words[2];
+         
         day = Integer.parseInt(words[0]);
         month = Integer.parseInt(words[1]);
         year = Integer.parseInt(words[2]);
@@ -70,6 +65,10 @@ public class Entry {
     
     public void setDay(int day) {
         this.day = day;
+    }
+    
+    public void setDay(String day) {
+        
     }
     
     public int getDay() {

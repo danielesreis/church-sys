@@ -128,6 +128,7 @@ public class MemberListFrame extends JFrame{
         txt_membernumber = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Lista de Membros");
         setResizable(false);
 
         btn_insert_member.setText("Inserir membro");

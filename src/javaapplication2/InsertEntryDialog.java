@@ -68,6 +68,7 @@ public class InsertEntryDialog extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Inserir registro");
         setResizable(false);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(549, 300));
