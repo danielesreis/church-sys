@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/juju-/Desktop/church_app/src/javaapplication2/CashFlowFrame.java</file>
-            <file>file:/C:/Users/juju-/Desktop/church_app/src/javaapplication2/InsertEntryDialog.java</file>
-            <file>file:/C:/Users/juju-/Desktop/church_app/src/javaapplication2/EntryList.java</file>
-            <file>file:/C:/Users/juju-/Desktop/church_app/src/javaapplication2/Entry.java</file>
-            <file>file:/C:/Users/juju-/Desktop/church_app/src/javaapplication2/MemberList.java</file>
+            <file>file:/C:/Users/juju-/Desktop/projetos/church_app/src/javaapplication2/Interfaces/MemberListFrame.java</file>
+            <file>file:/C:/Users/juju-/Desktop/projetos/church_app/src/javaapplication2/Interfaces/InsertMemberDialog.java</file>
+            <file>file:/C:/Users/juju-/Desktop/projetos/church_app/src/javaapplication2/Interfaces/SearchMemberDialog.java</file>
+            <file>file:/C:/Users/juju-/Desktop/projetos/church_app/src/javaapplication2/Classes/MemberList.java</file>
+            <file>file:/C:/Users/juju-/Desktop/projetos/church_app/src/javaapplication2/Interfaces/EditMemberDialog.java</file>
         </group>
     </open-files>
 </project-private>
