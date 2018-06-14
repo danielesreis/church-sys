@@ -22,29 +22,24 @@ public class InsertMemberDialog extends javax.swing.JDialog {
      */
     public InsertMemberDialog(Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();
-    }
-    
-    public InsertMemberDialog(Frame parent, boolean modal, MemberList memberList) {
-        super(parent, modal);
         setParentFrame(parent);
-        setMemberList(memberList);
+        setMemberList(((MemberListFrame)parent).getMemberList());
         initComponents();
     }
     
-    public void setMemberList(MemberList memberList) {
+    private void setMemberList(MemberList memberList) {
         this.memberList = memberList;
     }
     
-    public MemberList getMemberList() {
+    private MemberList getMemberList() {
         return this.memberList;
     }
        
-    public void setParentFrame(Frame parentFrame) {
+    private void setParentFrame(Frame parentFrame) {
         this.parentFrame = parentFrame;
     }
     
-    public Frame getParentFrame() {
+    private Frame getParentFrame() {
         return this.parentFrame;
     }
 

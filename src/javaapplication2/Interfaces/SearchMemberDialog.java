@@ -26,19 +26,14 @@ public class SearchMemberDialog extends javax.swing.JDialog {
     public SearchMemberDialog(Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-    }
-    
-    public SearchMemberDialog(Frame parent, boolean modal, JTable jTable) {
-        super(parent, modal);
-        initComponents();
         setParentFrame(parent);
     }
     
-    public void setParentFrame(Frame parentFrame) {
+    private void setParentFrame(Frame parentFrame) {
         this.parentFrame = parentFrame;
     }
     
-    public Frame getParentFrame() {
+    private Frame getParentFrame() {
         return this.parentFrame;
     }
 
@@ -238,13 +233,13 @@ public class SearchMemberDialog extends javax.swing.JDialog {
         
         if(!error) {
             for(int i=0; i<radiobtn.length; i++) {
-                if (radiobtn[i]==true)
+                if (radiobtn[i] == true)
                 {
                     searchResult = memberList.objectSearch(i, txtfield_search.getText());
                     break;
                 }
             }
-            memberListFrame.updateTable(memberList, searchResult, (DefaultTableModel)memberListFrame.getJTable().getModel());
+            memberListFrame.updateTable(searchResult, (DefaultTableModel)memberListFrame.getJTable().getModel());
             memberListFrame.updateTxt(Integer.toString(searchResult.size()));
             memberListFrame.getJTable().validate();
         }

@@ -16,7 +16,7 @@ public class Entry {
         setValue(value);
     }
     
-    public void setDate(String date) {
+    protected void setDate(String date) {
         String[] words = date.split("/");
         int day, month, year;
               
@@ -38,7 +38,7 @@ public class Entry {
         return this.date;
     }
     
-    public void setDescription(String description) {
+    protected void setDescription(String description) {
         EntryList entryList = new EntryList();
         this.description = description.isEmpty() ? description : entryList.upperCaseString(description);
     }
@@ -47,7 +47,7 @@ public class Entry {
         return this.description;
     }
     
-    public void setValue(double value) {
+    protected void setValue(double value) {
         this.value = (getPositiveEntry()) ? value : -value;
     }
     
@@ -55,7 +55,7 @@ public class Entry {
         return this.value;
     }
     
-    public void setPositiveEntry(boolean positiveEntry) {
+    protected void setPositiveEntry(boolean positiveEntry) {
         this.positiveEntry = positiveEntry;
     }
     
@@ -63,19 +63,15 @@ public class Entry {
         return this.positiveEntry;
     }
     
-    public void setDay(int day) {
+    protected void setDay(int day) {
         this.day = day;
-    }
-    
-    public void setDay(String day) {
-        
     }
     
     public int getDay() {
         return this.day;
     }
         
-    public void setMonth(int month) {
+    protected void setMonth(int month) {
         this.month = month;
     }
     
@@ -83,7 +79,7 @@ public class Entry {
         return this.month;
     }
     
-    public void setYear(int year) {
+    protected void setYear(int year) {
         this.year = year;
     }
     

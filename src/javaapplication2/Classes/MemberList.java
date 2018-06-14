@@ -2,7 +2,7 @@ package javaapplication2.Classes;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemberList implements Utilities{
+public class MemberList{
     private List<Member> memberList;
     static int total;
     
@@ -12,7 +12,7 @@ public class MemberList implements Utilities{
         setTotal(0);
     }
     
-    public void setMemberList(List<Member> memberList) {
+    private void setMemberList(List<Member> memberList) {
         this.memberList = memberList;
     }
     
@@ -20,8 +20,8 @@ public class MemberList implements Utilities{
         return this.memberList;
     }
     
-    public void setTotal(int total) {
-        this.total = this.total + total;
+    private void setTotal(int total) {
+        this.total = total;
     }
     
     public int getTotal() {
@@ -30,12 +30,12 @@ public class MemberList implements Utilities{
     
     public void addMember(Member member){
         getMemberList().add(member);
-        setTotal(1);
+        incTotal(1);
     }
     
     public void removeMember(int index) {
         getMemberList().remove(index);
-        setTotal(-1);
+        incTotal(-1);
     }
     
     public int getMemberListSize() {
@@ -44,6 +44,10 @@ public class MemberList implements Utilities{
     
     public Member getMemberByIndex(int index) {
         return getMemberList().get(index);
+    }
+    
+    private void incTotal(int qtd) {
+        setTotal(getTotal()+qtd);
     }
     
     public void updateMember(int memberIndex, int attributeIndex, Object attributeValue) {
@@ -59,7 +63,7 @@ public class MemberList implements Utilities{
         }
     }
     
-    public String upperCaseString(String str) {
+    public static String upperCaseString(String str) {
         str = str.trim();
         String[] words = str.split("\\s+");
         char firstLetter;
@@ -75,14 +79,14 @@ public class MemberList implements Utilities{
         return str.substring(0, str.length()-1);
     }
     
-    public Object[] getStringMember(int index) {
+    /*public Object[] getStringMember(int index) {
         Member member = getMemberByIndex(index);
         Object[] rowData = {member.getName(), member.getAddress(), member.getNumber(), member.getBirthDate(), member.getRole(), member.getRegister()};
         
         return rowData;
-    }
+    }*/
     
-    public Object[] getStringMember(Member member) {
+    public static Object[] getStringMember(Member member) {
         Object[] rowData = {member.getName(), member.getAddress(), member.getNumber(), member.getBirthDate(), member.getRole(), member.getRegister()};
         
         return rowData;

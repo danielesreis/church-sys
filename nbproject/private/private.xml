@@ -4,10 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/juju-/Desktop/projetos/church_app/src/javaapplication2/Interfaces/MemberListFrame.java</file>
-            <file>file:/C:/Users/juju-/Desktop/projetos/church_app/src/javaapplication2/Interfaces/InsertMemberDialog.java</file>
             <file>file:/C:/Users/juju-/Desktop/projetos/church_app/src/javaapplication2/Interfaces/SearchMemberDialog.java</file>
-            <file>file:/C:/Users/juju-/Desktop/projetos/church_app/src/javaapplication2/Classes/MemberList.java</file>
-            <file>file:/C:/Users/juju-/Desktop/projetos/church_app/src/javaapplication2/Interfaces/EditMemberDialog.java</file>
+            <file>file:/C:/Users/juju-/Desktop/projetos/church_app/src/javaapplication2/Classes/Member.java</file>
+            <file>file:/C:/Users/juju-/Desktop/projetos/church_app/src/javaapplication2/Interfaces/MenuFrame.java</file>
         </group>
     </open-files>
 </project-private>

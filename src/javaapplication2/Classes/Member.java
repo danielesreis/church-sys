@@ -9,7 +9,7 @@ public class Member {
     private String birthDate;
     private String role;
     private String register;
-    private MemberList memberList = new MemberList();
+    //private MemberList memberList = new MemberList();
     
     public Member(String name, String address, String number, String birthDate, String role, String register) {
         setName(name);
@@ -32,49 +32,49 @@ public class Member {
         return "";
     }
     
-    void setName(String name) {
-        this.name = name.isEmpty() ? name : memberList.upperCaseString(name);
+    protected void setName(String name) {
+        this.name = name.isEmpty() ? name : MemberList.upperCaseString(name);
     }
     
     public String getName() {
         return this.name;
     }
     
-    void setAddress(String address) {
-        this.address = address.isEmpty() ? address : memberList.upperCaseString(address);
+    protected void setAddress(String address) {
+        this.address = address.isEmpty() ? address : MemberList.upperCaseString(address);
     }
     
     public String getAddress() {
         return this.address;
     }
     
-    void setNumber(String number) {
-        this.number = number.isEmpty() ? number : memberList.upperCaseString(number);
+    protected void setNumber(String number) {
+        this.number = number.isEmpty() ? number : MemberList.upperCaseString(number);
     }
     
     public String getNumber() {
         return this.number;
     }
     
-    void setBirthDate(String birthDate) {
+    protected void setBirthDate(String birthDate) {
         birthDate = birthDate.replaceAll("\\s+", "");
-        this.birthDate = birthDate.isEmpty() ? birthDate : memberList.upperCaseString(birthDate);
+        this.birthDate = birthDate.isEmpty() ? birthDate : MemberList.upperCaseString(birthDate);
     }
     
     public String getBirthDate() {
         return this.birthDate;
     }
     
-    void setRole(String role) {
-        this.role = role.isEmpty() ? role : memberList.upperCaseString(role);
+    protected void setRole(String role) {
+        this.role = role.isEmpty() ? role : MemberList.upperCaseString(role);
     }
     
     public String getRole() {
         return this.role;
     }
     
-    void setRegister(String register) {
-        this.register = register.isEmpty() ? register : memberList.upperCaseString(register);
+    protected void setRegister(String register) {
+        this.register = register.isEmpty() ? register : MemberList.upperCaseString(register);
     }
     
     public String getRegister() {
