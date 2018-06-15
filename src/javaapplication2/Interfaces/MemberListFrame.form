@@ -144,6 +144,7 @@
     <Component class="javax.swing.JButton" name="btn_search_member">
       <Properties>
         <Property name="text" type="java.lang.String" value="Pesquisar membro"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_search_memberActionPerformed"/>

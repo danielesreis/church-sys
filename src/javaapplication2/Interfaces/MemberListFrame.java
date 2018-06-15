@@ -56,6 +56,10 @@ public class MemberListFrame extends JFrame{
         MemberList memberList = new MemberList();
         Member member = new Member("dani", "a", "a", "a", "a", "a");
         memberList.addMember(member);
+        member = new Member("juju", "b", "b", "b", "b", "b");
+        memberList.addMember(member);
+        member = new Member("mamis", "c", "c", "c", "c", "c");
+        memberList.addMember(member);
         setMemberList(memberList);
         
         updateTable(memberList, defaultTableModel);
@@ -78,7 +82,7 @@ public class MemberListFrame extends JFrame{
                 switch(e.getType())
                 {
                     case TableModelEvent.INSERT: updateTxt(Integer.toString(memberList.getTotal())); /*atualizo .xlsx*/ break;
-                    /*case TableModelEvent.UPDATE: atualizo .xlsx*/ 
+                    //case TableModelEvent.UPDATE: atualizo .xlsx
                     case TableModelEvent.DELETE: updateTxt(Integer.toString(memberList.getTotal())); /*atualizo .xlsx*/ break;
                     default: 
                 }
@@ -95,14 +99,15 @@ public class MemberListFrame extends JFrame{
                 if (radiobtn_name.isSelected()) {
                     if (getBtn() == 0) {
                         setBtn(-1);
-                        sorter.setRowFilter(rf.regexFilter("", 0));
-                        txtfield_search.setText("");
+                        //sorter.setRowFilter(rf.regexFilter("", 0));
+                        //updateTxt(Integer.toString(getJTable().getRowCount()));
+                        //txtfield_search.setText("");
                         buttonGroup1.clearSelection();
                     }
                     else {
                         setBtn(0);
-                        updateTxt(Integer.toString(getJTable().getRowCount()));
                         sorter.setRowFilter(rf.regexFilter("(?i)" + txtfield_search.getText(), 0));
+                        updateTxt(Integer.toString(getJTable().getRowCount()));
                     }
                 }
             }
@@ -114,14 +119,15 @@ public class MemberListFrame extends JFrame{
                 if (radiobtn_address.isSelected()) {
                     if (getBtn() == 1) {
                         setBtn(-1);
-                        sorter.setRowFilter(rf.regexFilter("", 0));
-                        txtfield_search.setText("");
+                        //sorter.setRowFilter(rf.regexFilter("", 0));
+                        //updateTxt(Integer.toString(getJTable().getRowCount()));
+                        //txtfield_search.setText("");
                         buttonGroup1.clearSelection();
                     }
                     else {
                         setBtn(1);
-                        updateTxt(Integer.toString(getJTable().getRowCount()));
                         sorter.setRowFilter(rf.regexFilter("(?i)" + txtfield_search.getText(), 1));
+                        updateTxt(Integer.toString(getJTable().getRowCount()));
                     }
                 }
             }
@@ -134,14 +140,15 @@ public class MemberListFrame extends JFrame{
                 if (radiobtn_number.isSelected()) {
                     if (getBtn() == 2) {
                         setBtn(-1);
-                        sorter.setRowFilter(rf.regexFilter("", 0));
-                        txtfield_search.setText("");
+                        //sorter.setRowFilter(rf.regexFilter("", 0));
+                        //updateTxt(Integer.toString(getJTable().getRowCount()));
+                        //txtfield_search.setText("");
                         buttonGroup1.clearSelection();
                     }
                     else {
                         setBtn(2);
-                        updateTxt(Integer.toString(getJTable().getRowCount()));
                         sorter.setRowFilter(rf.regexFilter("(?i)" + txtfield_search.getText(), 2));
+                        updateTxt(Integer.toString(getJTable().getRowCount()));
                     }
                 }
             }
@@ -155,13 +162,14 @@ public class MemberListFrame extends JFrame{
                     if (getBtn() == 3) {
                         setBtn(-1);
                         sorter.setRowFilter(rf.regexFilter("", 0));
-                        txtfield_search.setText("");
-                        buttonGroup1.clearSelection();
+                        //updateTxt(Integer.toString(getJTable().getRowCount()));
+                        //txtfield_search.setText("");
+                        //buttonGroup1.clearSelection();
                     }
                     else {
                         setBtn(3);
-                        updateTxt(Integer.toString(getJTable().getRowCount()));
                         sorter.setRowFilter(rf.regexFilter("(?i)" + txtfield_search.getText(), 3));
+                        updateTxt(Integer.toString(getJTable().getRowCount()));
                     }
                 }
             }           
@@ -173,14 +181,15 @@ public class MemberListFrame extends JFrame{
                 if (radiobtn_role.isSelected()) {
                     if (getBtn() == 4) {
                         setBtn(-1);
-                        sorter.setRowFilter(rf.regexFilter("", 0));
-                        txtfield_search.setText("");
+                        //sorter.setRowFilter(rf.regexFilter("", 0));
+                        //updateTxt(Integer.toString(getJTable().getRowCount()));
+                        //txtfield_search.setText("");
                         buttonGroup1.clearSelection();
                     }
                     else {
                         setBtn(4);
-                        updateTxt(Integer.toString(getJTable().getRowCount()));
                         sorter.setRowFilter(rf.regexFilter("(?i)" + txtfield_search.getText(), 4));
+                        updateTxt(Integer.toString(getJTable().getRowCount()));
                     }
                 }
             }
@@ -193,14 +202,15 @@ public class MemberListFrame extends JFrame{
                 if (radiobtn_register.isSelected()) {
                     if (getBtn() == 5) {
                         setBtn(-1);
-                        sorter.setRowFilter(rf.regexFilter("", 0));
-                        txtfield_search.setText("");
+                        //sorter.setRowFilter(rf.regexFilter("", 0));
+                        //updateTxt(Integer.toString(getJTable().getRowCount()));
+                        //txtfield_search.setText("");
                         buttonGroup1.clearSelection();
                     }
                     else {
                         setBtn(5);
-                        updateTxt(Integer.toString(getJTable().getRowCount()));
                         sorter.setRowFilter(rf.regexFilter("(?i)" + txtfield_search.getText(), 5));
+                        updateTxt(Integer.toString(getJTable().getRowCount()));
                     }
                 }
             }
@@ -210,13 +220,18 @@ public class MemberListFrame extends JFrame{
         txtfield_search.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                if (getBtn() >= 0) sorter.setRowFilter(rf.regexFilter("(?i)" + txtfield_search.getText(), getBtn()));
+                if (getBtn() >= 0) {
+                    sorter.setRowFilter(rf.regexFilter("(?i)" + txtfield_search.getText(), getBtn()));
+                    updateTxt(Integer.toString(getJTable().getRowCount()));
+                }
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                sorter.setRowFilter(rf.regexFilter("", 0));
+                if (getBtn() >= 0)  sorter.setRowFilter(rf.regexFilter("(?i)" + txtfield_search.getText(), getBtn()));
+                else sorter.setRowFilter(rf.regexFilter("", 0));
+                updateTxt(Integer.toString(getJTable().getRowCount()));
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
@@ -247,12 +262,12 @@ public class MemberListFrame extends JFrame{
         }
     }
     
-    protected void updateTable(List<Member> searchList, DefaultTableModel defaultTableModel) {
+    /*protected void updateTable(List<Member> searchList, DefaultTableModel defaultTableModel) {
         defaultTableModel.setRowCount(0);
         for(int i=0; i<searchList.size(); i++) {
             defaultTableModel.addRow(MemberList.getStringMember(searchList.get(i)));
         }
-    }
+    }*/
     
     protected void insertIntoTable(Member member) {
         DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();
@@ -277,11 +292,19 @@ public class MemberListFrame extends JFrame{
         return jTable;
     }
     
-    private void setEditedRow(byte editedRow) {
+    private void setEditedMemberReg(String editedMemberReg) {
+        this.editedMemberReg = editedMemberReg;
+    }
+    
+    protected String getEditedMemberReg() {
+        return this.editedMemberReg;
+    }
+    
+    protected void setEditedRow(int editedRow) {
         this.editedRow = editedRow;
     }
     
-    protected byte getEditedRow() {
+    protected int getEditedRow() {
         return this.editedRow;
     }
     /**
@@ -336,6 +359,7 @@ public class MemberListFrame extends JFrame{
         });
 
         btn_search_member.setText("Pesquisar membro");
+        btn_search_member.setEnabled(false);
         btn_search_member.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_search_memberActionPerformed(evt);
@@ -495,8 +519,8 @@ public class MemberListFrame extends JFrame{
 
     private void btn_search_memberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_search_memberActionPerformed
         // TODO add your handling code here:
-        //SearchMemberDialog searchMemberDialog = new SearchMemberDialog(this, true);
-        //searchMemberDialog.setVisible(true);
+        SearchMemberDialog searchMemberDialog = new SearchMemberDialog(this, true);
+        searchMemberDialog.setVisible(true);
     }//GEN-LAST:event_btn_search_memberActionPerformed
 
     private void btn_remove_memberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_remove_memberActionPerformed
@@ -510,10 +534,13 @@ public class MemberListFrame extends JFrame{
         if(answer == 0)
         {
             int[] rowsSelected = jTable.getSelectedRows();
+            String reg;
+            
             for (int i=0; i<rowsSelected.length; i++)
             {
-                memberList.removeMember(rowsSelected[i]-i);
-                defaultTableModel.removeRow(rowsSelected[i]-i);
+                reg = (String)defaultTableModel.getValueAt(jTable.convertRowIndexToModel(rowsSelected[i]), 5);
+                this.getMemberList().removeMember(reg);
+                defaultTableModel.removeRow(jTable.convertRowIndexToModel(rowsSelected[i]));
             }
             jTable.validate();
         }
@@ -529,7 +556,10 @@ public class MemberListFrame extends JFrame{
             JOptionPane.showMessageDialog(rootPane, "Selecione apenas UM membro para edição!", "Alerta", HEIGHT);
         else
         {
-            setEditedRow((byte) rowsSelected[0]);
+            int index = jTable.convertRowIndexToModel(rowsSelected[0]);
+            setEditedRow(rowsSelected[0]);
+            String reg = (String)getJTable().getModel().getValueAt(index, 5);
+            setEditedMemberReg(reg);
             EditMemberDialog editMemberDialog = new EditMemberDialog(this, true);
             editMemberDialog.setVisible(true);
         }
@@ -603,7 +633,8 @@ public class MemberListFrame extends JFrame{
     
     private MemberList memberList; 
     private javax.swing.JTable jTable;
-    private byte editedRow;
+    private String editedMemberReg;
+    private int editedRow;
     private int btn;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_edit_member;

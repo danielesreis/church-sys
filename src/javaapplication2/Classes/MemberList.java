@@ -33,13 +33,34 @@ public class MemberList{
         incTotal(1);
     }
     
-    public void removeMember(int index) {
-        getMemberList().remove(index);
-        incTotal(-1);
+    public void removeMember(String reg) {
+        int size = this.getMemberListSize();
+        Member member;
+                
+        for(int i=0; i<size; i++) {
+            member = getMemberList().get(i);
+            if (member.getRegister().equals(reg)){
+                getMemberList().remove(i);
+                incTotal(-1);
+                break;
+            }
+        }
     }
     
     public int getMemberListSize() {
         return getMemberList().size();
+    }
+    
+    /*optimize this*/
+    public Member getMemberByRegister(String register) {
+        int size = this.getMemberListSize();
+        Member member;
+        
+        for(int i=0; i<size; i++) {
+            member = getMemberList().get(i);
+            if (member.getRegister().equals(register)) return member;
+        }
+        return null;
     }
     
     public Member getMemberByIndex(int index) {
@@ -50,8 +71,8 @@ public class MemberList{
         setTotal(getTotal()+qtd);
     }
     
-    public void updateMember(int memberIndex, int attributeIndex, Object attributeValue) {
-        Member member = getMemberList().get(memberIndex);
+    public void updateMember(String reg, int attributeIndex, Object attributeValue) {
+        Member member = this.getMemberByRegister(reg);
         switch(attributeIndex) {
             case 0: member.setName((String)attributeValue); break;
             case 1: member.setAddress((String)attributeValue); break;
@@ -92,13 +113,14 @@ public class MemberList{
         return rowData;
     }
     
+    /*exceptions...*/
     public List<Member> objectSearch (int attributeIndex, String searchString)
     {
         List<Member> searchList = new ArrayList<Member>();
         String attributeValue;
         
         for(int i=0; i<getMemberListSize(); i++) {
-            Member member = getMemberByIndex(i);
+            Member member = this.getMemberList().get(i);
             attributeValue = member.getAttribute(attributeIndex);
             attributeValue = attributeValue.toLowerCase();
                        

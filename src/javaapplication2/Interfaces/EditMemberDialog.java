@@ -24,8 +24,9 @@ public class EditMemberDialog extends javax.swing.JDialog {
         setParentFrame(parentFrame);
         
         initComponents();
+        MemberListFrame memberListFrame = (MemberListFrame)parentFrame;
         
-        Member member = ((MemberListFrame)parentFrame).getMemberList().getMemberByIndex(((MemberListFrame)parentFrame).getEditedRow());
+        Member member = memberListFrame.getMemberList().getMemberByRegister(memberListFrame.getEditedMemberReg());
         txtfield_name.setText(member.getName());
         txtfield_address.setText(member.getAddress());
         txtfield_number.setText(member.getNumber());
@@ -254,13 +255,14 @@ public class EditMemberDialog extends javax.swing.JDialog {
         register = txtfield_register.getText();
         
         MemberListFrame frame = (MemberListFrame)getParentFrame();
-        byte editedRow = frame.getEditedRow();
+        String editedMemberReg = frame.getEditedMemberReg();
+        int editedRow = frame.getEditedRow();
         byte columnCount = (byte)frame.getJTable().getColumnCount();
             
         for (byte column=0; column<columnCount; column++)
         {
             Object value = getTxtFieldByNumber(column).getText();
-            frame.getMemberList().updateMember(editedRow, column, value);
+            frame.getMemberList().updateMember(editedMemberReg, column, value);
             frame.getJTable().setValueAt(value, editedRow, column);
         }
     }//GEN-LAST:event_btn_edit_memberActionPerformed
