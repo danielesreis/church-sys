@@ -84,22 +84,6 @@ public class MemberList{
         }
     }
     
-    public static String upperCaseString(String str) {
-        str = str.trim();
-        String[] words = str.split("\\s+");
-        char firstLetter;
-        
-        str = "";
-        for(int i = 0; i < words.length; i++) {
-            firstLetter = Character.toUpperCase(words[i].charAt(0));
-            words[i] = firstLetter + words[i].substring(1);
-            
-            str = str + words[i];
-            str = str + " ";
-        }
-        return str.substring(0, str.length()-1);
-    }
-    
     /*public Object[] getStringMember(int index) {
         Member member = getMemberByIndex(index);
         Object[] rowData = {member.getName(), member.getAddress(), member.getNumber(), member.getBirthDate(), member.getRole(), member.getRegister()};

@@ -2,6 +2,7 @@ package javaapplication2.Classes;
 
 public class Entry {
     private String date;
+    private int key;
     private int day;
     private int month;
     private int year;
@@ -9,8 +10,9 @@ public class Entry {
     private String description;
     private boolean positiveEntry;
     
-    public Entry(String date, String description, boolean positiveEntry, double value) {	
+    public Entry(String date, int key, String description, boolean positiveEntry, double value) {	
         setDate(date);
+        setKey(key);
         setDescription(description);
 	setPositiveEntry(positiveEntry);
         setValue(value);
@@ -38,9 +40,16 @@ public class Entry {
         return this.date;
     }
     
+    private void setKey(int key) {
+        this.key = key;
+    }
+    
+    public int getKey() {
+        return this.key;
+    }
+    
     protected void setDescription(String description) {
-        EntryList entryList = new EntryList();
-        this.description = description.isEmpty() ? description : entryList.upperCaseString(description);
+        this.description = description.isEmpty() ? description : Entry.upperCaseString(description);
     }
     
     public String getDescription() {
@@ -48,11 +57,15 @@ public class Entry {
     }
     
     protected void setValue(double value) {
-        this.value = (getPositiveEntry()) ? value : -value;
+        this.value = (this.getPositiveEntry()) ? value : -value;
     }
     
-    public double getValue() {
-        return this.value;
+    public double getValue(boolean sign) {
+        Double returnValue;
+        
+        returnValue = sign ? this.value : Math.abs(this.value);
+        
+        return returnValue;
     }
     
     protected void setPositiveEntry(boolean positiveEntry) {
@@ -86,4 +99,12 @@ public class Entry {
     public int getYear() {
         return this.year;
     }
+    
+    private static String upperCaseString(String str) {
+        str = str.trim();
+        char firstLetter = Character.toUpperCase(str.charAt(0));
+        str = firstLetter + str.substring(1, str.length());
+        return str;
+    }
+   
 }

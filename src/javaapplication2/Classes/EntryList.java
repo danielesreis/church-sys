@@ -3,7 +3,7 @@ import javaapplication2.Interfaces.CashFlowFrame;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntryList implements Utilities {
+public class EntryList{
     List<Entry> entryList;
     double in;
     double out;
@@ -21,7 +21,7 @@ public class EntryList implements Utilities {
         setTotal(0);
     }
     
-    public void setCashFlowFrame(CashFlowFrame cashFlowFrame) {
+    private void setCashFlowFrame(CashFlowFrame cashFlowFrame) {
         this.cashFlowFrame = cashFlowFrame;
     }
     
@@ -29,7 +29,7 @@ public class EntryList implements Utilities {
         return this.cashFlowFrame;
     }
     
-    public void setEntryList(List<Entry> entryList) {
+    private void setEntryList(List<Entry> entryList) {
         this.entryList = entryList;
     }
     
@@ -37,7 +37,7 @@ public class EntryList implements Utilities {
         return this.entryList;
     }
     
-    public void setIn (double in) {
+    private void setIn (double in) {
 	this.in = this.in + in;
         setTotal(in);
     }	
@@ -46,7 +46,7 @@ public class EntryList implements Utilities {
 	return this.in;
     }
 
-    public void setOut (double out) {
+    private void setOut (double out) {
 	this.out = this.out + out;
         setTotal(out);
     }
@@ -55,7 +55,7 @@ public class EntryList implements Utilities {
 	return this.out;
     }	
 
-    public void setTotal (double total) {
+    private void setTotal (double total) {
     	this.total = this.total + total;
     }
 	
@@ -67,44 +67,42 @@ public class EntryList implements Utilities {
         return getEntryList().size();
     }
     
-    public Entry getEntryByIndex(int index) {
-        return getEntryList().get(index);
+    public Entry getEntryByKey(int key) {
+        return getEntryList().get(key);
     }
     
     public int addEntry(Entry entry) {
-        
-        int index = position(entry);
+        int index = getPosition(entry);
         getEntryList().add(index, entry);
                 
         if(entry.getPositiveEntry())
-            setIn(entry.getValue());
+            setIn(entry.getValue(true));
         else
-            setOut(entry.getValue());
+            setOut(entry.getValue(true));
         
         return index;
     }
     
-    public void removeEntry(int index) {
-        Entry entry = getEntryByIndex(index);
+    public void removeEntry(int key) {
+        Entry entry = getEntryByKey(key);
         
-        if (entry.getPositiveEntry()) setIn(-entry.getValue());
-        else setOut(-entry.getValue());
+        if (entry.getPositiveEntry()) setIn(-entry.getValue(true));
+        else setOut(-entry.getValue(true));
         
-        getEntryList().remove(index);
+        getEntryList().remove(key);
     }
     
-    public int position(Entry newEntry) {
-        int pos = 0, auxPos=0, i, size = getEntryListSize(), auxYear, newEntryYear;
+    private int getPosition(Entry newEntry) {
+        int pos = 0, auxPos = 0, keep = 0, size = getEntryListSize(), newEntryYear, i;
         List<Entry> entryList = getEntryList(); 
         Entry auxEntry;
-        int keep = 0;
         
         if (size >= 1) {
             pos = size;
             newEntryYear = newEntry.getYear();
             
-            for(i=0; i<size; i++) {
-                auxEntry = getEntryByIndex(i);
+            for(i = 0; i < size; i++) {
+                auxEntry = getEntryByKey(i);
                 
                 if(newEntryYear < auxEntry.getYear()) {
                     keep = -1;
@@ -121,8 +119,8 @@ public class EntryList implements Utilities {
             if(keep == 1) {
                 int newEntryMonth = newEntry.getMonth();
                
-                for(i=auxPos; i<size; i++) {
-                    auxEntry = getEntryByIndex(i);
+                for(i = auxPos; i < size; i++) {
+                    auxEntry = getEntryByKey(i);
                     
                     if (newEntryMonth < auxEntry.getMonth()) {
                         keep = -1;
@@ -144,8 +142,8 @@ public class EntryList implements Utilities {
                 if(keep == 2) {
                     int newEntryDay = newEntry.getDay();
                     
-                    for(i=auxPos; i<size; i++) {
-                        auxEntry = getEntryByIndex(i);
+                    for(i = auxPos; i < size; i++) {
+                        auxEntry = getEntryByKey(i);
                         
                         if(newEntryDay < auxEntry.getDay()) {
                             pos = i;
@@ -166,15 +164,15 @@ public class EntryList implements Utilities {
         return pos;        
     }
             
-    public int updateEntry(int entryIndex, int attributeIndex, Object attributeValue) {
-        Entry entry = getEntryList().get(entryIndex);
+    public int updateEntry(int entryKey, int attributeKey, Object attributeValue) {
+        Entry entry = getEntryList().get(entryKey);
         Entry newEntry;
-        int index=0;
+        int index = 0;
         
-        switch(attributeIndex) {
+        switch(attributeKey) {
             case 0: entry.setDate((String)attributeValue); 
                     newEntry = entry;
-                    getEntryList().remove(entryIndex);
+                    getEntryList().remove(entryKey);
                     index = addEntry(newEntry);
                     getCashFlowFrame().updateComboBoxYear(newEntry.getYear());
                     getCashFlowFrame().setMoved(false);
@@ -182,21 +180,20 @@ public class EntryList implements Utilities {
             case 1: entry.setDescription((String)attributeValue); 
                     break;
             case 2: if(entry.getPositiveEntry()) {
-                        setIn(-entry.getValue());
-                        entry.setValue(Double.parseDouble(((String)attributeValue).replace(",", ".")));
-                        setIn(entry.getValue());
+                        this.setIn(-entry.getValue(true));
+                        entry.setValue((Double)attributeValue);
+                        this.setIn(entry.getValue(true));
                     }
-                    break;
-            case 3: if(!entry.getPositiveEntry()) {
-                        setOut(-entry.getValue());
-                        entry.setValue(Double.parseDouble(((String)attributeValue).replace(",", ".")));
-                        setOut(entry.getValue());
+                    else {
+                        this.setOut(-entry.getValue(true));
+                        entry.setValue((Double)attributeValue);
+                        this.setOut(entry.getValue(true));
                     }
         }
         return index;
     }
     
-    public static String concatDate(String day, String month, String year) {
+    private static String concatDate(String day, String month, String year) {
         String date = day + "/" + month + "/" + year;
         String[] words = date.split("/");
         
@@ -207,32 +204,25 @@ public class EntryList implements Utilities {
         return date;        
     }
     
-    public String upperCaseString(String str) {
-        str = str.trim();
-        char firstLetter = Character.toUpperCase(str.charAt(0));
-        str = firstLetter + str.substring(1, str.length());
-        return str;
-    }
-    
-    public Object[] getStringMember(int index) {
-        Entry entry = getEntryByIndex(index);
-        String value = String.format("%.2f", entry.getValue());
-        int valueIndex;
+    public Object[] getStringMember(int key) {
+        Entry entry = this.getEntryByKey(key);
+        String value = String.format("%.2f", entry.getValue(true));
+        int valueKey;
         
-        Object[] rowData = {entry.getDate(), entry.getDescription(), "", "", ""};
-        valueIndex = entry.getPositiveEntry() ? 2 : 3;
-        rowData[valueIndex] = value;
+        Object[] rowData = {entry.getKey(), entry.getDate(), entry.getDescription(), "", "", ""};
+        valueKey = entry.getPositiveEntry() ? 3 : 4;
+        rowData[valueKey] = value;
         
         return rowData;
     }
     
     public Object[] getStringMember(Entry entry) {
-        String value = String.format("%.2f", entry.getValue());
-        int valueIndex;
+        String value = String.format("%.2f", entry.getValue(true));
+        int valueKey;
         
-        Object[] rowData = {entry.getDate(), entry.getDescription(), "", "", ""};
-        valueIndex = entry.getPositiveEntry() ? 2 : 3;
-        rowData[valueIndex] = value;
+        Object[] rowData = {entry.getKey(), entry.getDate(), entry.getDescription(), "", "", ""};
+        valueKey = entry.getPositiveEntry() ? 2 : 3;
+        rowData[valueKey] = value;
         
         return rowData;
     }
@@ -243,7 +233,7 @@ public class EntryList implements Utilities {
         String searchDate, auxDay, auxMonth, auxYear;
         
         for(int i=0; i<getEntryListSize(); i++) {
-            Entry entry = getEntryByIndex(i);
+            Entry entry = getEntryByKey(i);
             
             auxDay = (day.isEmpty()) ? Integer.toString(entry.getDay()) : day;
             auxMonth = (month.isEmpty()) ? Integer.toString(entry.getMonth()) : month;

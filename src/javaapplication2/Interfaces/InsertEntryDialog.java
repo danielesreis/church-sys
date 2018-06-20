@@ -216,8 +216,8 @@ public class InsertEntryDialog extends javax.swing.JDialog {
         error = checkError(date, value);
         
         if(!error) {
-            Entry entry = new Entry(date, description, positiveEntry, Double.parseDouble(value.replace(",", ".")));
             EntryList entryList = getEntryList();
+            Entry entry = new Entry(date, entryList.getEntryListSize(), description, positiveEntry, Double.parseDouble(value.replace(",", ".")));
             index = entryList.addEntry(entry);
             CashFlowFrame cashFlowFrame = (CashFlowFrame)getParentFrame();
             cashFlowFrame.updateTable(entryList.getStringMember(index), index);
@@ -229,7 +229,7 @@ public class InsertEntryDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_radiobtn_outActionPerformed
 
-    public boolean checkError(String date, String value) {
+    private boolean checkError(String date, String value) {
         boolean error = false;
         
         if (value.isEmpty()) {

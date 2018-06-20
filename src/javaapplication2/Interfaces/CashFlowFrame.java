@@ -34,7 +34,14 @@ public class CashFlowFrame extends javax.swing.JFrame {
      */
     public CashFlowFrame() {
         initComponents();
-        DefaultTableModel defaultTableModel = new DefaultTableModel();
+        DefaultTableModel defaultTableModel = new DefaultTableModel() {
+            
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        defaultTableModel.addColumn("Código");
         defaultTableModel.addColumn("Data");
         defaultTableModel.addColumn("Descrição");
         defaultTableModel.addColumn("Entrada (R$)");
@@ -44,6 +51,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         JTable jTable = new JTable(defaultTableModel);
         jTable.setAutoscrolls(true);
         jTable.getTableHeader().setReorderingAllowed(false);
+        jTable.setRowSelectionAllowed(true);
         
         setJTable(jTable);
         
@@ -52,16 +60,24 @@ public class CashFlowFrame extends javax.swing.JFrame {
         
         /*leio as rows e armazeno em EntryList*/
         EntryList entryList = new EntryList(this);
-        for(int i=0; i<0; i++) {
-            /*crio objeto entry de cada row do arquivo*/
-            //entryList.addEntry(entry);
-            updateTable(entryList.getStringMember(i), i);
-        }
-        //chamo o método do cálculo do saldo
-        //updateBalance(getEntryList());
+        
+        /*crio objeto entry de cada row do arquivo*/
+        Entry entry = new Entry("10/09/1995", entryList.getEntryListSize(), "Cafeteira", false, 500);
+        entryList.addEntry(entry);
+        
+        entry = new Entry("10/10/1995", entryList.getEntryListSize(), "Bebedouro", false, 100);
+        entryList.addEntry(entry);
+        
+        entry = new Entry("10/09/2000", entryList.getEntryListSize(), "Bolão", true, 1000);
+        entryList.addEntry(entry);
         
         setEntryList(entryList);
         
+        for (int i = 0; i < 3; i++)
+            updateTable(entryList.getStringMember(i), i);
+        //chamo o método do cálculo do saldo
+        //updateBalance(getEntryList());
+               
         this.jTable.validate();
         this.jScrollPane.getViewport().add(jTable);
         
@@ -78,7 +94,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
                         /*atualizo .xlsx*/; break;
                         
                     case TableModelEvent.UPDATE: 
-                        if(!getUpdated()) {
+                        /*if(!getUpdated()) {
                             if(e.getColumn()!=-1) {
                                 index = entryList.updateEntry(e.getFirstRow(), e.getColumn(), (Object)getJTable().getModel().getValueAt(e.getFirstRow(), e.getColumn()));
                                 updateTxt(entryList.getIn(), entryList.getOut(), entryList.getTotal());
@@ -88,7 +104,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
                                 moveRowTable(e.getFirstRow(), index);
                             }
                             setUpdated(false);
-                        }
+                        }*/
                         
                         /*atualizo .xlsx*/; break;
                         
@@ -113,7 +129,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
                     indexMonthSelected = combobox_month.getSelectedIndex();
                     indexDaySelected = combobox_day.getSelectedIndex();
 
-                    if(indexYearSelected>0 || indexMonthSelected>0 || indexDaySelected>0) {
+                    if(indexYearSelected > 0 || indexMonthSelected > 0 || indexDaySelected > 0) {
                         
                         yearSelected = (indexYearSelected == 0) ? "" : (String)combobox_year.getSelectedItem();
 
@@ -144,7 +160,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
                     indexMonthSelected = combobox_month.getSelectedIndex();
                     indexDaySelected = combobox_day.getSelectedIndex();
 
-                    if(indexYearSelected>0 || indexMonthSelected>0 || indexDaySelected>0) {
+                    if(indexYearSelected > 0 || indexMonthSelected > 0 || indexDaySelected > 0) {
                         
                         yearSelected = (indexYearSelected == 0) ? "" : (String)combobox_year.getSelectedItem();
 
@@ -175,7 +191,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
                     indexMonthSelected = combobox_month.getSelectedIndex();
                     indexDaySelected = combobox_day.getSelectedIndex();
 
-                    if(indexYearSelected>0 || indexMonthSelected>0 || indexDaySelected>0) {
+                    if(indexYearSelected > 0 || indexMonthSelected > 0 || indexDaySelected > 0) {
                         
                         yearSelected = (indexYearSelected == 0) ? "" : (String)combobox_year.getSelectedItem();
 
@@ -195,7 +211,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         });
     }
     
-    public void updateTxt(Double in, Double out, Double total) {
+    private void updateTxt(Double in, Double out, Double total) {
         String txtIn, txtOut, txtTotal; 
         
         txtIn = String.format("%.2f", in);
@@ -207,27 +223,27 @@ public class CashFlowFrame extends javax.swing.JFrame {
         txt_total.setText(txtTotal);
     }
     
-    public void moveRowTable(int oldRowIndex, int newRowIndex) {
+    private void moveRowTable(int oldRowIndex, int newRowIndex) {
         DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();
         defaultTableModel.moveRow(oldRowIndex, oldRowIndex, newRowIndex);
         setMoved(true);
     }
     
-    public void updateTable(List<Entry> searchEntryList) {
+    private void updateTable(List<Entry> searchEntryList) {
         DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();
         defaultTableModel.setRowCount(0);
         Double in = 0.0, out = 0.0, total = 0.0, value;
         Entry entry;
         Object[] rowData;
         
-        for(int i=0; i<searchEntryList.size(); i++) {
+        for(int i = 0; i < searchEntryList.size(); i++) {
             entry = searchEntryList.get(i);
             if (entry.getPositiveEntry()) {
-                value = entry.getValue();
+                value = entry.getValue(true);
                 in = in + value;
             }
             else {
-                value = entry.getValue();
+                value = entry.getValue(true);
                 out = out + value;
             }
             total = total + value;
@@ -255,7 +271,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         if(!years.contains(newYear)) {
             if (size >= 1){
                 pos = size;
-                for(i=0; i<size; i++) {
+                for(i = 0; i < size; i++) {
                     if (newYear > years.get(i)) {
                         pos = i;
                         break;
@@ -304,11 +320,11 @@ public class CashFlowFrame extends javax.swing.JFrame {
         }
     }*/
     
-    public void setBalance(double balance) {
+    private void setBalance(double balance) {
         this.balance = balance;
     }
     
-    public double getBalance() {
+    private double getBalance() {
         return this.balance;
     }
     
@@ -316,43 +332,58 @@ public class CashFlowFrame extends javax.swing.JFrame {
         this.moved = moved;
     }
     
-    public boolean getMoved() {
+    private boolean getMoved() {
         return this.moved;
     }
     
-    public void setUpdated(boolean updated) {
+    private void setUpdated(boolean updated) {
         this.updated = updated;
     }
     
-    public boolean getUpdated() {
+    private boolean getUpdated() {
         return this.updated;
     }
     
-    public void setEntryList(EntryList entryList) {
+    private void setEntryList(EntryList entryList) {
         this.entryList = entryList;
     }
     
-    public EntryList getEntryList() {
+    protected EntryList getEntryList() {
         return this.entryList;
     } 
     
-    public void setJTable(JTable jTable) {
+    private void setJTable(JTable jTable) {
         this.jTable = jTable;
     }
     
-    public JTable getJTable() {
+    protected JTable getJTable() {
         return this.jTable;
     }
     
-    public void setYears(List<Integer> years) {
+    private void setYears(List<Integer> years) {
         this.years = years;
     }
     
-    public List<Integer> getYears() {
+    private List<Integer> getYears() {
         return this.years;
     }
     
-                
+    protected void setEditedRow(int editedRow) {
+        this.editedRow = editedRow;
+    }
+    
+    protected int getEditedRow() {
+        return this.editedRow;
+    }
+    
+    protected void setEditedEntryKey(int key) {
+        this.key = key;
+    }
+    
+    protected int getEditedEntryKey() {
+        return this.key;
+    }
+                    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -364,6 +395,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
 
         jScrollPane = new javax.swing.JScrollPane();
         btn_insert_entry = new javax.swing.JButton();
+        btn_edit_entry = new javax.swing.JButton();
         btn_remove_entry = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -383,6 +415,13 @@ public class CashFlowFrame extends javax.swing.JFrame {
         btn_insert_entry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_insert_entryActionPerformed(evt);
+            }
+        });
+
+        btn_edit_entry.setText("Editar entrada");
+        btn_edit_entry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_edit_entryActionPerformed(evt);
             }
         });
 
@@ -444,7 +483,8 @@ public class CashFlowFrame extends javax.swing.JFrame {
                             .addComponent(btn_remove_entry, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(combobox_year, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(combobox_month, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(combobox_day, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(combobox_day, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_edit_entry, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(49, 49, 49)
                         .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -467,9 +507,11 @@ public class CashFlowFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btn_insert_entry, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
-                        .addComponent(btn_remove_entry, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_edit_entry, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(btn_remove_entry, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(76, 76, 76)
                         .addComponent(combobox_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(combobox_month, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -506,10 +548,13 @@ public class CashFlowFrame extends javax.swing.JFrame {
         if(answer == 0)
         {
             int[] rowsSelected = jTable.getSelectedRows();
-            for (int i=0; i<rowsSelected.length; i++)
+            int key;
+            
+            for (int i = 0; i < rowsSelected.length; i++)
             {
-                entryList.removeEntry(rowsSelected[i]-i);
-                defaultTableModel.removeRow(rowsSelected[i]-i);
+                key = (int)defaultTableModel.getValueAt(jTable.convertRowIndexToModel(rowsSelected[i]), 0);
+                entryList.removeEntry(key);
+                defaultTableModel.removeRow(jTable.convertRowIndexToModel(rowsSelected[i]));
             }
             jTable.validate();
         }
@@ -533,6 +578,26 @@ public class CashFlowFrame extends javax.swing.JFrame {
     private void combobox_yearItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combobox_yearItemStateChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_combobox_yearItemStateChanged
+
+    private void btn_edit_entryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_edit_entryActionPerformed
+        // TODO add your handling code here:
+        JTable jTable = getJTable();
+        DefaultTableModel defaultTableModel = (DefaultTableModel)jTable.getModel();
+        int[] rowsSelected = jTable.getSelectedRows();
+
+        if (rowsSelected.length > 1)
+        JOptionPane.showMessageDialog(rootPane, "Selecione apenas UM membro para edição!", "Alerta", HEIGHT);
+        else
+        {
+            int index = jTable.convertRowIndexToModel(rowsSelected[0]);
+            setEditedRow(rowsSelected[0]);
+            int key  = (int)getJTable().getModel().getValueAt(index, 0);
+            setEditedEntryKey(key);
+            EditEntryDialog editEntryDialog = new EditEntryDialog(this, true);
+            editEntryDialog.setVisible(true);
+        }
+
+    }//GEN-LAST:event_btn_edit_entryActionPerformed
 
     /**
      * @param args the command line arguments
@@ -569,7 +634,8 @@ public class CashFlowFrame extends javax.swing.JFrame {
         });
     }
     
- 
+    private int editedRow;
+    private int key;
     private double balance;
     private boolean moved = false;
     private boolean updated = false;
@@ -577,6 +643,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
     private JTable jTable;
     private EntryList entryList;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_edit_entry;
     private javax.swing.JButton btn_insert_entry;
     private javax.swing.JButton btn_remove_entry;
     private javax.swing.JComboBox<String> combobox_day;

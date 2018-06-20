@@ -164,7 +164,7 @@ public class MemberListFrame extends JFrame{
                         sorter.setRowFilter(rf.regexFilter("", 0));
                         //updateTxt(Integer.toString(getJTable().getRowCount()));
                         //txtfield_search.setText("");
-                        //buttonGroup1.clearSelection();
+                        buttonGroup1.clearSelection();
                     }
                     else {
                         setBtn(3);
@@ -536,7 +536,7 @@ public class MemberListFrame extends JFrame{
             int[] rowsSelected = jTable.getSelectedRows();
             String reg;
             
-            for (int i=0; i<rowsSelected.length; i++)
+            for (int i = 0; i < rowsSelected.length; i++)
             {
                 reg = (String)defaultTableModel.getValueAt(jTable.convertRowIndexToModel(rowsSelected[i]), 5);
                 this.getMemberList().removeMember(reg);

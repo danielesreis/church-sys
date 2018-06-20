@@ -7,7 +7,9 @@ package javaapplication2.Interfaces;
 
 import java.awt.Frame;
 import java.awt.TextField;
+import static java.awt.image.ImageObserver.HEIGHT;
 import javaapplication2.Classes.Member;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -254,17 +256,21 @@ public class EditMemberDialog extends javax.swing.JDialog {
         role = txtfield_role.getText();
         register = txtfield_register.getText();
         
-        MemberListFrame frame = (MemberListFrame)getParentFrame();
-        String editedMemberReg = frame.getEditedMemberReg();
-        int editedRow = frame.getEditedRow();
-        byte columnCount = (byte)frame.getJTable().getColumnCount();
+        if (!name.isEmpty() || !address.isEmpty() || !number.isEmpty() || !birthDate.isEmpty() || !role.isEmpty() || !register.isEmpty()) {
+            MemberListFrame frame = (MemberListFrame)getParentFrame();
+            String editedMemberReg = frame.getEditedMemberReg();
+            int editedRow = frame.getEditedRow();
+            byte columnCount = (byte)frame.getJTable().getColumnCount();
             
-        for (byte column=0; column<columnCount; column++)
-        {
-            Object value = getTxtFieldByNumber(column).getText();
-            frame.getMemberList().updateMember(editedMemberReg, column, value);
-            frame.getJTable().setValueAt(value, editedRow, column);
+            for (byte column = 0; column < columnCount; column++)
+            {
+                Object value = getTxtFieldByNumber(column).getText();
+                frame.getMemberList().updateMember(editedMemberReg, column, value);
+                frame.getJTable().setValueAt(value, editedRow, column);
+            }
         }
+        else JOptionPane.showMessageDialog(parentFrame, "Campo em branco!", "Alerta", HEIGHT);
+        
     }//GEN-LAST:event_btn_edit_memberActionPerformed
 
     /**
