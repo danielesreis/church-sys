@@ -22,6 +22,9 @@ import java.util.Calendar;
 import javaapplication2.Classes.Entry;
 import javaapplication2.Classes.EntryList;
 import javax.swing.JComboBox;
+import javax.swing.RowFilter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -64,12 +67,14 @@ public class CashFlowFrame extends javax.swing.JFrame {
         /*crio objeto entry de cada row do arquivo*/
         Entry entry = new Entry("10/09/1995", entryList.getEntryListSize(), "Cafeteira", false, 500);
         entryList.addEntry(entry);
+        this.updateComboBoxYear(entry.getYear());
         
         entry = new Entry("10/10/1995", entryList.getEntryListSize(), "Bebedouro", false, 100);
         entryList.addEntry(entry);
         
         entry = new Entry("10/09/2000", entryList.getEntryListSize(), "Bolão", true, 1000);
         entryList.addEntry(entry);
+        this.updateComboBoxYear(entry.getYear());
         
         setEntryList(entryList);
         
@@ -117,10 +122,14 @@ public class CashFlowFrame extends javax.swing.JFrame {
             }
         });
         
+        TableRowSorter sorter = new TableRowSorter<TableModel>(defaultTableModel);
+        jTable.setRowSorter(sorter);
+        RowFilter<DefaultTableModel, Object> rf = null;
+        
         combobox_year.addItemListener(new ItemListener() {
-           List<Entry> searchEntryList;
-           public void itemStateChanged(ItemEvent e) {
-               
+           //List<Entry> searchEntryList;
+            public void itemStateChanged(ItemEvent e) {
+                String searchString;
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     int indexYearSelected, indexMonthSelected, indexDaySelected;
                     String yearSelected, monthSelected, daySelected;
@@ -135,23 +144,28 @@ public class CashFlowFrame extends javax.swing.JFrame {
 
                         monthSelected = Integer.toString(indexMonthSelected);
                         monthSelected = (indexMonthSelected == 0) ? "" : Integer.toString(combobox_month.getSelectedIndex());
-                        monthSelected = (indexMonthSelected > 0 && indexMonthSelected < 9) ? "0" + monthSelected : monthSelected;
+                        monthSelected = (indexMonthSelected > 0 && indexMonthSelected < 10) ? "0" + monthSelected : monthSelected;
 
                         daySelected = (indexDaySelected == 0) ? "" : (String)combobox_day.getSelectedItem();
+                        
+                        searchString = daySelected.isEmpty() ? "([0-9]{2})/" : daySelected + "/";
+                        searchString = monthSelected.isEmpty() ? searchString + "([0-9]{2})/" : searchString + monthSelected + "/";
+                        searchString = yearSelected.isEmpty() ? searchString : searchString + yearSelected;
+                        sorter.setRowFilter(rf.regexFilter(searchString, 1));
 
-                        searchEntryList = getEntryList().objectSearch(daySelected, monthSelected, yearSelected);
-                        updateTable(searchEntryList);
+                        //searchEntryList = getEntryList().objectSearch(daySelected, monthSelected, yearSelected);
+                        //updateTable(searchEntryList);
                         //updateBalance(searchEntryList);
                     }
-                    else updateTable(getEntryList().getEntryList());
                 }
+                else sorter.setRowFilter(rf.regexFilter("", 1));
            }
         });
-        
+                
         combobox_month.addItemListener(new ItemListener() {
             List<Entry> searchEntryList;
             public void itemStateChanged(ItemEvent e) {
-                
+                String searchString;
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     int indexYearSelected, indexMonthSelected, indexDaySelected;
                     String yearSelected, monthSelected, daySelected;
@@ -166,23 +180,28 @@ public class CashFlowFrame extends javax.swing.JFrame {
 
                         monthSelected = Integer.toString(indexMonthSelected);
                         monthSelected = (indexMonthSelected == 0) ? "" : Integer.toString(combobox_month.getSelectedIndex());
-                        monthSelected = (indexMonthSelected > 0 && indexMonthSelected < 9) ? "0" + monthSelected : monthSelected;
+                        monthSelected = (indexMonthSelected > 0 && indexMonthSelected < 10) ? "0" + monthSelected : monthSelected;
 
                         daySelected = (indexDaySelected == 0) ? "" : (String)combobox_day.getSelectedItem();
+                        
+                        searchString = daySelected.isEmpty() ? "([0-9]{2})/" : daySelected + "/";
+                        searchString = monthSelected.isEmpty() ? searchString + "([0-9]{2})/" : searchString + monthSelected + "/";
+                        searchString = yearSelected.isEmpty() ? searchString : searchString + yearSelected;
+                        sorter.setRowFilter(rf.regexFilter(searchString, 1));
 
-                        searchEntryList = getEntryList().objectSearch(daySelected, monthSelected, yearSelected);
-                        updateTable(searchEntryList);
+                        //searchEntryList = getEntryList().objectSearch(daySelected, monthSelected, yearSelected);
+                        //updateTable(searchEntryList);
                         //updateBalance(searchEntryList);
                     }
-                    else updateTable(getEntryList().getEntryList());
                 }
+                else sorter.setRowFilter(rf.regexFilter("", 1));
             }
         });
         
         combobox_day.addItemListener(new ItemListener() {
             List<Entry> searchEntryList;
             public void itemStateChanged(ItemEvent e) {
-                
+                String searchString;
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     int indexYearSelected, indexMonthSelected, indexDaySelected;
                     String yearSelected, monthSelected, daySelected;
@@ -197,16 +216,20 @@ public class CashFlowFrame extends javax.swing.JFrame {
 
                         monthSelected = Integer.toString(indexMonthSelected);
                         monthSelected = (indexMonthSelected == 0) ? "" : Integer.toString(combobox_month.getSelectedIndex());
-                        monthSelected = (indexMonthSelected > 0 && indexMonthSelected < 9) ? "0" + monthSelected : monthSelected;
+                        monthSelected = (indexMonthSelected > 0 && indexMonthSelected < 10) ? "0" + monthSelected : monthSelected;
 
                         daySelected = (indexDaySelected == 0) ? "" : (String)combobox_day.getSelectedItem();
 
-                        searchEntryList = getEntryList().objectSearch(daySelected, monthSelected, yearSelected);
-                        updateTable(searchEntryList);
+                        searchString = daySelected.isEmpty() ? "([0-9]{2})/" : daySelected + "/";
+                        searchString = monthSelected.isEmpty() ? searchString + "([0-9]{2})/" : searchString + monthSelected + "/";
+                        searchString = yearSelected.isEmpty() ? searchString : searchString + yearSelected;
+                        sorter.setRowFilter(rf.regexFilter(searchString, 1));
+                        //searchEntryList = getEntryList().objectSearch(daySelected, monthSelected, yearSelected);
+                        //updateTable(searchEntryList);
                         //updateBalance(searchEntryList);
                     }
-                    else updateTable(getEntryList().getEntryList());
                 }
+                else sorter.setRowFilter(rf.regexFilter("", 1));
             }
         });
     }
@@ -223,13 +246,13 @@ public class CashFlowFrame extends javax.swing.JFrame {
         txt_total.setText(txtTotal);
     }
     
-    private void moveRowTable(int oldRowIndex, int newRowIndex) {
+    /*private void moveRowTable(int oldRowIndex, int newRowIndex) {
         DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();
         defaultTableModel.moveRow(oldRowIndex, oldRowIndex, newRowIndex);
         setMoved(true);
-    }
+    }*/
     
-    private void updateTable(List<Entry> searchEntryList) {
+    /*private void updateTable(List<Entry> searchEntryList) {
         DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();
         defaultTableModel.setRowCount(0);
         Double in = 0.0, out = 0.0, total = 0.0, value;
@@ -254,7 +277,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         updateTxt(in, out, total);
         
         getJTable().validate();
-    }
+    }*/
         
     public void updateTable(Object[] rowData, int index) {
         DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();        
@@ -336,13 +359,13 @@ public class CashFlowFrame extends javax.swing.JFrame {
         return this.moved;
     }
     
-    private void setUpdated(boolean updated) {
+    /*private void setUpdated(boolean updated) {
         this.updated = updated;
     }
     
     private boolean getUpdated() {
         return this.updated;
-    }
+    }*/
     
     private void setEntryList(EntryList entryList) {
         this.entryList = entryList;

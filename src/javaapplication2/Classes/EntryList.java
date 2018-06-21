@@ -227,6 +227,7 @@ public class EntryList{
         return rowData;
     }
     
+    /*bye?*/
     public List<Entry> objectSearch (String day, String month, String year)
     {
         List<Entry> searchList = new ArrayList<Entry>();
