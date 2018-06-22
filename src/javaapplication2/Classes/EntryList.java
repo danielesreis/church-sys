@@ -7,7 +7,6 @@ public class EntryList{
     List<Entry> entryList;
     double in;
     double out;
-    double total;
     CashFlowFrame cashFlowFrame;
     
     EntryList() {}
@@ -18,7 +17,6 @@ public class EntryList{
         setEntryList(entryList);
         setIn(0);
         setOut(0);
-        setTotal(0);
     }
     
     private void setCashFlowFrame(CashFlowFrame cashFlowFrame) {
@@ -39,7 +37,6 @@ public class EntryList{
     
     private void setIn (double in) {
 	this.in = this.in + in;
-        setTotal(in);
     }	
 
     public double getIn() {
@@ -48,20 +45,11 @@ public class EntryList{
 
     private void setOut (double out) {
 	this.out = this.out + out;
-        setTotal(out);
     }
 
     public double getOut() {
 	return this.out;
     }	
-
-    private void setTotal (double total) {
-    	this.total = this.total + total;
-    }
-	
-    public double getTotal() {
-        return this.total;
-    }
     
     public int getEntryListSize() {
         return getEntryList().size();
@@ -97,7 +85,7 @@ public class EntryList{
         if (entry.getPositiveEntry()) setIn(-entry.getValue(true));
         else setOut(-entry.getValue(true));
         
-        getEntryList().remove(key);
+        getEntryList().remove(entry);
     }
     
     /*what if auxEntry is null?*/

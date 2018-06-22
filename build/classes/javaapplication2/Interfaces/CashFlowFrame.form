@@ -69,7 +69,7 @@
                       <Component id="btn_insert_entry" min="-2" pref="41" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btn_edit_entry" min="-2" pref="41" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                       <Component id="btn_remove_entry" min="-2" pref="41" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
                       <Component id="combobox_year" min="-2" max="-2" attributes="0"/>

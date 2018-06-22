@@ -49,7 +49,6 @@ public class CashFlowFrame extends javax.swing.JFrame {
         defaultTableModel.addColumn("Descrição");
         defaultTableModel.addColumn("Entrada (R$)");
         defaultTableModel.addColumn("Saída (R$)");
-        defaultTableModel.addColumn("Saldo (R$)");
         
         JTable jTable = new JTable(defaultTableModel);
         jTable.setAutoscrolls(true);
@@ -69,19 +68,19 @@ public class CashFlowFrame extends javax.swing.JFrame {
         entryList.addEntry(entry);
         this.updateComboBoxYear(entry.getYear());
         
-        entry = new Entry("10/09/1996", entryList.getEntryListSize(), "Cafeteira", false, 500);
+        entry = new Entry("11/09/1996", entryList.getEntryListSize(), "Cafeteira", false, 500);
         entryList.addEntry(entry);
         this.updateComboBoxYear(entry.getYear());
         
-        entry = new Entry("10/09/1997", entryList.getEntryListSize(), "Cafeteira", false, 500);
+        entry = new Entry("12/09/1997", entryList.getEntryListSize(), "Cafeteira", false, 500);
         entryList.addEntry(entry);
         this.updateComboBoxYear(entry.getYear());
         
-        entry = new Entry("10/09/1998", entryList.getEntryListSize(), "Cafeteira", false, 500);
+        entry = new Entry("11/09/1998", entryList.getEntryListSize(), "Cafeteira", false, 500);
         entryList.addEntry(entry);
         this.updateComboBoxYear(entry.getYear());
         
-        entry = new Entry("10/09/1999", entryList.getEntryListSize(), "Cafeteira", false, 500);
+        entry = new Entry("12/09/1999", entryList.getEntryListSize(), "Cafeteira", false, 500);
         entryList.addEntry(entry);
         this.updateComboBoxYear(entry.getYear());
         
@@ -92,7 +91,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         setEntryList(entryList);
         
         for (int i = 0; i < 6; i++)
-            updateTable(entryList.getStringMember(i), i);
+            InsertToTable(entryList.getStringMember(i), i);
         //chamo o método do cálculo do saldo
         //updateBalance(getEntryList());
                
@@ -107,7 +106,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
                 switch(e.getType())
                 {
                     case TableModelEvent.INSERT: 
-                        updateTxt(entryList.getIn(), entryList.getOut(), entryList.getTotal());
+                        updateTxt(entryList.getIn(), entryList.getOut());
                         //updateBalance(getEntryList());
                         /*atualizo .xlsx*/; break;
                         
@@ -127,7 +126,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
                         /*atualizo .xlsx*/; break;
                         
                     case TableModelEvent.DELETE:
-                        updateTxt(entryList.getIn(), entryList.getOut(), entryList.getTotal());
+                        updateTxt(entryList.getIn(), entryList.getOut());
                         //updateBalance(getEntryList());
                          /*atualizo .xlsx*/ break;
                     default: 
@@ -169,6 +168,16 @@ public class CashFlowFrame extends javax.swing.JFrame {
                         //searchEntryList = getEntryList().objectSearch(daySelected, monthSelected, yearSelected);
                         //updateTable(searchEntryList);
                         //updateBalance(searchEntryList);
+                        
+                        Double in = 0.0, out = 0.0, auxIn, auxOut;
+                        
+                        for (int i = 0; i < jTable.getRowCount(); i++) {
+                            auxIn = jTable.getValueAt(i, 3).toString().isEmpty() ? 0 : Double.parseDouble(jTable.getValueAt(i, 3).toString().replace(",", "."));
+                            auxOut = jTable.getValueAt(i, 4).toString().isEmpty() ? 0 : Double.parseDouble(jTable.getValueAt(i, 4).toString().substring(1).replace(",", "."));
+                            in += auxIn;
+                            out += auxOut;
+                        }
+                        updateTxt(in, -out);
                     }
                 }
                 else sorter.setRowFilter(rf.regexFilter("", 1));
@@ -205,6 +214,16 @@ public class CashFlowFrame extends javax.swing.JFrame {
                         //searchEntryList = getEntryList().objectSearch(daySelected, monthSelected, yearSelected);
                         //updateTable(searchEntryList);
                         //updateBalance(searchEntryList);
+                        
+                        Double in = 0.0, out = 0.0, auxIn, auxOut;
+                        
+                        for (int i = 0; i < jTable.getRowCount(); i++) {
+                            auxIn = jTable.getValueAt(i, 3).toString().isEmpty() ? 0 : Double.parseDouble(jTable.getValueAt(i, 3).toString().replace(",", "."));
+                            auxOut = jTable.getValueAt(i, 4).toString().isEmpty() ? 0 : Double.parseDouble(jTable.getValueAt(i, 4).toString().substring(1).replace(",", "."));
+                            in += auxIn;
+                            out += auxOut;
+                        }
+                        updateTxt(in, -out);
                     }
                 }
                 else sorter.setRowFilter(rf.regexFilter("", 1));
@@ -240,6 +259,16 @@ public class CashFlowFrame extends javax.swing.JFrame {
                         //searchEntryList = getEntryList().objectSearch(daySelected, monthSelected, yearSelected);
                         //updateTable(searchEntryList);
                         //updateBalance(searchEntryList);
+                        
+                        Double in = 0.0, out = 0.0, auxIn, auxOut;
+                        
+                        for (int i = 0; i < jTable.getRowCount(); i++) {
+                            auxIn = jTable.getValueAt(i, 3).toString().isEmpty() ? 0 : Double.parseDouble(jTable.getValueAt(i, 3).toString().replace(",", "."));
+                            auxOut = jTable.getValueAt(i, 4).toString().isEmpty() ? 0 : Double.parseDouble(jTable.getValueAt(i, 4).toString().substring(1).replace(",", "."));
+                            in += auxIn;
+                            out += auxOut;
+                        }
+                        updateTxt(in, -out);
                     }
                 }
                 else sorter.setRowFilter(rf.regexFilter("", 1));
@@ -247,12 +276,12 @@ public class CashFlowFrame extends javax.swing.JFrame {
         });
     }
     
-    private void updateTxt(Double in, Double out, Double total) {
+    protected void updateTxt(Double in, Double out) {
         String txtIn, txtOut, txtTotal; 
         
         txtIn = String.format("%.2f", in);
         txtOut = String.format("%.2f", out);
-        txtTotal = String.format("%.2f", total);
+        txtTotal = String.format("%.2f", in + out);
         
         txt_in.setText(txtIn);
         txt_out.setText(txtOut);
@@ -292,10 +321,10 @@ public class CashFlowFrame extends javax.swing.JFrame {
         getJTable().validate();
     }*/
         
-    public void updateTable(Object[] rowData, int index) {
+    public void InsertToTable(Object[] rowData, int index) {
         DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();        
         defaultTableModel.insertRow(index, rowData);
-        updateTxt(getEntryList().getIn(), getEntryList().getOut(), getEntryList().getTotal());
+        updateTxt(getEntryList().getIn(), getEntryList().getOut());
     }
     
     public void swapRows(int oldPos, int newPos) {
@@ -361,13 +390,13 @@ public class CashFlowFrame extends javax.swing.JFrame {
         }
     }*/
     
-    private void setBalance(double balance) {
+    /*private void setBalance(double balance) {
         this.balance = balance;
     }
     
     private double getBalance() {
         return this.balance;
-    }
+    }*/
     
     /*public void setMoved(boolean moved) {
         this.moved = moved;
@@ -550,7 +579,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
                         .addComponent(btn_insert_entry, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_edit_entry, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
+                        .addGap(27, 27, 27)
                         .addComponent(btn_remove_entry, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(76, 76, 76)
                         .addComponent(combobox_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)

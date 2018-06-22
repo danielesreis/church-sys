@@ -220,7 +220,7 @@ public class InsertEntryDialog extends javax.swing.JDialog {
             Entry entry = new Entry(date, entryList.getEntryListSize(), description, positiveEntry, Double.parseDouble(value.replace(",", ".")));
             index = entryList.addEntry(entry);
             CashFlowFrame cashFlowFrame = (CashFlowFrame)getParentFrame();
-            cashFlowFrame.updateTable(entryList.getStringMember(index), index);
+            cashFlowFrame.InsertToTable(entryList.getStringMember(entry.getKey()), index);
             cashFlowFrame.updateComboBoxYear(entry.getYear());
         }
     }//GEN-LAST:event_btn_insertActionPerformed

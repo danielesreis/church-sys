@@ -171,11 +171,10 @@ public class EditEntryDialog extends javax.swing.JDialog {
 
     private void btn_edit_entryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_edit_entryActionPerformed
         // TODO add your handling code here:
-        String date, newDate, description, newDescription, value, newValue;
+        String newDate, description, newDescription, value, newValue;
         Double newValueNum;
         boolean error;
         
-        date = txtfield_date.getText();
         description = txtfield_description.getText();
         value = txtfield_value.getText();
         
@@ -211,6 +210,8 @@ public class EditEntryDialog extends javax.swing.JDialog {
                 jTable.setValueAt(newDate, editedRow, 1);
                 entryList.updateEntry(editedEntryKey, 0, newDate);
             }
+            
+            frame.updateTxt(entryList.getIn(), entryList.getOut());
         }        
     }//GEN-LAST:event_btn_edit_entryActionPerformed
 
