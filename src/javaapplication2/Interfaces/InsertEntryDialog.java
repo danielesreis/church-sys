@@ -242,7 +242,7 @@ public class InsertEntryDialog extends javax.swing.JDialog {
             error = true;
         }
         
-        if(!date.matches("\\d{1,2}/{1}\\d{1,2}/{1}\\d{4}")) {
+        if(!date.matches("\\d{1,2}/{1}\\d{1,2}/{1}\\d{4}")) {            
             JOptionPane.showMessageDialog(parentFrame, "Formato de data incorreto!", "Alerta", HEIGHT);
             error = true;
         }

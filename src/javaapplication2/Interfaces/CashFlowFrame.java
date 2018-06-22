@@ -69,8 +69,21 @@ public class CashFlowFrame extends javax.swing.JFrame {
         entryList.addEntry(entry);
         this.updateComboBoxYear(entry.getYear());
         
-        entry = new Entry("10/10/1995", entryList.getEntryListSize(), "Bebedouro", false, 100);
+        entry = new Entry("10/09/1996", entryList.getEntryListSize(), "Cafeteira", false, 500);
         entryList.addEntry(entry);
+        this.updateComboBoxYear(entry.getYear());
+        
+        entry = new Entry("10/09/1997", entryList.getEntryListSize(), "Cafeteira", false, 500);
+        entryList.addEntry(entry);
+        this.updateComboBoxYear(entry.getYear());
+        
+        entry = new Entry("10/09/1998", entryList.getEntryListSize(), "Cafeteira", false, 500);
+        entryList.addEntry(entry);
+        this.updateComboBoxYear(entry.getYear());
+        
+        entry = new Entry("10/09/1999", entryList.getEntryListSize(), "Cafeteira", false, 500);
+        entryList.addEntry(entry);
+        this.updateComboBoxYear(entry.getYear());
         
         entry = new Entry("10/09/2000", entryList.getEntryListSize(), "Bolão", true, 1000);
         entryList.addEntry(entry);
@@ -78,7 +91,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         
         setEntryList(entryList);
         
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 6; i++)
             updateTable(entryList.getStringMember(i), i);
         //chamo o método do cálculo do saldo
         //updateBalance(getEntryList());
@@ -283,6 +296,11 @@ public class CashFlowFrame extends javax.swing.JFrame {
         DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();        
         defaultTableModel.insertRow(index, rowData);
         updateTxt(getEntryList().getIn(), getEntryList().getOut(), getEntryList().getTotal());
+    }
+    
+    public void swapRows(int oldPos, int newPos) {
+        DefaultTableModel defaultTableModel = (DefaultTableModel)getJTable().getModel();
+        defaultTableModel.moveRow(oldPos, oldPos, newPos);
         getJTable().validate();
     }
         
@@ -351,13 +369,13 @@ public class CashFlowFrame extends javax.swing.JFrame {
         return this.balance;
     }
     
-    public void setMoved(boolean moved) {
+    /*public void setMoved(boolean moved) {
         this.moved = moved;
     }
     
     private boolean getMoved() {
         return this.moved;
-    }
+    }*/
     
     /*private void setUpdated(boolean updated) {
         this.updated = updated;
@@ -379,7 +397,7 @@ public class CashFlowFrame extends javax.swing.JFrame {
         this.jTable = jTable;
     }
     
-    protected JTable getJTable() {
+    public JTable getJTable() {
         return this.jTable;
     }
     

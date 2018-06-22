@@ -194,16 +194,23 @@ public class EditEntryDialog extends javax.swing.JDialog {
         if (!error) {
             EntryList entryList = frame.getEntryList();
             JTable jTable = frame.getJTable();
+            Entry editedEntry = entryList.getEntryByKey(editedEntryKey);
         
-            entryList.updateEntry(editedEntryKey, 0, newDate);
-            jTable.setValueAt(newDate, editedRow, 1);
+            if (!editedEntry.getDescription().equals(description)) {
+                entryList.updateEntry(editedEntryKey, 1, newDescription);
+                jTable.setValueAt(newDescription, editedRow, 2);
+            }
         
-            entryList.updateEntry(editedEntryKey, 1, newDescription);
-            jTable.setValueAt(newDescription, editedRow, 2);
-        
-            entryList.updateEntry(editedEntryKey, 2, newValueNum);
-            if(jTable.getValueAt(editedRow, 3).toString().isEmpty()) jTable.setValueAt("-" + newValue, editedRow, 4);
-            else jTable.setValueAt(newValue, editedRow, 3);
+            if (!Double.toString(editedEntry.getValue(false)).equals(newValue)) {
+                entryList.updateEntry(editedEntryKey, 2, newValueNum);
+                if(jTable.getValueAt(editedRow, 3).toString().isEmpty()) jTable.setValueAt("-" + newValue, editedRow, 4);
+                else jTable.setValueAt(newValue, editedRow, 3);
+            }
+            
+            if (!editedEntry.getDate().equals(newDate)) {
+                jTable.setValueAt(newDate, editedRow, 1);
+                entryList.updateEntry(editedEntryKey, 0, newDate);
+            }
         }        
     }//GEN-LAST:event_btn_edit_entryActionPerformed
 

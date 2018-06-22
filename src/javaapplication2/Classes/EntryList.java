@@ -68,7 +68,14 @@ public class EntryList{
     }
     
     public Entry getEntryByKey(int key) {
-        return getEntryList().get(key);
+        Entry entry = null;
+        
+        for(int i = 0; i < this.getEntryListSize(); i++) {
+            entry = getEntryList().get(i);
+            if (entry.getKey() == key) return entry;
+        }
+        
+        return entry;
     }
     
     public int addEntry(Entry entry) {
@@ -83,6 +90,7 @@ public class EntryList{
         return index;
     }
     
+    /*what if entry is null?*/
     public void removeEntry(int key) {
         Entry entry = getEntryByKey(key);
         
@@ -92,6 +100,7 @@ public class EntryList{
         getEntryList().remove(key);
     }
     
+    /*what if auxEntry is null?*/
     private int getPosition(Entry newEntry) {
         int pos = 0, auxPos = 0, keep = 0, size = getEntryListSize(), newEntryYear, i;
         List<Entry> entryList = getEntryList(); 
@@ -164,18 +173,18 @@ public class EntryList{
         return pos;        
     }
             
-    public int updateEntry(int entryKey, int attributeKey, Object attributeValue) {
+    public void updateEntry(int entryKey, int attributeKey, Object attributeValue) {
         Entry entry = getEntryList().get(entryKey);
         Entry newEntry;
-        int index = 0;
         
         switch(attributeKey) {
-            case 0: entry.setDate((String)attributeValue); 
+            case 0: entry.setDate((String)attributeValue);
+                    int oldPos = getEntryList().indexOf(entry), newPos;
                     newEntry = entry;
                     getEntryList().remove(entryKey);
-                    index = addEntry(newEntry);
+                    newPos = addEntry(newEntry);
                     getCashFlowFrame().updateComboBoxYear(newEntry.getYear());
-                    getCashFlowFrame().setMoved(false);
+                    getCashFlowFrame().swapRows(oldPos, newPos);
                     break;
             case 1: entry.setDescription((String)attributeValue); 
                     break;
@@ -190,20 +199,20 @@ public class EntryList{
                         this.setOut(entry.getValue(true));
                     }
         }
-        return index;
     }
     
     private static String concatDate(String day, String month, String year) {
         String date = day + "/" + month + "/" + year;
         String[] words = date.split("/");
         
-        words[0] = (words[0].length()==1) ? "0" + words[0] : words[0];
-        words[1] = (words[1].length()==1) ? "0" + words[1] : words[1];
+        words[0] = (words[0].length() == 1) ? "0" + words[0] : words[0];
+        words[1] = (words[1].length() == 1) ? "0" + words[1] : words[1];
         date = words[0] + "/" + words[1] + "/" + words[2];
         
         return date;        
     }
     
+    /*what if entry is null?*/
     public Object[] getStringMember(int key) {
         Entry entry = this.getEntryByKey(key);
         String value = String.format("%.2f", entry.getValue(true));
@@ -216,6 +225,7 @@ public class EntryList{
         return rowData;
     }
     
+    /*bye?*/
     public Object[] getStringMember(Entry entry) {
         String value = String.format("%.2f", entry.getValue(true));
         int valueKey;
@@ -227,10 +237,10 @@ public class EntryList{
         return rowData;
     }
     
-    /*bye?*/
+    /*bye?*/ /*what if entry is null?*/
     public List<Entry> objectSearch (String day, String month, String year)
     {
-        List<Entry> searchList = new ArrayList<Entry>();
+        List<Entry> searchList = new ArrayList<>();
         String searchDate, auxDay, auxMonth, auxYear;
         
         for(int i=0; i<getEntryListSize(); i++) {
